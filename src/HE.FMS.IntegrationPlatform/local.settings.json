@@ -1,0 +1,17 @@
+{
+    "IsEncrypted": false,
+    "Values": {
+        "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+        "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+        "ServiceBus:Connection__fullyQualifiedNamespace": "",
+        "ServiceBus:Connection__tenantId": "",
+        "ServiceBus:Connection__clientId": "",
+        "ServiceBus:Connection__clientSecret": "",
+        "ServiceBus:PushMessageToCosmosDb:Topic": "poc",
+        "ServiceBus:PushMessageToCosmosDb:Subscription": "push-message-to-cosmosdb",
+        "CosmosDb:AccountEndpoint": "",
+        "CosmosDb:ConnectionString": "",
+        "CosmosDb:DatabaseId": "fms",
+        "CosmosDb:ContainerId": "fms-container"
+    }
+}

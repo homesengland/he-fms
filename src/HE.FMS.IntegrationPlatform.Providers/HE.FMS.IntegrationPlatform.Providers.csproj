@@ -1,0 +1,10 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <ItemGroup>
+      <PackageReference Include="Azure.Identity" Version="1.11.4" />
+      <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.41.0" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.1" />
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\HE.FMS.IntegrationPlatform.Common\HE.FMS.IntegrationPlatform.Common.csproj" />
+    </ItemGroup>
+</Project>

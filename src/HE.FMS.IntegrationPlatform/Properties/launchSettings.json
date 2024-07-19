@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "HE.FMS.IntegrationPlatform": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7242",
+      "launchBrowser": false,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
