@@ -7,8 +7,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 var host = new HostBuilder()
-    .ConfigureFunctionsWorkerDefaults(builder => builder.UseCommonMiddlewares())
-    .ConfigureAppConfiguration((context, builder) => builder.AddDefaultConfiguration(context))
+    .ConfigureFunctionsWorkerDefaults(builder => builder.UseFmsMiddlewares())
+    .ConfigureAppConfiguration((context, builder) => builder.AddFmsConfiguration(context))
     .ConfigureServices(services =>
     {
         services.AddApplicationInsightsTelemetryWorkerService();

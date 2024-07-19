@@ -1,10 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using HE.FMS.IntegrationPlatform.Common.Exceptions.Communication;
-using HE.FMS.IntegrationPlatform.Common.Exceptions.Validation;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Middleware;
 using Microsoft.Extensions.Logging;
-using Polly.Timeout;
 
 namespace HE.FMS.IntegrationPlatform.Middlewares;
 
@@ -30,25 +27,9 @@ internal sealed class ExceptionHandlingWithoutResponseMiddleware : IFunctionsWor
             {
                 await next(context);
             }
-            catch (ExternalServerErrorException ex)
-            {
-                _logger.LogError(ex, ex.Message);
-            }
-            catch (CommunicationException ex)
-            {
-                _logger.LogError(ex, ex.Message);
-            }
-            catch (TimeoutRejectedException ex)
-            {
-                _logger.LogError(ex, ex.Message);
-            }
-            catch (FailedSerializationException ex)
-            {
-                _logger.LogError(ex, ex.Message);
-            }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Unknown exception");
+                _logger.LogError(ex, ex.Message);
             }
         }
         else

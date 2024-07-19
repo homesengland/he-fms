@@ -6,7 +6,7 @@ namespace HE.FMS.IntegrationPlatform.Extensions;
 
 public static class FunctionsWorkerApplicationBuilderExtensions
 {
-    public static IFunctionsWorkerApplicationBuilder UseCommonMiddlewares(this IFunctionsWorkerApplicationBuilder builder)
+    public static IFunctionsWorkerApplicationBuilder UseFmsMiddlewares(this IFunctionsWorkerApplicationBuilder builder)
         => builder
             .UseMiddleware<ExceptionHandlingWithResponseMiddleware>()
             .UseMiddleware<ExceptionHandlingWithoutResponseMiddleware>()

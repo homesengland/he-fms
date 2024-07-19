@@ -12,6 +12,9 @@
         "CosmosDb:AccountEndpoint": "",
         "CosmosDb:ConnectionString": "",
         "CosmosDb:DatabaseId": "fms",
-        "CosmosDb:ContainerId": "fms-container"
+        "CosmosDb:ContainerId": "fms-container",
+        "Mambu:BaseUrl": "https://mambu.com/api/",
+        "Mambu:RetryCount": "1",
+        "Mambu:RetryDelayInMilliseconds": "500"
     }
 }

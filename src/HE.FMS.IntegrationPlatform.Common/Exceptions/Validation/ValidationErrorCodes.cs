@@ -1,6 +1,6 @@
-﻿namespace HE.FMS.IntegrationPlatform.Common.Exceptions;
+﻿namespace HE.FMS.IntegrationPlatform.Common.Exceptions.Validation;
 
-public static class ValidationErrorCodes
+internal static class ValidationErrorCodes
 {
     public static string InvalidRequest => nameof(InvalidRequest);
 

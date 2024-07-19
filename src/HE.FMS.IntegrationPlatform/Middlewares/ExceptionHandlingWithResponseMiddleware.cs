@@ -35,20 +35,15 @@ internal sealed class ExceptionHandlingWithResponseMiddleware : IFunctionsWorker
                 _logger.LogWarning(ex, ex.Message);
                 await SetErrorResponse(context, HttpStatusCode.BadRequest, ex);
             }
-            catch (ExternalServerErrorException ex)
+            catch (ExternalSystemException ex)
             {
                 _logger.LogError(ex, ex.Message);
-                await SetErrorResponse(context, ex.Code, errorCode: "ExternalError");
-            }
-            catch (CommunicationException ex)
-            {
-                _logger.LogError(ex, ex.Message);
-                await SetErrorResponse(context, ex.Code, ex.Message);
+                await SetErrorResponse(context, HttpStatusCode.InternalServerError, errorCode: ex.ErrorCode, errorMessage: ex.Message);
             }
             catch (TimeoutRejectedException ex)
             {
                 _logger.LogError(ex, ex.Message);
-                await SetErrorResponse(context, HttpStatusCode.InternalServerError, errorCode: "ExternalError", errorMessage: "External service takes too long to respond.");
+                await SetErrorResponse(context, HttpStatusCode.InternalServerError, errorCode: CommunicationErrorCodes.ExternalSystemIsBusy, errorMessage: "External service takes too long to respond.");
             }
             catch (Exception ex)
             {
@@ -71,7 +66,6 @@ internal sealed class ExceptionHandlingWithResponseMiddleware : IFunctionsWorker
         if (request != null)
         {
             var response = request.CreateResponse(httpStatusCode);
-
             if (errorCode != null)
             {
                 await response.WriteAsJsonAsync(new ErrorDto(errorCode, errorMessage), httpStatusCode);

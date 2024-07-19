@@ -27,3 +27,6 @@ Configuration for local development is stored in `local.settings.json`. It shoul
 - `CosmosDb:DatabaseId` id of the database `fms`
 - `CosmosDb:ContainerId` if of the database container `fms-container`
 - `CosmosDb:PartitionKey` partition key `/partitionKey`
+- `Mambu:BaseUrl` base url to Mambu API
+- `Mambu:RetryCount` number of retries for Mambu API calls
+- `Mambu:RetryDelayInMilliseconds` delay between retries for Mambu API calls

@@ -1,6 +1,6 @@
 ﻿namespace HE.FMS.IntegrationPlatform.Common.Exceptions.Validation;
 
-public class FailedSerializationException : ValidationException
+public sealed class FailedSerializationException : ValidationException
 {
     public FailedSerializationException()
         : base(ValidationErrorCodes.FailedSerialization, "Error during request serialization")

@@ -1,10 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using HE.FMS.IntegrationPlatform.Common.Exceptions.Communication;
 using HE.FMS.IntegrationPlatform.Common.Exceptions.Validation;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Middleware;
 using Microsoft.Extensions.Logging;
-using Polly.Timeout;
 
 namespace HE.FMS.IntegrationPlatform.Middlewares;
 
@@ -28,17 +26,7 @@ internal sealed class ExceptionHandlingForServiceBusTriggersMiddleware : IFuncti
             {
                 await next(context);
             }
-            catch (ExternalServerErrorException ex)
-            {
-                _logger.LogError(ex, ex.Message);
-                throw;
-            }
-            catch (TimeoutRejectedException ex)
-            {
-                _logger.LogError(ex, ex.Message);
-                throw;
-            }
-            catch (FailedSerializationException ex)
+            catch (ValidationException ex)
             {
                 _logger.LogError(ex, ex.Message);
             }
