@@ -1,6 +1,6 @@
 ﻿namespace HE.FMS.IntegrationPlatform.Providers.Mambu.Settings;
 
-internal sealed class MambuSettings : IMambuSettings
+internal sealed class MambuApiSettings : IMambuApiSettings
 {
     public Uri BaseUrl { get; set; }
 

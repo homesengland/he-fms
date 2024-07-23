@@ -1,6 +1,6 @@
 ﻿namespace HE.FMS.IntegrationPlatform.Providers.Mambu.Settings;
 
-public interface IMambuSettings
+public interface IMambuApiSettings
 {
     Uri BaseUrl { get; }
 

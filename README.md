@@ -3,6 +3,17 @@
 ## Local Development
 When running Azure Function in Rider it must be started with elevated permissions.
 
+This project integrates with Azure resources using `DefaultAzureCredential`. To authenticate with Azure resources create Service Principal and set following environment variables:
+ - AZURE_TENANT_ID
+ - AZURE_CLIENT_ID
+ - AZURE_CLIENT_SECRET
+Alternative way is Azure CLI login. Following roles are required to be granted for Service Principal:
+ - Key Vault
+     - Key Vault Secrets Officer
+ - Service Bus
+     - Azure Service Bus Data Sender
+     - Azure Service Bus Data Receiver
+
 ### Prerequisites
 - **Azurite**
 - **Service Bus** in Standard Tier
@@ -27,6 +38,10 @@ Configuration for local development is stored in `local.settings.json`. It shoul
 - `CosmosDb:DatabaseId` id of the database `fms`
 - `CosmosDb:ContainerId` if of the database container `fms-container`
 - `CosmosDb:PartitionKey` partition key `/partitionKey`
-- `Mambu:BaseUrl` base url to Mambu API
-- `Mambu:RetryCount` number of retries for Mambu API calls
-- `Mambu:RetryDelayInMilliseconds` delay between retries for Mambu API calls
+- `Mambu:RotateApiKeyTimeTrigger` cron expression for rotating Mambu API key
+- `Mambu:Api:BaseUrl` base url to Mambu API
+- `Mambu:Api:RetryCount` number of retries for Mambu API calls
+- `Mambu:Api:RetryDelayInMilliseconds` delay between retries for Mambu API calls
+- `Mambu:ApiKey:KeyVaultSecretName` secret name which stores ApiKey in Azure Key Vault
+- `Mambu:ApiKey:ExpirationInSeconds` expiration in seconds of Mambu API key which is used for rotating
+- `KeyVault:Url` url to Azure Key Vault
