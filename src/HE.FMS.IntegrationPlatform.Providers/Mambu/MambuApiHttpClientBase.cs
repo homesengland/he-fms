@@ -28,14 +28,26 @@ internal abstract class MambuApiHttpClientBase
 
     protected abstract string ApiName { get; }
 
-    protected async Task<TResponse> Get<TResponse>(string relativeUrl, CancellationToken cancellationToken, Action<HttpRequestMessage>? httpRequestMessageBuilder = null)
+    protected async Task Send(HttpMethod httpMethod, string relativeUrl, CancellationToken cancellationToken, Action<HttpRequestMessage>? httpRequestMessageBuilder = null)
+    {
+        using var httpRequest = new HttpRequestMessage(httpMethod, relativeUrl);
+        httpRequest.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.mambu.v2+json"));
+
+        httpRequestMessageBuilder?.Invoke(httpRequest);
+
+        await SendAsync(httpRequest, cancellationToken);
+    }
+
+    protected async Task<TResponse> Send<TResponse>(HttpMethod httpMethod, string relativeUrl, CancellationToken cancellationToken, Action<HttpRequestMessage>? httpRequestMessageBuilder = null)
     {
         using var httpRequest = new HttpRequestMessage(HttpMethod.Get, relativeUrl);
         httpRequest.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.mambu.v2+json"));
 
         httpRequestMessageBuilder?.Invoke(httpRequest);
 
-        return await SendAsync<TResponse>(httpRequest, cancellationToken);
+        var httpResponse = await SendAsync(httpRequest, cancellationToken);
+
+        return await ParseResponse<TResponse>(httpRequest, httpResponse, cancellationToken);
     }
 
     protected async Task<TResponse> Send<TRequest, TResponse>(HttpMethod httpMethod, string relativeUrl, TRequest requestBody, CancellationToken cancellationToken, Action<HttpRequestMessage>? httpRequestMessageBuilder = null)
@@ -46,7 +58,9 @@ internal abstract class MambuApiHttpClientBase
 
         httpRequestMessageBuilder?.Invoke(httpRequest);
 
-        return await SendAsync<TResponse>(httpRequest, cancellationToken);
+        using var httpResponse = await SendAsync(httpRequest, cancellationToken);
+
+        return await ParseResponse<TResponse>(httpRequest, httpResponse, cancellationToken);
     }
 
     private static string GetRequestDetails(HttpRequestMessage httpRequest)
@@ -54,9 +68,9 @@ internal abstract class MambuApiHttpClientBase
         return $"{httpRequest.Method} {httpRequest.RequestUri} Mambu request";
     }
 
-    private async Task<TResponse> SendAsync<TResponse>(HttpRequestMessage httpRequest, CancellationToken cancellationToken)
+    private async Task<HttpResponseMessage> SendAsync(HttpRequestMessage httpRequest, CancellationToken cancellationToken)
     {
-        using var httpResponse = await _httpClient.SendAsync(httpRequest, cancellationToken);
+        var httpResponse = await _httpClient.SendAsync(httpRequest, cancellationToken);
         if (!httpResponse.IsSuccessStatusCode)
         {
             var errorContent = await httpResponse.Content.ReadAsStringAsync(cancellationToken);
@@ -65,6 +79,11 @@ internal abstract class MambuApiHttpClientBase
             throw new ExternalSystemCommunicationException(ApiName, httpResponse.StatusCode);
         }
 
+        return httpResponse;
+    }
+
+    private async Task<TResponse> ParseResponse<TResponse>(HttpRequestMessage httpRequest, HttpResponseMessage httpResponse, CancellationToken cancellationToken)
+    {
         var responseContent = await httpResponse.Content.ReadAsStringAsync(cancellationToken);
         if (string.IsNullOrEmpty(responseContent))
         {

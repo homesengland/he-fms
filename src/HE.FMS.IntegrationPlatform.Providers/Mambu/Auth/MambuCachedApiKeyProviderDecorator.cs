@@ -2,7 +2,7 @@
 
 namespace HE.FMS.IntegrationPlatform.Providers.Mambu.Auth;
 
-public class MambuCachedApiKeyProviderDecorator : IMambuApiKeyProvider
+internal sealed class MambuCachedApiKeyProviderDecorator : IMambuApiKeyProvider
 {
     private const string CacheKey = "MambuApiKey";
 

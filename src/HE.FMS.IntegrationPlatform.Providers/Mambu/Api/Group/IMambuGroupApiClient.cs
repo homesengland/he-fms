@@ -2,7 +2,6 @@
 
 namespace HE.FMS.IntegrationPlatform.Providers.Mambu.Api.Group;
 
-public interface IMambuGroupApiClient
+public interface IMambuGroupApiClient : IMambuRestApiClient<GroupDto, GetAllGroupsParams>
 {
-    Task<IList<GetGroupResponse>> GetAll(CancellationToken cancellationToken);
 }

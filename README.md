@@ -37,7 +37,6 @@ Configuration for local development is stored in `local.settings.json`. It shoul
 - `CosmosDb:ConnectionString` provide full connection string for local development using Cosmos DB emulator
 - `CosmosDb:DatabaseId` id of the database `fms`
 - `CosmosDb:ContainerId` if of the database container `fms-container`
-- `CosmosDb:PartitionKey` partition key `/partitionKey`
 - `Mambu:RotateApiKeyTimeTrigger` cron expression for rotating Mambu API key
 - `Mambu:Api:BaseUrl` base url to Mambu API
 - `Mambu:Api:RetryCount` number of retries for Mambu API calls
@@ -45,3 +44,4 @@ Configuration for local development is stored in `local.settings.json`. It shoul
 - `Mambu:ApiKey:KeyVaultSecretName` secret name which stores ApiKey in Azure Key Vault
 - `Mambu:ApiKey:ExpirationInSeconds` expiration in seconds of Mambu API key which is used for rotating
 - `KeyVault:Url` url to Azure Key Vault
+- `Grants:BranchId` id of Mambu branch (environment)

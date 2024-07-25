@@ -7,9 +7,9 @@ namespace HE.FMS.IntegrationPlatform.Functions.HttpTriggers.Mambu;
 
 public class MambuHealthCheckHttpTrigger
 {
-    private readonly IMambuService _mambuService;
+    private readonly IMambuApiKeyService _mambuService;
 
-    public MambuHealthCheckHttpTrigger(IMambuService mambuService)
+    public MambuHealthCheckHttpTrigger(IMambuApiKeyService mambuService)
     {
         _mambuService = mambuService;
     }
