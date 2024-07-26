@@ -10,13 +10,13 @@ public sealed class GroupAddressDto
 
     public int? IndexInList { get; set; }
 
-    public double? Latitude { get; set; }
+    public decimal? Latitude { get; set; }
 
     public string? Line1 { get; set; }
 
     public string? Line2 { get; set; }
 
-    public double? Longitude { get; set; }
+    public decimal? Longitude { get; set; }
 
     public string? ParentKey { get; set; }
 

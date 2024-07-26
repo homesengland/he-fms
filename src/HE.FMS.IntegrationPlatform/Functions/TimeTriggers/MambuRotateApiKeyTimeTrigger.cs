@@ -1,4 +1,4 @@
-﻿using HE.FMS.IntegrationPlatform.Domain.Mambu;
+﻿using HE.FMS.IntegrationPlatform.BusinessLogic.Mambu;
 using Microsoft.Azure.Functions.Worker;
 
 namespace HE.FMS.IntegrationPlatform.Functions.TimeTriggers;

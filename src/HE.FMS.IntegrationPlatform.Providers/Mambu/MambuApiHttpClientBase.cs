@@ -3,6 +3,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using HE.FMS.IntegrationPlatform.Common.Exceptions.Communication;
+using HE.FMS.IntegrationPlatform.Common.Serialization.Converters;
 using Microsoft.Extensions.Logging;
 
 namespace HE.FMS.IntegrationPlatform.Providers.Mambu;
@@ -18,6 +19,7 @@ internal abstract class MambuApiHttpClientBase
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
         PropertyNameCaseInsensitive = true,
         DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+        Converters = { new EnumDescriptionJsonConverterFactory() },
     };
 
     protected MambuApiHttpClientBase(HttpClient httpClient, ILogger<MambuApiHttpClientBase> logger)

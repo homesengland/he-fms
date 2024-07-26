@@ -4,6 +4,7 @@ using HE.FMS.IntegrationPlatform.Providers.CosmosDb.Settings;
 using HE.FMS.IntegrationPlatform.Providers.KeyVault;
 using HE.FMS.IntegrationPlatform.Providers.KeyVault.Settings;
 using HE.FMS.IntegrationPlatform.Providers.Mambu;
+using HE.FMS.IntegrationPlatform.Providers.Mambu.Api.CreditArrangement;
 using HE.FMS.IntegrationPlatform.Providers.Mambu.Api.Group;
 using HE.FMS.IntegrationPlatform.Providers.Mambu.Api.Rotation;
 using HE.FMS.IntegrationPlatform.Providers.Mambu.Auth;
@@ -30,8 +31,9 @@ public static class ProvidersModule
         services.AddScoped<IMambuApiKeyProvider, MambuApiKeyProvider>();
         services.Decorate<IMambuApiKeyProvider, MambuCachedApiKeyProviderDecorator>();
 
-        services.AddMambuApiClient<IMambuGroupApiClient, MambuGroupApiClient>().WithApiKeyAuthorization().WithDefaultRetryPolicy();
         services.AddMambuApiClient<IMambuRotationApiClient, MambuRotationApiClient>().WithDefaultRetryPolicy();
+        services.AddMambuApiClient<IMambuGroupApiClient, MambuGroupApiClient>().WithApiKeyAuthorization().WithDefaultRetryPolicy();
+        services.AddMambuApiClient<IMambuCreditArrangementApiClient, MambuCreditArrangementApiClient>().WithApiKeyAuthorization().WithDefaultRetryPolicy();
 
         return services;
     }

@@ -1,5 +1,5 @@
+using HE.FMS.IntegrationPlatform.BusinessLogic.Config;
 using HE.FMS.IntegrationPlatform.Common.Config;
-using HE.FMS.IntegrationPlatform.Domain.Config;
 using HE.FMS.IntegrationPlatform.Extensions;
 using HE.FMS.IntegrationPlatform.Providers.Config;
 using Microsoft.Azure.Functions.Worker;

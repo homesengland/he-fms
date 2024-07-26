@@ -1,5 +1,5 @@
 ﻿using System.Net;
-using HE.FMS.IntegrationPlatform.Domain.Mambu;
+using HE.FMS.IntegrationPlatform.BusinessLogic.Mambu;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 

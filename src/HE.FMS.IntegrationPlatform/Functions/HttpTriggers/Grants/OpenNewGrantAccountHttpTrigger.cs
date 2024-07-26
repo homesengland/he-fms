@@ -1,8 +1,8 @@
 ﻿using System.Net;
+using HE.FMS.IntegrationPlatform.BusinessLogic.Framework;
 using HE.FMS.IntegrationPlatform.Common.Serialization;
 using HE.FMS.IntegrationPlatform.Contract.Grants.Results;
 using HE.FMS.IntegrationPlatform.Contract.Grants.UseCases;
-using HE.FMS.IntegrationPlatform.Domain.Framework;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 

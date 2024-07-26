@@ -30,7 +30,7 @@
     <Using Include="System.Threading.ExecutionContext" Alias="ExecutionContext" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\HE.FMS.IntegrationPlatform.Domain\HE.FMS.IntegrationPlatform.Domain.csproj" />
+    <ProjectReference Include="..\HE.FMS.IntegrationPlatform.BusinessLogic\HE.FMS.IntegrationPlatform.BusinessLogic.csproj" />
     <ProjectReference Include="..\HE.FMS.IntegrationPlatform.Providers\HE.FMS.IntegrationPlatform.Providers.csproj" />
   </ItemGroup>
 </Project>
