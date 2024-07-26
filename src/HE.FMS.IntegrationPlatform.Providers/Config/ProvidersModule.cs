@@ -1,13 +1,15 @@
-﻿using System.Net;
-using HE.FMS.IntegrationPlatform.Common.Extensions;
+﻿using HE.FMS.IntegrationPlatform.Common.Extensions;
 using HE.FMS.IntegrationPlatform.Providers.CosmosDb;
 using HE.FMS.IntegrationPlatform.Providers.CosmosDb.Settings;
+using HE.FMS.IntegrationPlatform.Providers.KeyVault;
+using HE.FMS.IntegrationPlatform.Providers.KeyVault.Settings;
 using HE.FMS.IntegrationPlatform.Providers.Mambu;
+using HE.FMS.IntegrationPlatform.Providers.Mambu.Api.Group;
+using HE.FMS.IntegrationPlatform.Providers.Mambu.Api.Rotation;
 using HE.FMS.IntegrationPlatform.Providers.Mambu.Auth;
+using HE.FMS.IntegrationPlatform.Providers.Mambu.Extensions;
 using HE.FMS.IntegrationPlatform.Providers.Mambu.Settings;
 using Microsoft.Extensions.DependencyInjection;
-using Polly;
-using Polly.Retry;
 
 namespace HE.FMS.IntegrationPlatform.Providers.Config;
 
@@ -16,20 +18,20 @@ public static class ProvidersModule
     public static IServiceCollection AddProvidersModule(this IServiceCollection services)
     {
         return services.AddMambu()
-            .AddCosmosDb();
+            .AddCosmosDb()
+            .AddKeyVault();
     }
 
     private static IServiceCollection AddMambu(this IServiceCollection services)
     {
-        services.AddAppConfiguration<IMambuSettings, MambuSettings>("Mambu");
-        services.AddHttpClient<IMambuApiHttpClient, MambuApiHttpClient>(
-                (serviceProvider, httpClient) =>
-                {
-                    var settings = serviceProvider.GetRequiredService<IMambuSettings>();
-                    httpClient.BaseAddress = settings.BaseUrl;
-                })
-            .AddHttpMessageHandler<MambuAuthorizationHandler>()
-            .AddPolicyHandler((provider, _) => ConfigureRetryPolicy(provider));
+        services.AddAppConfiguration<IMambuApiSettings, MambuApiSettings>("Mambu:Api");
+        services.AddAppConfiguration<IMambuApiKeySettings, MambuApiKeySettings>("Mambu:ApiKey");
+        services.AddScoped<MambuApiKeyAuthorizationHandler>();
+        services.AddScoped<IMambuApiKeyProvider, MambuApiKeyProvider>();
+        services.Decorate<IMambuApiKeyProvider, MambuCachedApiKeyProviderDecorator>();
+
+        services.AddMambuApiClient<IMambuGroupApiClient, MambuGroupApiClient>().WithApiKeyAuthorization().WithDefaultRetryPolicy();
+        services.AddMambuApiClient<IMambuRotationApiClient, MambuRotationApiClient>().WithDefaultRetryPolicy();
 
         return services;
     }
@@ -42,12 +44,23 @@ public static class ProvidersModule
         return services;
     }
 
-    private static AsyncRetryPolicy<HttpResponseMessage> ConfigureRetryPolicy(IServiceProvider serviceProvider)
+    private static IServiceCollection AddKeyVault(this IServiceCollection services)
     {
-        var settings = serviceProvider.GetRequiredService<IMambuSettings>();
+        services.AddAppConfiguration<IKeyVaultSettings, KeyVaultSettings>("KeyVault");
+        services.AddScoped<IKeyVaultSecretClient, KeyVaultSecretClient>();
 
-        return Policy.HandleResult<HttpResponseMessage>(
-                x => x.StatusCode is HttpStatusCode.RequestTimeout || x.StatusCode >= HttpStatusCode.InternalServerError)
-            .WaitAndRetryAsync(settings.RetryCount, _ => TimeSpan.FromMilliseconds(settings.RetryDelayInMilliseconds));
+        return services;
+    }
+
+    private static IHttpClientBuilder AddMambuApiClient<TService, TImplementation>(this IServiceCollection services)
+        where TImplementation : MambuApiHttpClientBase, TService
+        where TService : class
+    {
+        return services.AddHttpClient<TService, TImplementation>(
+            (serviceProvider, httpClient) =>
+            {
+                var settings = serviceProvider.GetRequiredService<IMambuApiSettings>();
+                httpClient.BaseAddress = settings.BaseUrl;
+            });
     }
 }

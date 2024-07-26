@@ -8,6 +8,7 @@ internal static class CommunicationErrorCodeMapper
     {
         return statusCode switch
         {
+            HttpStatusCode.Processing => CommunicationErrorCodes.ExternalRequestProcessing,
             HttpStatusCode.BadRequest => CommunicationErrorCodes.InvalidExternalSystemRequest,
             HttpStatusCode.Unauthorized => CommunicationErrorCodes.ExternalSystemNoAuthorized,
             HttpStatusCode.Forbidden => CommunicationErrorCodes.ExternalSystemNoAuthorized,
