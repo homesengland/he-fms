@@ -12,7 +12,7 @@ public sealed class GrantDetailsContract
     public decimal TotalFundingRequested { get; set; }
 
     [Required]
-    public DateTime StartDate { get; set; }
+    public DateTimeOffset StartDate { get; set; }
 
     [MaxLength(255)]
     public string? Notes { get; set; }

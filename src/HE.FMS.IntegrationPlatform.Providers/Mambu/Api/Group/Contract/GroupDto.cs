@@ -1,12 +1,10 @@
 ﻿namespace HE.FMS.IntegrationPlatform.Providers.Mambu.Api.Group.Contract;
 
-public sealed class GroupDto
+public class GroupDto
 {
     public string Id { get; set; }
 
     public string GroupName { get; set; }
-
-    public string EncodedKey { get; set; }
 
     public IList<GroupAddressDto>? Addresses { get; set; }
 
@@ -16,8 +14,6 @@ public sealed class GroupDto
 
     public string? AssignedUserKey { get; set; }
 
-    public DateTime? CreationDate { get; set; }
-
     public string? EmailAddress { get; set; }
 
     public IList<GroupMemberDto>? GroupMembers { get; set; }
@@ -25,12 +21,6 @@ public sealed class GroupDto
     public string? GroupRoleKey { get; set; }
 
     public string? HomePhone { get; set; }
-
-    public DateTime? LastModifiedDate { get; set; }
-
-    public int? LoanCycle { get; set; }
-
-    public string? MigrationEventKey { get; set; }
 
     public string? MobilePhone { get; set; }
 

@@ -1,6 +1,6 @@
-﻿using HE.FMS.IntegrationPlatform.Common.Serialization;
+﻿using HE.FMS.IntegrationPlatform.BusinessLogic.PoC;
+using HE.FMS.IntegrationPlatform.Common.Serialization;
 using HE.FMS.IntegrationPlatform.Contract.PoC;
-using HE.FMS.IntegrationPlatform.Domain.PoC;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 

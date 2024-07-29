@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 
 namespace HE.FMS.IntegrationPlatform.Providers.Mambu.Api.Group;
 
-internal sealed class MambuGroupApiClient : MambuRestApiClientBase<GroupDto, GetAllGroupsParams>, IMambuGroupApiClient
+internal sealed class MambuGroupApiClient : MambuRestApiClientBase<GroupDto, GroupReadDto, GetAllGroupsParams>, IMambuGroupApiClient
 {
     public MambuGroupApiClient(HttpClient httpClient, ILogger<MambuGroupApiClient> logger)
         : base(httpClient, logger)

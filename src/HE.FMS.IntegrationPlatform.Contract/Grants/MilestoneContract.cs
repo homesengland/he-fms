@@ -10,5 +10,5 @@ public class MilestoneContract
     [Required]
     public decimal Amount { get; set; }
 
-    public DateTime MilestoneExpectedDisbursementDate { get; set; }
+    public DateTimeOffset MilestoneExpectedDisbursementDate { get; set; }
 }

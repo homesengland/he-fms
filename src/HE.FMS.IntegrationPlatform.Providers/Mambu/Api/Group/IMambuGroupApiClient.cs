@@ -2,6 +2,6 @@
 
 namespace HE.FMS.IntegrationPlatform.Providers.Mambu.Api.Group;
 
-public interface IMambuGroupApiClient : IMambuRestApiClient<GroupDto, GetAllGroupsParams>
+public interface IMambuGroupApiClient : IMambuRestApiClient<GroupDto, GroupReadDto, GetAllGroupsParams>
 {
 }
