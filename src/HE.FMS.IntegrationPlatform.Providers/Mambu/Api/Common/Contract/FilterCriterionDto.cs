@@ -11,4 +11,9 @@ public sealed class FilterCriterionDto
     public string? Value { get; set; }
 
     public IList<string>? Values { get; set; }
+
+    public static FilterCriterionDto Equals(string field, string value)
+    {
+        return new FilterCriterionDto { Field = field, Operator = "EQUALS", Value = value };
+    }
 }

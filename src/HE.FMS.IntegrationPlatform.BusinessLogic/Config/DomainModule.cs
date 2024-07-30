@@ -33,6 +33,7 @@ public static class DomainModule
         services.AddAppConfiguration<IGrantsSettings, GrantsSettings>("Grants");
         services.AddScoped<IGroupService, GroupService>();
         services.AddScoped<ICreditArrangementService, CreditArrangementService>();
+        services.AddScoped<ILoanAccountService, LoanAccountService>();
         services.AddScoped<IUseCase<OpenNewGrantAccountRequest, OpenNewGrantAccountResult>, OpenNewGrantAccountUseCase>();
 
         return services;

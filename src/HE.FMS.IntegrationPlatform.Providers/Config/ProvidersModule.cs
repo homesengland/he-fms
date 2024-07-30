@@ -6,6 +6,7 @@ using HE.FMS.IntegrationPlatform.Providers.KeyVault.Settings;
 using HE.FMS.IntegrationPlatform.Providers.Mambu;
 using HE.FMS.IntegrationPlatform.Providers.Mambu.Api.CreditArrangement;
 using HE.FMS.IntegrationPlatform.Providers.Mambu.Api.Group;
+using HE.FMS.IntegrationPlatform.Providers.Mambu.Api.LoanAccount;
 using HE.FMS.IntegrationPlatform.Providers.Mambu.Api.Rotation;
 using HE.FMS.IntegrationPlatform.Providers.Mambu.Auth;
 using HE.FMS.IntegrationPlatform.Providers.Mambu.Extensions;
@@ -34,6 +35,7 @@ public static class ProvidersModule
         services.AddMambuApiClient<IMambuRotationApiClient, MambuRotationApiClient>().WithDefaultRetryPolicy();
         services.AddMambuApiClient<IMambuGroupApiClient, MambuGroupApiClient>().WithApiKeyAuthorization().WithDefaultRetryPolicy();
         services.AddMambuApiClient<IMambuCreditArrangementApiClient, MambuCreditArrangementApiClient>().WithApiKeyAuthorization().WithDefaultRetryPolicy();
+        services.AddMambuApiClient<IMambuLoanAccountApiClient, MambuLoanAccountApiClient>().WithApiKeyAuthorization().WithDefaultRetryPolicy();
 
         return services;
     }
