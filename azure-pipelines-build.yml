@@ -12,7 +12,7 @@ pool: 'vmss-ado-chs-nonprod-001'
 
 resources:
   repositories:
-  - repository: pipeline-assessment-deployment
+  - repository: he-fms-deployment
     type: git
     name: 'FMS/he-fms-deployment'   
     ref: 'main'
