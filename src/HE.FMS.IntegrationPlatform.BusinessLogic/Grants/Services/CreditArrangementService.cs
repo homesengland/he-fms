@@ -2,6 +2,7 @@
 using HE.FMS.IntegrationPlatform.Providers.Mambu.Api.Common.Enums;
 using HE.FMS.IntegrationPlatform.Providers.Mambu.Api.CreditArrangement;
 using HE.FMS.IntegrationPlatform.Providers.Mambu.Api.CreditArrangement.Contract;
+using HE.FMS.IntegrationPlatform.Providers.Mambu.Api.LoanAccount.Contract;
 
 namespace HE.FMS.IntegrationPlatform.BusinessLogic.Grants.Services;
 
@@ -20,6 +21,13 @@ internal sealed class CreditArrangementService : ICreditArrangementService
     {
         return await _creditArrangementApiClient.GetById(applicationId, DetailsLevel.Full, cancellationToken)
                ?? await _creditArrangementApiClient.Create(ToDto(applicationId, groupId, grantDetails), cancellationToken);
+    }
+
+    public async Task<LoanAccountReadDto> AddLoanAccount(string creditArrangementId, string loanAccountId, CancellationToken cancellationToken)
+    {
+        var accounts = await _creditArrangementApiClient.AddAccount(creditArrangementId, loanAccountId, AccountType.Loan, cancellationToken);
+
+        return accounts.LoanAccounts.First(x => x.EncodedKey == loanAccountId);
     }
 
     private static CreditArrangementDto ToDto(string applicationId, string groupId, GrantDetailsContract grantDetails)

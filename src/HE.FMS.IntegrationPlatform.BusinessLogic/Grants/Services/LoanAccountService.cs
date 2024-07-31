@@ -30,12 +30,12 @@ internal sealed class LoanAccountService : ILoanAccountService
     {
         var searchCriteria = new SearchCriteriaDto
         {
-            FilterCriteria = new[]
-            {
+            FilterCriteria =
+            [
                 FilterCriterionDto.Equals("accountHolderKey", groupId),
                 FilterCriterionDto.Equals("productTypeKey", grantDetails.ProductId),
                 FilterCriterionDto.Equals("loanName", phaseDetails.Name),
-            },
+            ],
         };
 
         var searchResult = await _loanAccountApiClient.Search(searchCriteria, new PageDetails(), cancellationToken);
