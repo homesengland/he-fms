@@ -11,10 +11,13 @@ internal sealed class OpenNewGrantAccountUseCase : IUseCase<OpenNewGrantAccountR
 
     private readonly ICreditArrangementService _creditArrangementService;
 
-    public OpenNewGrantAccountUseCase(IGroupService groupService, ICreditArrangementService creditArrangementService)
+    private readonly ILoanAccountService _loanAccountService;
+
+    public OpenNewGrantAccountUseCase(IGroupService groupService, ICreditArrangementService creditArrangementService, ILoanAccountService loanAccountService)
     {
         _groupService = groupService;
         _creditArrangementService = creditArrangementService;
+        _loanAccountService = loanAccountService;
     }
 
     public async Task<OpenNewGrantAccountResult> Trigger(OpenNewGrantAccountRequest input, CancellationToken cancellationToken)
@@ -25,10 +28,16 @@ internal sealed class OpenNewGrantAccountUseCase : IUseCase<OpenNewGrantAccountR
             group.EncodedKey,
             input.GrantDetails,
             cancellationToken);
+        var loanAccount = await _loanAccountService.GetOrCreateLoanAccount(
+            creditArrangement.EncodedKey,
+            group.EncodedKey,
+            input.GrantDetails,
+            input.PhaseDetails,
+            cancellationToken);
 
         return new OpenNewGrantAccountResult(
             input.ApplicationId,
-            group.Id,
-            creditArrangement.Id);
+            creditArrangement.Id,
+            loanAccount.Id);
     }
 }

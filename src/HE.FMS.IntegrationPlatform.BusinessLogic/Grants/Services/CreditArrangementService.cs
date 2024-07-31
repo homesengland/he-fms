@@ -2,12 +2,13 @@
 using HE.FMS.IntegrationPlatform.Providers.Mambu.Api.Common.Enums;
 using HE.FMS.IntegrationPlatform.Providers.Mambu.Api.CreditArrangement;
 using HE.FMS.IntegrationPlatform.Providers.Mambu.Api.CreditArrangement.Contract;
-using HE.FMS.IntegrationPlatform.Providers.Mambu.Api.CreditArrangement.Contract.Enums;
 
 namespace HE.FMS.IntegrationPlatform.BusinessLogic.Grants.Services;
 
 internal sealed class CreditArrangementService : ICreditArrangementService
 {
+    private static readonly DateTimeOffset CreditArrangementExpireDate = new(2199, 12, 31, 23, 59, 59, TimeSpan.Zero);
+
     private readonly IMambuCreditArrangementApiClient _creditArrangementApiClient;
 
     public CreditArrangementService(IMambuCreditArrangementApiClient creditArrangementApiClient)
@@ -15,7 +16,7 @@ internal sealed class CreditArrangementService : ICreditArrangementService
         _creditArrangementApiClient = creditArrangementApiClient;
     }
 
-    public async Task<CreditArrangementDto> GetOrCreateCreditArrangement(string applicationId, string groupId, GrantDetailsContract grantDetails, CancellationToken cancellationToken)
+    public async Task<CreditArrangementReadDto> GetOrCreateCreditArrangement(string applicationId, string groupId, GrantDetailsContract grantDetails, CancellationToken cancellationToken)
     {
         return await _creditArrangementApiClient.GetById(applicationId, DetailsLevel.Full, cancellationToken)
                ?? await _creditArrangementApiClient.Create(ToDto(applicationId, groupId, grantDetails), cancellationToken);
@@ -25,12 +26,12 @@ internal sealed class CreditArrangementService : ICreditArrangementService
     {
         return new CreditArrangementDto
         {
-            Id = applicationId, // TODO: can we use applicationId as the CreditArrangement ID? If not how to perform deduplication?
+            Id = applicationId,
             Amount = grantDetails.TotalFundingRequested,
             HolderKey = groupId,
             HolderType = HolderType.Group,
             StartDate = grantDetails.StartDate,
-            ExpireDate = grantDetails.StartDate.AddYears(10), // TODO: This field is mandatory, but we don't have this information
+            ExpireDate = CreditArrangementExpireDate,
             Notes = grantDetails.Notes,
         };
     }

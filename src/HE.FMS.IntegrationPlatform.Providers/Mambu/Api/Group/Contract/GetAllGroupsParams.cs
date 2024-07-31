@@ -8,17 +8,17 @@ public sealed record GetAllGroupsParams(string? CreditOfficerUsername = null, st
     {
         if (!string.IsNullOrEmpty(CreditOfficerUsername))
         {
-            yield return new KeyValuePair<string, string>("creditOfficerUsername", CreditOfficerUsername!);
+            yield return new KeyValuePair<string, string>("creditOfficerUsername", CreditOfficerUsername);
         }
 
         if (!string.IsNullOrEmpty(BranchId))
         {
-            yield return new KeyValuePair<string, string>("branchId", BranchId!);
+            yield return new KeyValuePair<string, string>("branchId", BranchId);
         }
 
         if (!string.IsNullOrEmpty(CentreId))
         {
-            yield return new KeyValuePair<string, string>("centreId", CentreId!);
+            yield return new KeyValuePair<string, string>("centreId", CentreId);
         }
 
         if (SortBy is { Value.Count: > 0 })
