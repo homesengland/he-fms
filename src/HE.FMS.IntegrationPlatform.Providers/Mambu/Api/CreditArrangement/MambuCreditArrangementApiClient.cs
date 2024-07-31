@@ -26,4 +26,9 @@ internal sealed class MambuCreditArrangementApiClient : MambuRestApiClientBase<C
 
         return await Send<AddCreditArrangementAccountDto, CreditArrangementAccountsDto>(HttpMethod.Post, relativeUrl, requestBody, cancellationToken);
     }
+
+    public async Task<CreditArrangementAccountsDto> GetAccounts(string creditArrangementId, CancellationToken cancellationToken)
+    {
+        return await Send<CreditArrangementAccountsDto>(HttpMethod.Get, $"{ApiUrl}/{creditArrangementId}/accounts", cancellationToken);
+    }
 }

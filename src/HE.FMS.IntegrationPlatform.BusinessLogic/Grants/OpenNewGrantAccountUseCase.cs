@@ -28,16 +28,20 @@ internal sealed class OpenNewGrantAccountUseCase : IUseCase<OpenNewGrantAccountR
             group.EncodedKey,
             input.GrantDetails,
             cancellationToken);
-        var loanAccount = await _loanAccountService.GetOrCreateLoanAccount(
+        var (loanAccount, accountAlreadyExists) = await _loanAccountService.GetOrCreateLoanAccount(
             creditArrangement.EncodedKey,
             group.EncodedKey,
             input.GrantDetails,
             input.PhaseDetails,
             cancellationToken);
-        loanAccount = await _creditArrangementService.AddLoanAccount(
-            creditArrangement.EncodedKey,
-            loanAccount.EncodedKey,
-            cancellationToken);
+
+        if (!accountAlreadyExists)
+        {
+            loanAccount = await _creditArrangementService.AddLoanAccount(
+                creditArrangement.EncodedKey,
+                loanAccount.EncodedKey,
+                cancellationToken);
+        }
 
         return new OpenNewGrantAccountResult(
             input.ApplicationId,

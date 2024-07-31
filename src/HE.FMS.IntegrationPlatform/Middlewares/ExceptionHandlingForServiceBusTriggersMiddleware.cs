@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using HE.FMS.IntegrationPlatform.Common.Exceptions.Validation;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Middleware;
 using Microsoft.Extensions.Logging;
@@ -25,10 +24,6 @@ internal sealed class ExceptionHandlingForServiceBusTriggersMiddleware : IFuncti
             try
             {
                 await next(context);
-            }
-            catch (ValidationException ex)
-            {
-                _logger.LogError(ex, ex.Message);
             }
             catch (Exception ex)
             {

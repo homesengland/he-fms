@@ -10,4 +10,6 @@ public interface IMambuCreditArrangementApiClient : IMambuRestApiClient<CreditAr
         string accountId,
         AccountType accountType,
         CancellationToken cancellationToken);
+
+    Task<CreditArrangementAccountsDto> GetAccounts(string creditArrangementId, CancellationToken cancellationToken);
 }

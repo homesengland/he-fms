@@ -7,7 +7,6 @@ public static class CommonModule
 {
     public static IServiceCollection AddCommonModule(this IServiceCollection services)
     {
-        services.AddSingleton<IBinarySerializer, BinarySerializer>();
         services.AddSingleton<IStreamSerializer, StreamSerializer>();
 
         return services;
