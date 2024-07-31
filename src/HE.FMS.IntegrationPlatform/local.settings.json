@@ -20,6 +20,8 @@
         "Mambu:ApiKey:KeyVaultSecretName": "MambuApiKey",
         "Mambu:ApiKey:ExpirationInSeconds": "100000000",
         "KeyVault:Url": "https://{keyVault}.vault.azure.net/",
-        "Grants:BranchId": "{mambuEnvironment}"
+        "Grants:BranchId": "{mambuEnvironment}",
+        "Grants:OpenGrantAccount:TopicName": "he-ahp-CreateGrantAccount-local",
+        "Grants:OpenGrantAccount:SubscriptionName": "subscription-GrantCreate-local"
     }
 }

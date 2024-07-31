@@ -45,3 +45,5 @@ Configuration for local development is stored in `local.settings.json`. It shoul
 - `Mambu:ApiKey:ExpirationInSeconds` expiration in seconds of Mambu API key which is used for rotating
 - `KeyVault:Url` url to Azure Key Vault
 - `Grants:BranchId` id of Mambu branch (environment)
+- `Grants:OpenGrantAccount:TopicName` service bus topic name for creating grant account
+- `Grants:OpenGrantAccount:SubscriptionName` service bus subscription name for creating grant account

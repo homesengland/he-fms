@@ -10,14 +10,14 @@ public class PoCPushMessageToCosmosDbServiceBusTrigger
 {
     private readonly IPoCService _pocService;
 
-    private readonly IBinarySerializer _binarySerializer;
+    private readonly IStreamSerializer _streamSerializer;
 
     private readonly ILogger<PoCPushMessageToCosmosDbServiceBusTrigger> _logger;
 
-    public PoCPushMessageToCosmosDbServiceBusTrigger(IPoCService pocService, IBinarySerializer binarySerializer, ILogger<PoCPushMessageToCosmosDbServiceBusTrigger> logger)
+    public PoCPushMessageToCosmosDbServiceBusTrigger(IPoCService pocService, IStreamSerializer streamSerializer, ILogger<PoCPushMessageToCosmosDbServiceBusTrigger> logger)
     {
         _pocService = pocService;
-        _binarySerializer = binarySerializer;
+        _streamSerializer = streamSerializer;
         _logger = logger;
     }
 
@@ -31,7 +31,7 @@ public class PoCPushMessageToCosmosDbServiceBusTrigger
         _logger.LogInformation("Message Body: {Body}", message.Body);
         _logger.LogInformation("Message Content-Type: {ContentType}", message.ContentType);
 
-        var inputMessage = _binarySerializer.Deserialize<InputMessage>(message.Body);
+        var inputMessage = await _streamSerializer.Deserialize<InputMessage>(message.Body.ToStream(), cancellationToken);
 
         await _pocService.PushToCosmosDb(message.MessageId, inputMessage, cancellationToken);
     }

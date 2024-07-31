@@ -21,7 +21,7 @@ internal sealed class LoanAccountService : ILoanAccountService
         _grantsSettings = grantsSettings;
     }
 
-    public async Task<LoanAccountReadDto> GetOrCreateLoanAccount(
+    public async Task<(LoanAccountReadDto Account, bool AccountAlreadyExists)> GetOrCreateLoanAccount(
         string creditArrangementId,
         string groupId,
         GrantDetailsContract grantDetails,
@@ -41,10 +41,12 @@ internal sealed class LoanAccountService : ILoanAccountService
         var searchResult = await _loanAccountApiClient.Search(searchCriteria, new PageDetails(), cancellationToken);
         if (searchResult.Any())
         {
-            return searchResult[0];
+            return (searchResult[0], true);
         }
 
-        return await _loanAccountApiClient.Create(ToDto(groupId, grantDetails, phaseDetails), cancellationToken);
+        var account = await _loanAccountApiClient.Create(ToDto(groupId, grantDetails, phaseDetails), cancellationToken);
+
+        return (account, false);
     }
 
     private static LoanTrancheDto ToTrancheDto(MilestoneContract milestone)

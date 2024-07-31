@@ -5,7 +5,7 @@ namespace HE.FMS.IntegrationPlatform.BusinessLogic.Grants.Services;
 
 public interface ILoanAccountService
 {
-    Task<LoanAccountReadDto> GetOrCreateLoanAccount(
+    Task<(LoanAccountReadDto Account, bool AccountAlreadyExists)> GetOrCreateLoanAccount(
         string creditArrangementId,
         string groupId,
         GrantDetailsContract grantDetails,
