@@ -34,6 +34,10 @@ internal sealed class OpenNewGrantAccountUseCase : IUseCase<OpenNewGrantAccountR
             input.GrantDetails,
             input.PhaseDetails,
             cancellationToken);
+        loanAccount = await _creditArrangementService.AddLoanAccount(
+            creditArrangement.EncodedKey,
+            loanAccount.EncodedKey,
+            cancellationToken);
 
         return new OpenNewGrantAccountResult(
             input.ApplicationId,
