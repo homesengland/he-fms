@@ -1,5 +1,10 @@
 # FMS Integration Platform
 
+## Durable functions
+Solution uses durable function for business process orchestration.
+
+⚠️ Do not update `Microsoft.Azure.Functions.Worker.Sdk` package to version `1.16.0` or higher, it will break durable functions because of [this bug](https://github.com/microsoft/durabletask-dotnet/issues/247).
+
 ## Local Development
 When running Azure Function in Rider it must be started with elevated permissions.
 

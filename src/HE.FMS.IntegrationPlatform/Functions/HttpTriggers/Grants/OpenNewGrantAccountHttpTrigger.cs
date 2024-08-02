@@ -1,22 +1,19 @@
 ﻿using System.Net;
-using HE.FMS.IntegrationPlatform.BusinessLogic.Framework;
 using HE.FMS.IntegrationPlatform.Common.Serialization;
-using HE.FMS.IntegrationPlatform.Contract.Grants.Results;
 using HE.FMS.IntegrationPlatform.Contract.Grants.UseCases;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.DurableTask;
+using Microsoft.DurableTask.Client;
 
 namespace HE.FMS.IntegrationPlatform.Functions.HttpTriggers.Grants;
 
 public class OpenNewGrantAccountHttpTrigger
 {
-    private readonly IUseCase<OpenNewGrantAccountRequest, OpenNewGrantAccountResult> _useCase;
-
     private readonly IStreamSerializer _serializer;
 
-    public OpenNewGrantAccountHttpTrigger(IUseCase<OpenNewGrantAccountRequest, OpenNewGrantAccountResult> useCase, IStreamSerializer serializer)
+    public OpenNewGrantAccountHttpTrigger(IStreamSerializer serializer)
     {
-        _useCase = useCase;
         _serializer = serializer;
     }
 
@@ -24,13 +21,13 @@ public class OpenNewGrantAccountHttpTrigger
     public async Task<HttpResponseData> Run(
         [HttpTrigger(AuthorizationLevel.Function, "post", Route = "grants")]
         HttpRequestData request,
-        FunctionContext executionContext,
+        [DurableClient] DurableTaskClient durableClient,
         CancellationToken cancellationToken)
     {
         var dto = await _serializer.Deserialize<OpenNewGrantAccountRequest>(request.Body, cancellationToken);
 
-        await _useCase.Trigger(dto, cancellationToken);
+        await durableClient.ScheduleNewOpenNewGrantAccountOrchestrationInstanceAsync(dto);
 
-        return request.CreateResponse(HttpStatusCode.Created);
+        return request.CreateResponse(HttpStatusCode.Accepted);
     }
 }
