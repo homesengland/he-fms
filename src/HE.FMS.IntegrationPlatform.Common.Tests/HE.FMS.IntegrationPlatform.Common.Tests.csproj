@@ -1,5 +1,0 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-    <ItemGroup>
-      <ProjectReference Include="..\HE.FMS.IntegrationPlatform.Common\HE.FMS.IntegrationPlatform.Common.csproj" />
-    </ItemGroup>
-</Project>
