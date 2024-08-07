@@ -46,6 +46,9 @@ internal sealed class OpenNewGrantAccountUseCase : IUseCase<OpenNewGrantAccountR
         return new OpenNewGrantAccountResult(
             input.ApplicationId,
             creditArrangement.Id,
-            loanAccount.Id);
+            loanAccount.Id,
+            loanAccount.LoanName,
+            loanAccount.CreationDate,
+            loanAccount.AccountState);
     }
 }
