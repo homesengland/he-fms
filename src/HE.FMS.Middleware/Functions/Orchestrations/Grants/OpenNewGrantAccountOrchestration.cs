@@ -1,4 +1,4 @@
-﻿using HE.FMS.Middleware.Contract.Grants.Results;
+using HE.FMS.Middleware.Contract.Grants.Results;
 using HE.FMS.Middleware.Contract.Grants.UseCases;
 using HE.FMS.Middleware.Functions.Activities.Grants.OpenNewGrantAccount;
 using Microsoft.DurableTask;
@@ -14,6 +14,12 @@ public class OpenNewGrantAccountOrchestration : TaskOrchestrator<OpenNewGrantAcc
         var creditArrangement = await context.CallCreateCreditArrangementAsync(new CreateCreditArrangement.CreateCreditArrangementInput(input, group));
         var loanAccount = await context.CallCreateLoanAccountAsync(new CreateLoanAccount.CreateLoanAccountInput(input, group, creditArrangement));
 
-        return new OpenNewGrantAccountResult(input.ApplicationId, creditArrangement.Id, loanAccount.Id);
+        return new OpenNewGrantAccountResult(
+            input.ApplicationId,
+            creditArrangement.Id,
+            loanAccount.Id,
+            loanAccount.LoanName,
+            loanAccount.CreationDate,
+            loanAccount.AccountState);
     }
 }

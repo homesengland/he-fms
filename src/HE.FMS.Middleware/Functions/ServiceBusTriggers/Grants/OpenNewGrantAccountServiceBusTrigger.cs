@@ -1,4 +1,4 @@
-﻿using HE.FMS.Middleware.BusinessLogic.Framework;
+using HE.FMS.Middleware.BusinessLogic.Framework;
 using HE.FMS.Middleware.Common.Serialization;
 using HE.FMS.Middleware.Contract.Grants.Results;
 using HE.FMS.Middleware.Contract.Grants.UseCases;
@@ -21,13 +21,15 @@ public class OpenNewGrantAccountServiceBusTrigger
     }
 
     [Function(nameof(OpenNewGrantAccountServiceBusTrigger))]
-    public async Task Run(
+    [ServiceBusOutput("%ServiceBus:PushToCrm:Topic%", ServiceBusEntityType.Topic, Connection = "ServiceBus:Connection")]
+    [FixedDelayRetry(5, "00:00:10")]
+    public async Task<OpenNewGrantAccountResult> Run(
         [ServiceBusTrigger("%Grants:OpenGrantAccount:TopicName%", "%Grants:OpenGrantAccount:SubscriptionName%", Connection = "ServiceBus:Connection")]
         Azure.Messaging.ServiceBus.ServiceBusReceivedMessage message,
         CancellationToken cancellationToken)
     {
         var dto = await _streamSerializer.Deserialize<OpenNewGrantAccountRequest>(message.Body.ToStream(), cancellationToken);
 
-        await _useCase.Trigger(dto, cancellationToken);
+        return await _useCase.Trigger(dto, cancellationToken);
     }
 }
