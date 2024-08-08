@@ -56,3 +56,7 @@ Configuration for local development is stored in `local.settings.json`. It shoul
 - `Grants:BranchId` id of Mambu branch (environment)
 - `Grants:OpenGrantAccount:TopicName` service bus topic name for creating grant account
 - `Grants:OpenGrantAccount:SubscriptionName` service bus subscription name for creating grant account
+
+### Docker
+To build docker image locally run the following command on the main repository folder:
+`docker build -t middleware:latest -f src\HE.FMS.Middleware\Dockerfile .`
