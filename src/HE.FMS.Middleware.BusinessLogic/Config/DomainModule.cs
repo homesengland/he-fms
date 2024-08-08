@@ -3,7 +3,6 @@ using HE.FMS.Middleware.BusinessLogic.Grants;
 using HE.FMS.Middleware.BusinessLogic.Grants.Services;
 using HE.FMS.Middleware.BusinessLogic.Grants.Settings;
 using HE.FMS.Middleware.BusinessLogic.Mambu;
-using HE.FMS.Middleware.BusinessLogic.PoC;
 using HE.FMS.Middleware.Common.Extensions;
 using HE.FMS.Middleware.Contract.Grants.Results;
 using HE.FMS.Middleware.Contract.Grants.UseCases;
@@ -15,8 +14,6 @@ public static class DomainModule
 {
     public static IServiceCollection AddDomainModule(this IServiceCollection services)
     {
-        services.AddScoped<IPoCService, PoCService>();
-
         return services.AddMambu()
             .AddGrants();
     }

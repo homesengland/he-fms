@@ -1,3 +1,4 @@
+using Azure.Messaging.ServiceBus;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 
@@ -5,9 +6,10 @@ namespace HE.FMS.Middleware.Functions.ServiceBusTriggers;
 public class PushToCrmServiceBusTrigger(ILogger<PushToCrmServiceBusTrigger> logger)
 {
     [Function(nameof(PushToCrmServiceBusTrigger))]
-    public async Task Run(
+    [CosmosDBOutput("%CosmosDb:DatabaseId%", "%CosmosDb:ContainerId%", Connection = "CosmosDb:ConnectionString", PartitionKey = "PoC")]
+    public async Task<ServiceBusReceivedMessage> Run(
         [ServiceBusTrigger("%ServiceBus:PushToCrm:Topic%", "%ServiceBus:PushToCrm:Subscription%", Connection = "ServiceBus:Connection")]
-        Azure.Messaging.ServiceBus.ServiceBusReceivedMessage message,
+        ServiceBusReceivedMessage message,
         CancellationToken cancellationToken)
     {
         logger.LogInformation("Message ID: {Id}", message.MessageId);
@@ -15,5 +17,7 @@ public class PushToCrmServiceBusTrigger(ILogger<PushToCrmServiceBusTrigger> logg
         logger.LogInformation("Message Content-Type: {ContentType}", message.ContentType);
 
         // TODO: send to CRM
+
+        return message;
     }
 }

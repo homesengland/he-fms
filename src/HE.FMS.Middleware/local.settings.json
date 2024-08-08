@@ -8,8 +8,6 @@
     "ServiceBus:Connection__tenantId": "",
     "ServiceBus:Connection__clientId": "",
     "ServiceBus:Connection__clientSecret": "",
-    "ServiceBus:PushMessageToCosmosDb:Topic": "poc",
-    "ServiceBus:PushMessageToCosmosDb:Subscription": "push-message-to-cosmosdb",
     "ServiceBus:PushToCrm:Topic": "push-message-to-crm",
     "ServiceBus:PushToCrm:Subscription": "push-message-to-crm",
     "CosmosDb:AccountEndpoint": "",
