@@ -1,0 +1,24 @@
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS installer-env
+
+COPY ["src/HE.FMS.Middleware/HE.FMS.Middleware.csproj","src/HE.FMS.Middleware/"]
+COPY ["src/HE.FMS.Middleware.BusinessLogic/HE.FMS.Middleware.BusinessLogic.csproj","src/HE.FMS.Middleware.BusinessLogic/"]
+COPY ["src/HE.FMS.Middleware.Common/HE.FMS.Middleware.Common.csproj","src/HE.FMS.Middleware.Common/"]
+COPY ["src/HE.FMS.Middleware.Contract/HE.FMS.Middleware.Contract.csproj","src/HE.FMS.Middleware.Contract/"]
+COPY ["src/HE.FMS.Middleware.Providers/HE.FMS.Middleware.Providers.csproj","src/HE.FMS.Middleware.Providers/"]
+
+RUN dotnet restore "src/HE.FMS.Middleware/HE.FMS.Middleware.csproj"
+
+COPY . /src/dotnet-function-app
+RUN cd /src/dotnet-function-app && \
+    mkdir -p /home/site/wwwroot && \
+    dotnet publish src/HE.FMS.Middleware/HE.FMS.Middleware.csproj -c Release -o /home/site/wwwroot
+
+FROM mcr.microsoft.com/azure-functions/dotnet-isolated:4-dotnet-isolated8.0
+ENV AzureWebJobsScriptRoot=/home/site/wwwroot \
+    AzureFunctionsJobHost__Logging__Console__IsEnabled=true
+
+EXPOSE 8080
+EXPOSE 4443
+ENV ASPNETCORE_URLS=http://*:8080
+
+COPY --from=installer-env ["/home/site/wwwroot", "/home/site/wwwroot"]
