@@ -25,6 +25,7 @@ public class OpenNewGrantAccountHttpTrigger
 
         return new OpenNewGrantAccountTriggerResponse()
         {
+            HttpRequest = request,
             HttpResponse = request.CreateResponse(HttpStatusCode.Accepted),
             ServiceBusOutput = dto,
         };
@@ -36,5 +37,8 @@ public class OpenNewGrantAccountHttpTrigger
 
         [ServiceBusOutput("%Grants:OpenGrantAccount:TopicName%", Connection = "ServiceBus:Connection")]
         public OpenNewGrantAccountRequest ServiceBusOutput { get; set; }
+
+        [CosmosDBOutput("%CosmosDb:DatabaseId%", "%CosmosDb:ContainerId%", Connection = "CosmosDb:ConnectionString")]
+        public HttpRequestData HttpRequest { get; set; }
     }
 }
