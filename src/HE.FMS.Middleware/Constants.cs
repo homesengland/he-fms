@@ -1,4 +1,4 @@
-﻿namespace HE.FMS.Middleware;
+namespace HE.FMS.Middleware;
 
 public static class Constants
 {
@@ -10,4 +10,11 @@ public static class Constants
         public const string HttpTrigger = "httpTrigger";
         public const string TimeTrigger = "timeTrigger";
     }
+
+    public static class FunctionsConfiguration
+    {
+        public const int MaxRetryCount = 5;
+        public const string DelayInterval = "00:00:30";
+    }
+
 }
