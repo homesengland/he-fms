@@ -22,7 +22,7 @@ public class OpenNewGrantAccountServiceBusTrigger
 
     [Function(nameof(OpenNewGrantAccountServiceBusTrigger))]
     [ServiceBusOutput("%ServiceBus:PushToCrm:Topic%", ServiceBusEntityType.Topic, Connection = "ServiceBus:Connection")]
-    [FixedDelayRetry(5, "00:00:10")]
+    [FixedDelayRetry(Constants.FunctionsConfiguration.MaxRetryCount, Constants.FunctionsConfiguration.DelayInterval)]
     public async Task<OpenNewGrantAccountResult> Run(
         [ServiceBusTrigger("%Grants:OpenGrantAccount:TopicName%", "%Grants:OpenGrantAccount:SubscriptionName%", Connection = "ServiceBus:Connection")]
         Azure.Messaging.ServiceBus.ServiceBusReceivedMessage message,

@@ -1,5 +1,9 @@
 # FMS Integration Platform
 
+## Developers' flow diagram
+
+[LucidChart Here](https://lucid.app/lucidchart/521bf20d-9052-4a0c-9b8a-7c1e8931395a/edit?beaconFlowId=E265A244F18B3E1A&invitationId=inv_0b60e453-bca5-431b-9c2a-d1e89abaa78d&page=mXwzAnnOLpm1)
+
 ## Durable functions
 Solution uses durable function for business process orchestration.
 
