@@ -38,7 +38,7 @@ public class OpenNewGrantAccountHttpTrigger
         [ServiceBusOutput("%Grants:OpenGrantAccount:TopicName%", Connection = "ServiceBus:Connection")]
         public OpenNewGrantAccountRequest ServiceBusOutput { get; set; }
 
-        [CosmosDBOutput("%CosmosDb:DatabaseId%", "%CosmosDb:ContainerId%", Connection = "CosmosDb:ConnectionString")]
+        [CosmosDBOutput("%CosmosDb:DatabaseId%", "%CosmosDb:ContainerId%", Connection = "CosmosDb:ConnectionString", PartitionKey = "PoC")]
         public HttpRequestData HttpRequest { get; set; }
     }
 }
