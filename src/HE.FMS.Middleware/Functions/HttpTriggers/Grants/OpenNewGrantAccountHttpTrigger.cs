@@ -1,4 +1,5 @@
 using System.Net;
+using HE.FMS.Middleware.Common.Extensions;
 using HE.FMS.Middleware.Common.Serialization;
 using HE.FMS.Middleware.Contract.Grants.UseCases;
 using HE.FMS.Middleware.Providers.CosmosDb;
@@ -22,9 +23,9 @@ public class OpenNewGrantAccountHttpTrigger
         HttpRequestData request,
         CancellationToken cancellationToken)
     {
-        var dto = await _serializer.Deserialize<OpenNewGrantAccountRequest>(request.Body, cancellationToken) ?? throw new InvalidOperationException();
+        var dto = await _serializer.Deserialize<OpenNewGrantAccountRequest>(request.Body, cancellationToken);
 
-        var idempotencyKey = request.Headers.GetValues(Constants.HttpHeaders.IdempotencyKey).Single();
+        var idempotencyKey = request.GetIdempotencyHeader();
 
         return new OpenNewGrantAccountTriggerResponse()
         {

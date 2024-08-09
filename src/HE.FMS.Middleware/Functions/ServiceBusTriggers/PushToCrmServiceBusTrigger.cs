@@ -24,6 +24,6 @@ public class PushToCrmServiceBusTrigger
         _logger.LogInformation("Message Content-Type: {ContentType}", message.ContentType);
 
         // TODO: send to CRM
-        return await Task.FromResult();
+        return await Task.FromResult(message);
     }
 }
