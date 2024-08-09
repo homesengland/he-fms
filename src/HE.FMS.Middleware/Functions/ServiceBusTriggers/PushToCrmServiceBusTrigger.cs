@@ -13,7 +13,7 @@ public class PushToCrmServiceBusTrigger
     }
 
     [Function(nameof(PushToCrmServiceBusTrigger))]
-    [CosmosDBOutput("%CosmosDb:DatabaseId%", "%CosmosDb:ContainerId%", Connection = "CosmosDb:ConnectionString", PartitionKey = "PoC")]
+    [CosmosDBOutput("%CosmosDb:DatabaseId%", "%CosmosDb:ContainerId%", Connection = "CosmosDb:ConnectionString")]
     public async Task<ServiceBusReceivedMessage> Run(
         [ServiceBusTrigger("%ServiceBus:PushToCrm:Topic%", "%ServiceBus:PushToCrm:Subscription%", Connection = "ServiceBus:Connection")]
         ServiceBusReceivedMessage message,
@@ -24,6 +24,6 @@ public class PushToCrmServiceBusTrigger
         _logger.LogInformation("Message Content-Type: {ContentType}", message.ContentType);
 
         // TODO: send to CRM
-        return await Task.FromResult(message);
+        return await Task.FromResult();
     }
 }

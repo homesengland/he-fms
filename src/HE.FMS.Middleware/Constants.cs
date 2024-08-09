@@ -2,6 +2,11 @@ namespace HE.FMS.Middleware;
 
 public static class Constants
 {
+    public static class HttpHeaders
+    {
+        public const string IdempotencyKey = "Idempotency-Key";
+    }
+
     public static class FunctionsTriggers
     {
         public const string ServiceBusTrigger = "serviceBusTrigger";
@@ -15,5 +20,10 @@ public static class Constants
     {
         public const int MaxRetryCount = 5;
         public const string DelayInterval = "00:00:30";
+    }
+
+    public static class CosmosDBConfiguration
+    {
+        public const string FMS = "fms";
     }
 }

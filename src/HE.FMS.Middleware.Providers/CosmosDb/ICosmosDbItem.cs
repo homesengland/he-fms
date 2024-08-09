@@ -1,12 +1,12 @@
-﻿using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace HE.FMS.Middleware.Providers.CosmosDb;
 
 public interface ICosmosDbItem
 {
-    [JsonProperty("id")]
+    [JsonPropertyName("id")]
     string Id { get; }
 
-    [JsonProperty("partitionKey")]
+    [JsonPropertyName("partitionKey")]
     string PartitionKey { get; }
 }
