@@ -1,4 +1,5 @@
 using System.Net;
+using Azure.Messaging.ServiceBus;
 using HE.FMS.Middleware.Common.Extensions;
 using HE.FMS.Middleware.Common.Serialization;
 using HE.FMS.Middleware.Contract.Grants.UseCases;
@@ -10,11 +11,11 @@ namespace HE.FMS.Middleware.Functions.HttpTriggers.Grants;
 
 public class OpenNewGrantAccountHttpTrigger
 {
-    private readonly IStreamSerializer _serializer;
+    private readonly IStreamSerializer _streamSerializer;
 
-    public OpenNewGrantAccountHttpTrigger(IStreamSerializer serializer)
+    public OpenNewGrantAccountHttpTrigger(IStreamSerializer streamSerializer)
     {
-        _serializer = serializer;
+        _streamSerializer = streamSerializer;
     }
 
     [Function(nameof(OpenNewGrantAccountHttpTrigger))]
@@ -23,15 +24,22 @@ public class OpenNewGrantAccountHttpTrigger
         HttpRequestData request,
         CancellationToken cancellationToken)
     {
-        var dto = await _serializer.Deserialize<OpenNewGrantAccountRequest>(request.Body, cancellationToken);
+        var dto = await _streamSerializer.Deserialize<OpenNewGrantAccountRequest>(request.Body, cancellationToken);
 
         var idempotencyKey = request.GetIdempotencyHeader();
+
+        var cosmosDbOutput = new CosmosDbItem()
+        {
+            Id = idempotencyKey,
+            PartitionKey = Constants.CosmosDBConfiguration.FMS,
+            Value = dto,
+        };
 
         return new OpenNewGrantAccountTriggerResponse()
         {
             HttpResponse = request.CreateResponse(HttpStatusCode.Accepted),
             ServiceBusOutput = dto,
-            CosmosDbOutput = new CosmosDbItem() { Id = idempotencyKey, PartitionKey = Constants.CosmosDBConfiguration.FMS, Value = dto },
+            CosmosDbOutput = cosmosDbOutput,
         };
     }
 

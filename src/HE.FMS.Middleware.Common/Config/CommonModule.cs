@@ -17,6 +17,7 @@ public static class CommonModule
     {
         services.AddSingleton(CommonSerializerOptions);
         services.AddSingleton<IStreamSerializer, StreamSerializer>();
+        services.AddSingleton<IObjectSerializer, ObjectSerializer>();
 
         return services;
     }

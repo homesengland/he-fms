@@ -2,7 +2,7 @@ namespace HE.FMS.Middleware;
 
 public static class Constants
 {
-    public static class HttpHeaders
+    public static class CustomHeaders
     {
         public const string IdempotencyKey = "Idempotency-Key";
     }
