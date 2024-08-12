@@ -1,5 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using HE.FMS.Middleware;
+using System.Diagnostics.CodeAnalysis;
+using HE.FMS.Middleware.Common;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Middleware;
 using Microsoft.Extensions.Logging;

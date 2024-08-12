@@ -1,5 +1,6 @@
 using System.Text;
 using HE.FMS.Middleware.BusinessLogic.Framework;
+using HE.FMS.Middleware.Common;
 using HE.FMS.Middleware.Common.Serialization;
 using HE.FMS.Middleware.Contract.Grants.Results;
 using HE.FMS.Middleware.Contract.Grants.UseCases;

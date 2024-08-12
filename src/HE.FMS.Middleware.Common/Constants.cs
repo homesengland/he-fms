@@ -2,7 +2,7 @@ namespace HE.FMS.Middleware.Common;
 
 public static class Constants
 {
-    public static class HttpHeaders
+    public static class CustomHeaders
     {
         public const string IdempotencyKey = "Idempotency-Key";
     }
@@ -24,6 +24,6 @@ public static class Constants
 
     public static class CosmosDBConfiguration
     {
-        public const string FMS = "fms";
+        public const string PartitonKey = "fms";
     }
 }

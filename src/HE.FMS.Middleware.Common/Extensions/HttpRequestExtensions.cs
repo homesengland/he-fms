@@ -8,16 +8,16 @@ public static class HttpRequestExtensions
 {
     public static string GetIdempotencyHeader(this HttpRequestData requestData)
     {
-        var headers = requestData.Headers.GetValues(Constants.HttpHeaders.IdempotencyKey);
+        var headers = requestData.Headers.GetValues(Constants.CustomHeaders.IdempotencyKey);
 
         if (headers.IsNullOrEmpty())
         {
-            throw new MissingRequiredHeaderException(Constants.HttpHeaders.IdempotencyKey);
+            throw new MissingRequiredHeaderException(Constants.CustomHeaders.IdempotencyKey);
         }
 
         if (headers.Count() > 1)
         {
-            throw new InvalidRequestException($"Multiple '{Constants.HttpHeaders.IdempotencyKey}' headers");
+            throw new InvalidRequestException($"Multiple '{Constants.CustomHeaders.IdempotencyKey}' headers");
         }
 
         return headers.Single();
