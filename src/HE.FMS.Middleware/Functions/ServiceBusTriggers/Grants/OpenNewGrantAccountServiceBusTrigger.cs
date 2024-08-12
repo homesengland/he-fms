@@ -36,9 +36,9 @@ public class OpenNewGrantAccountServiceBusTrigger
         Azure.Messaging.ServiceBus.ServiceBusReceivedMessage message,
         CancellationToken cancellationToken)
     {
-        var dto = await _streamSerializer.Deserialize<OpenNewGrantAccountRequest>(message.Body.ToStream(), cancellationToken);
+        var inputData = await _streamSerializer.Deserialize<OpenNewGrantAccountRequest>(message.Body.ToStream(), cancellationToken);
 
-        var result = await _useCase.Trigger(dto, cancellationToken);
+        var result = await _useCase.Trigger(inputData, cancellationToken);
 
         var topicOutput = new Message(Encoding.UTF8.GetBytes(_objectSerializer.Serialize(result)))
         {

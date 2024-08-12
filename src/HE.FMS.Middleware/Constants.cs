@@ -21,9 +21,4 @@ public static class Constants
         public const int MaxRetryCount = 5;
         public const string DelayInterval = "00:00:30";
     }
-
-    public static class CosmosDBConfiguration
-    {
-        public const string FMS = "fms";
-    }
 }

@@ -13,5 +13,9 @@ public class CosmosDbItem
 
     public string PartitionKey { get; set; }
 
+    public string IdempotencyKey { get; set; }
+
+    public DateTimeOffset? CreationTime { get; set; }
+
     public object Value { get; set; }
 }

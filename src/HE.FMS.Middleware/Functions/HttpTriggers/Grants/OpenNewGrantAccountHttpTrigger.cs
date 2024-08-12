@@ -18,12 +18,18 @@ public class OpenNewGrantAccountHttpTrigger
     private readonly IStreamSerializer _streamSerializer;
     private readonly IObjectSerializer _objectSerializer;
     private readonly TopicClient _topicClient;
+    private readonly CosmosDbHelper _cosmosDbHelper;
 
-    public OpenNewGrantAccountHttpTrigger(IStreamSerializer streamSerializer, IObjectSerializer objectSerializer, ITopicClientFactory topicClientFactory)
+    public OpenNewGrantAccountHttpTrigger(
+        IStreamSerializer streamSerializer,
+        IObjectSerializer objectSerializer,
+        ITopicClientFactory topicClientFactory,
+        CosmosDbHelper cosmosDbHelper)
     {
         _streamSerializer = streamSerializer;
         _objectSerializer = objectSerializer;
         _topicClient = topicClientFactory.GetTopicClient("Grants:OpenGrantAccount:TopicName");
+        _cosmosDbHelper = cosmosDbHelper;
     }
 
     [Function(nameof(OpenNewGrantAccountHttpTrigger))]
@@ -32,18 +38,13 @@ public class OpenNewGrantAccountHttpTrigger
         HttpRequestData request,
         CancellationToken cancellationToken)
     {
-        var dto = await _streamSerializer.Deserialize<OpenNewGrantAccountRequest>(request.Body, cancellationToken);
+        var inputData = await _streamSerializer.Deserialize<OpenNewGrantAccountRequest>(request.Body, cancellationToken);
 
         var idempotencyKey = request.GetIdempotencyHeader();
 
-        var cosmosDbOutput = new CosmosDbItem()
-        {
-            Id = idempotencyKey,
-            PartitionKey = Constants.CosmosDBConfiguration.FMS,
-            Value = dto,
-        };
+        var cosmosDbOutput = _cosmosDbHelper.CreateCosmosDbItem(inputData, idempotencyKey);
 
-        var topicOutput = new Message(Encoding.UTF8.GetBytes(_objectSerializer.Serialize(dto)))
+        var topicOutput = new Message(Encoding.UTF8.GetBytes(_objectSerializer.Serialize(inputData)))
         {
             CorrelationId = idempotencyKey,
         };

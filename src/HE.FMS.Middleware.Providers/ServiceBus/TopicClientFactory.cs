@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using HE.FMS.Middleware.Common.Exceptions.Internal;
 using Microsoft.Azure.ServiceBus;
 using Microsoft.Extensions.Configuration;
 
@@ -28,7 +23,7 @@ public class TopicClientFactory : ITopicClientFactory
 
         if (string.IsNullOrWhiteSpace(_configuration[topicName]))
         {
-            throw new ArgumentNullException(nameof(topicName));
+            throw new MissingConfigurationException(nameof(topicName));
         }
 
         return new TopicClient(_configuration[ConnectionStringSetting], _configuration[topicName]);

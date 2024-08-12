@@ -14,6 +14,7 @@
     "CosmosDb:ConnectionString": "",
     "CosmosDb:DatabaseId": "fms",
     "CosmosDb:ContainerId": "fms-container",
+    "CosmosDb:PartitionKey": "fms", 
     "Mambu:RotateApiKeyTimeTrigger": "0 30 7 * * *",
     "Mambu:Api:BaseUrl": "https://{mambuInstance}.mambu.com",
     "Mambu:Api:RetryCount": "1",
