@@ -1,10 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using HE.FMS.Middleware.Common;
-using HE.FMS.Middleware.Common.Exceptions.Internal;
 using Microsoft.Extensions.Configuration;
 
 namespace HE.FMS.Middleware.Providers.CosmosDb;
