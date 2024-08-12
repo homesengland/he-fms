@@ -1,6 +1,5 @@
 using System.Net;
 using System.Text;
-using Azure.Messaging.ServiceBus;
 using HE.FMS.Middleware.Common.Extensions;
 using HE.FMS.Middleware.Common.Serialization;
 using HE.FMS.Middleware.Contract.Grants.UseCases;
@@ -9,7 +8,6 @@ using HE.FMS.Middleware.Providers.ServiceBus;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.ServiceBus;
-using Newtonsoft.Json;
 
 namespace HE.FMS.Middleware.Functions.HttpTriggers.Grants;
 

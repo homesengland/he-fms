@@ -1,7 +1,6 @@
 using Azure.Messaging.ServiceBus;
 using HE.FMS.Middleware.Common.Serialization;
 using HE.FMS.Middleware.Contract.Grants.Results;
-using HE.FMS.Middleware.Contract.Grants.UseCases;
 using HE.FMS.Middleware.Providers.CosmosDb;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
