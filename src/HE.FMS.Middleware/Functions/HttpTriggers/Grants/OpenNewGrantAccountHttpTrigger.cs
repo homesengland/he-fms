@@ -1,18 +1,35 @@
 using System.Net;
+using System.Text;
+using Azure.Messaging.ServiceBus;
+using HE.FMS.Middleware.Common.Extensions;
 using HE.FMS.Middleware.Common.Serialization;
 using HE.FMS.Middleware.Contract.Grants.UseCases;
+using HE.FMS.Middleware.Providers.CosmosDb;
+using HE.FMS.Middleware.Providers.ServiceBus;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Azure.ServiceBus;
+using Newtonsoft.Json;
 
 namespace HE.FMS.Middleware.Functions.HttpTriggers.Grants;
 
 public class OpenNewGrantAccountHttpTrigger
 {
-    private readonly IStreamSerializer _serializer;
+    private readonly IStreamSerializer _streamSerializer;
+    private readonly IObjectSerializer _objectSerializer;
+    private readonly TopicClient _topicClient;
+    private readonly CosmosDbHelper _cosmosDbHelper;
 
-    public OpenNewGrantAccountHttpTrigger(IStreamSerializer serializer)
+    public OpenNewGrantAccountHttpTrigger(
+        IStreamSerializer streamSerializer,
+        IObjectSerializer objectSerializer,
+        ITopicClientFactory topicClientFactory,
+        CosmosDbHelper cosmosDbHelper)
     {
-        _serializer = serializer;
+        _streamSerializer = streamSerializer;
+        _objectSerializer = objectSerializer;
+        _topicClient = topicClientFactory.GetTopicClient("Grants:OpenGrantAccount:TopicName");
+        _cosmosDbHelper = cosmosDbHelper;
     }
 
     [Function(nameof(OpenNewGrantAccountHttpTrigger))]
@@ -21,13 +38,23 @@ public class OpenNewGrantAccountHttpTrigger
         HttpRequestData request,
         CancellationToken cancellationToken)
     {
-        var dto = await _serializer.Deserialize<OpenNewGrantAccountRequest>(request.Body, cancellationToken);
+        var inputData = await _streamSerializer.Deserialize<OpenNewGrantAccountRequest>(request.Body, cancellationToken);
+
+        var idempotencyKey = request.GetIdempotencyHeader();
+
+        var cosmosDbOutput = _cosmosDbHelper.CreateCosmosDbItem(inputData, idempotencyKey);
+
+        var topicOutput = new Message(Encoding.UTF8.GetBytes(_objectSerializer.Serialize(inputData)))
+        {
+            CorrelationId = idempotencyKey,
+        };
+
+        await _topicClient.SendAsync(topicOutput);
 
         return new OpenNewGrantAccountTriggerResponse()
         {
-            HttpRequest = request,
             HttpResponse = request.CreateResponse(HttpStatusCode.Accepted),
-            ServiceBusOutput = dto,
+            CosmosDbOutput = cosmosDbOutput,
         };
     }
 
@@ -35,10 +62,7 @@ public class OpenNewGrantAccountHttpTrigger
     {
         public HttpResponseData HttpResponse { get; set; }
 
-        [ServiceBusOutput("%Grants:OpenGrantAccount:TopicName%", Connection = "ServiceBus:Connection")]
-        public OpenNewGrantAccountRequest ServiceBusOutput { get; set; }
-
-        [CosmosDBOutput("%CosmosDb:DatabaseId%", "%CosmosDb:ContainerId%", Connection = "CosmosDb:ConnectionString", PartitionKey = "PoC")]
-        public HttpRequestData HttpRequest { get; set; }
+        [CosmosDBOutput("%CosmosDb:DatabaseId%", "%CosmosDb:ContainerId%", Connection = "CosmosDb:ConnectionString")]
+        public CosmosDbItem CosmosDbOutput { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Net;
+using HE.FMS.Middleware.Common;
 using HE.FMS.Middleware.Common.Exceptions;
 using HE.FMS.Middleware.Common.Exceptions.Communication;
 using HE.FMS.Middleware.Common.Exceptions.Validation;
