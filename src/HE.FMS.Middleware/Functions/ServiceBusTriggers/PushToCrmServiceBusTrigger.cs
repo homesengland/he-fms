@@ -19,7 +19,8 @@ public class PushToCrmServiceBusTrigger
         ServiceBusReceivedMessage message,
         CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Message ID: {Id}", message.MessageId);
+        _logger.LogInformation("Message Id: {Id}", message.MessageId);
+        _logger.LogInformation("Message Correlation Id: {CorrelationId}", message.CorrelationId);
         _logger.LogInformation("Message Body: {Body}", message.Body);
         _logger.LogInformation("Message Content-Type: {ContentType}", message.ContentType);
 

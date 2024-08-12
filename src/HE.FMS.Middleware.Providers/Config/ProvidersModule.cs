@@ -1,4 +1,4 @@
-﻿using HE.FMS.Middleware.Common.Extensions;
+using HE.FMS.Middleware.Common.Extensions;
 using HE.FMS.Middleware.Providers.CosmosDb;
 using HE.FMS.Middleware.Providers.CosmosDb.Settings;
 using HE.FMS.Middleware.Providers.KeyVault;
@@ -11,6 +11,7 @@ using HE.FMS.Middleware.Providers.Mambu.Api.Rotation;
 using HE.FMS.Middleware.Providers.Mambu.Auth;
 using HE.FMS.Middleware.Providers.Mambu.Extensions;
 using HE.FMS.Middleware.Providers.Mambu.Settings;
+using HE.FMS.Middleware.Providers.ServiceBus;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace HE.FMS.Middleware.Providers.Config;
@@ -21,7 +22,8 @@ public static class ProvidersModule
     {
         return services.AddMambu()
             .AddCosmosDb()
-            .AddKeyVault();
+            .AddKeyVault()
+            .AddServiceBus();
     }
 
     private static IServiceCollection AddMambu(this IServiceCollection services)
@@ -66,5 +68,12 @@ public static class ProvidersModule
                 var settings = serviceProvider.GetRequiredService<IMambuApiSettings>();
                 httpClient.BaseAddress = settings.BaseUrl;
             });
+    }
+
+    private static IServiceCollection AddServiceBus(this IServiceCollection services)
+    {
+        services.AddSingleton<ITopicClientFactory, TopicClientFactory>();
+
+        return services;
     }
 }
