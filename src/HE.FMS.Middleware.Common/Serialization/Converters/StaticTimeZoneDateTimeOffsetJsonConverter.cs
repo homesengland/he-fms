@@ -1,4 +1,4 @@
-﻿using System.Globalization;
+using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -23,6 +23,6 @@ public sealed class StaticTimeZoneDateTimeOffsetJsonConverter : JsonConverter<Da
     public override void Write(Utf8JsonWriter writer, DateTimeOffset value, JsonSerializerOptions options)
     {
         var ukTime = TimeZoneInfo.ConvertTime(value, _timeZone);
-        writer.WriteStringValue(ukTime.ToString("yyyy-MM-ddTHH:mm:sszzz", CultureInfo.InvariantCulture));
+        writer.WriteStringValue(ukTime.ToString("o", CultureInfo.InvariantCulture));
     }
 }
