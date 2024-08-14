@@ -54,10 +54,10 @@ internal sealed class LoanAccountService : ILoanAccountService
         return new LoanTrancheDto
         {
             Amount = milestone.Amount,
-            DisbursementDetails = milestone.MilestoneExpectedDisbursementDate.HasValue ? new TrancheDisbursementDetailsDto
+            DisbursementDetails = new TrancheDisbursementDetailsDto
             {
                 ExpectedDisbursementDate = milestone.MilestoneExpectedDisbursementDate,
-            } : null,
+            },
         };
     }
 
