@@ -25,3 +25,5 @@ resources:
 
 stages:
 - template: pipelines/azure-pipelines-deploy.yml@he-fms-deployment
+  parameters:
+    tag: "$(Build.BuildId)"
