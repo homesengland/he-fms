@@ -1,0 +1,24 @@
+trigger:
+  branches:
+    include:
+    - main
+variables:
+  tag: "$(Build.BuildId)"
+
+pool: 'vmss-ado-chs-nonprod-001'
+
+resources:
+  repositories:
+  - repository: he-fms-deployment
+    type: git
+    name: 'FMS/he-fms-deployment'   
+    ref: 'feature/semver'
+  - repository: templates
+    type: git
+    name: 'Cloud Hosting Service/Templates'   
+    ref: 'master'
+
+stages:
+- template: pipelines/azure-pipelines-build.yml@he-fms-deployment
+  parameters:
+    tag: "$(Build.BuildId)"
