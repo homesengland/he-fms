@@ -9,6 +9,8 @@ parameters:
     displayName: Force Push to Production
     type: boolean
     default: false
+  - name: tag
+    type: string
 
 pool: 'vmss-ado-chs-nonprod-001'
 
@@ -24,6 +26,67 @@ resources:
     ref: 'master'
 
 stages:
-- template: pipelines/azure-pipelines-deploy.yml@he-fms-deployment
-  parameters:
-    tag: "$(Build.BuildId)"
+  # Deploy to Dev
+  - stage: DeployDevFunction
+    displayName: Dev Deploy Function
+    pool: "vmss-ado-chs-nonprod-001"
+    jobs:
+      - template: pipelines/azure-pipelines-deploy.yml@he-fms-deployment
+        parameters:
+          serviceConnection: "fms-nonprod"
+          environment: "fms-dev-01"
+          resourceGroupName: "rg-fms-dev-01"
+          appName: "func-fms-dev-01"
+          tag: "$(Build.BuildId)"
+  # Deploy to QA
+  - stage: DeployQAFunction
+    dependsOn: DeployDevFunction
+    displayName: QA Deploy Function
+    pool: "vmss-ado-chs-nonprod-001"
+    jobs:
+      - template: pipelines/azure-pipelines-deploy.yml@he-fms-deployment
+        parameters:
+          serviceConnection: "fms-nonprod"
+          environment: "fms-qa-01"
+          resourceGroupName: "rg-fms-qa-01"
+          appName: "func-fms-qa-01"
+          tag: "$(Build.BuildId)"
+  # Deploy to UAT
+  - stage: DeployUATFunction
+    dependsOn: DeployQAFunction
+    displayName: UAT Deploy Function
+    pool: "vmss-ado-chs-nonprod-001"
+    jobs:
+      - template: pipelines/azure-pipelines-deploy.yml@he-fms-deployment
+        parameters:
+          serviceConnection: "fms-nonprod"
+          environment: "fms-uat-01"
+          resourceGroupName: "rg-fms-uat-01"
+          appName: "func-fms-uat-01"
+          tag: "$(Build.BuildId)"
+  # Deploy to PRE
+  - stage: DeployPREFunction
+    dependsOn: DeployUATFunction
+    displayName: PRE Deploy Function
+    pool: "vmss-ado-chs-prod-001"
+    jobs:
+      - template: pipelines/azure-pipelines-deploy.yml@he-fms-deployment
+        parameters:
+          serviceConnection: "fms-prod"
+          environment: "fms-pre-01"
+          resourceGroupName: "rg-fms-pre-01"
+          appName: "func-fms-pre-01"
+          tag: "$(Build.BuildId)"
+  # Deploy to PRD
+  - stage: DeployPRDFunction
+    dependsOn: DeployPREFunction
+    displayName: PRD Deploy Function
+    pool: "vmss-ado-chs-prod-001"
+    jobs:
+      - template: pipelines/azure-pipelines-deploy.yml@he-fms-deployment
+        parameters:
+          serviceConnection: "fms-prod"
+          environment: "fms-prd-01"
+          resourceGroupName: "rg-fms-prd-01"
+          appName: "func-fms-prd-01"
+          tag: "$(Build.BuildId)"
