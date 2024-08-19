@@ -14,7 +14,7 @@
     "CosmosDb:ConnectionString": "",
     "CosmosDb:DatabaseId": "fms",
     "CosmosDb:ContainerId": "fms-container",
-    "CosmosDb:PartitionKey": "fms", 
+    "CosmosDb:PartitionKey": "fms",
     "Mambu:RotateApiKeyTimeTrigger": "0 30 7 * * *",
     "Mambu:Api:BaseUrl": "https://{mambuInstance}.mambu.com",
     "Mambu:Api:RetryCount": "1",
@@ -24,6 +24,12 @@
     "KeyVault:Url": "https://{keyVault}.vault.azure.net/",
     "Grants:BranchId": "{mambuEnvironment}",
     "Grants:OpenGrantAccount:TopicName": "he-ahp-CreateGrantAccount-local",
-    "Grants:OpenGrantAccount:SubscriptionName": "subscription-GrantCreate-local"
+    "Grants:OpenGrantAccount:SubscriptionName": "subscription-GrantCreate-local",
+    "AzureWebJobs.OpenNewGrantAccountHttpTrigger.Disabled": true,
+    "AzureWebJobs.OpenNewGrantAccountServiceBusTrigger.Disabled": true,
+    "AzureWebJobs.PushToCrmServiceBusTrigger.Disabled": true,
+    "AzureWebJobs.MambuRotateApiKeyTimeTrigger.Disabled": true,
+    "AzureWebJobs.MambuHealthCheckHttpTrigger.Disabled": true,
+    "AzureWebJobs.MambuRotateApiKeyHttpTrigger.Disabled": true
   }
 }
