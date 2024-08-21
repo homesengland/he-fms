@@ -41,7 +41,6 @@ public class CreateClaimHttpTrigger
         {
             var inputData = await _streamSerializer.Deserialize<CreateClaimRequest>(request.Body, cancellationToken);
 
-
             var cosmosDbOutput = _cosmosDbHelper.CreateCosmosDbItem(inputData, string.Empty);
 
             var idempotencyKey = request.GetIdempotencyHeader();
