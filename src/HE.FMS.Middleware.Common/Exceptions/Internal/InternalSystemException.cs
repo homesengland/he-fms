@@ -1,10 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace HE.FMS.Middleware.Common.Exceptions.Common;
+namespace HE.FMS.Middleware.Common.Exceptions.Internal;
 public abstract class InternalSystemException : Exception
 {
     protected InternalSystemException(string message, Exception? innerException = null)
