@@ -36,6 +36,11 @@ internal sealed class ExceptionHandlingWithResponseMiddleware : IFunctionsWorker
                 _logger.LogWarning(ex, ex.Message);
                 await SetErrorResponse(context, HttpStatusCode.BadRequest, ex);
             }
+            catch (AggregateException ex)
+            {
+                _logger.LogWarning(ex, ex.Message);
+                await SetErrorResponse(context, HttpStatusCode.BadRequest, ex);
+            }
             catch (ExternalSystemException ex)
             {
                 _logger.LogError(ex, ex.Message);
@@ -60,6 +65,9 @@ internal sealed class ExceptionHandlingWithResponseMiddleware : IFunctionsWorker
 
     private static async Task SetErrorResponse(FunctionContext context, HttpStatusCode httpStatusCode, ValidationException exception) =>
         await SetErrorResponse(context, httpStatusCode, exception.Code, exception.Message);
+
+    private static async Task SetErrorResponse(FunctionContext context, HttpStatusCode httpStatusCode, AggregateException exception) =>
+        await SetErrorResponse(context, httpStatusCode, CommunicationErrorCodes.InvalidExternalSystemRequest, exception.Message);
 
     private static async Task SetErrorResponse(FunctionContext context, HttpStatusCode httpStatusCode, string? errorCode = null, string? errorMessage = null)
     {

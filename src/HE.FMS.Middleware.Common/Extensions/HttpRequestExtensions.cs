@@ -1,7 +1,5 @@
-using Azure.Core;
 using HE.FMS.Middleware.Common.Exceptions.Validation;
 using Microsoft.Azure.Functions.Worker.Http;
-using Microsoft.VisualBasic;
 
 namespace HE.FMS.Middleware.Common.Extensions;
 public static class HttpRequestExtensions
