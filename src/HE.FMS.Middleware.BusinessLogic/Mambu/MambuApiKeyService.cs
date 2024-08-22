@@ -48,12 +48,12 @@ public class MambuApiKeyService : IMambuApiKeyService
 
     public async Task RotateApiKey(CancellationToken cancellationToken)
     {
-        var key = await _keyVaultClient.Get<RotateApiKeyResponse>(_settings.KeyVaultSecretName, cancellationToken);
+        var key = await _keyVaultClient.Get<RotateApiKeyResponse>(_settings.KeyVaultValueName, cancellationToken);
         var response = await _rotationApiClient.RotateApiKey(key.Id, key.ApiKey, key.SecretKey, cancellationToken);
 
         try
         {
-            await _keyVaultClient.Set(_settings.KeyVaultSecretName, response, cancellationToken);
+            await _keyVaultClient.Set(_settings.KeyVaultValueName, response, cancellationToken);
         }
         catch (Exception ex)
         {

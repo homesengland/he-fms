@@ -1,5 +1,9 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS installer-env
 
+RUN groupadd -g 999 appuser && \
+ useradd -r -u 999 -g appuser appuser
+USER appuser
+
 COPY ["src/HE.FMS.Middleware/HE.FMS.Middleware.csproj","src/HE.FMS.Middleware/"]
 COPY ["src/HE.FMS.Middleware.BusinessLogic/HE.FMS.Middleware.BusinessLogic.csproj","src/HE.FMS.Middleware.BusinessLogic/"]
 COPY ["src/HE.FMS.Middleware.Common/HE.FMS.Middleware.Common.csproj","src/HE.FMS.Middleware.Common/"]

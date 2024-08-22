@@ -4,5 +4,5 @@ internal sealed class MambuApiKeySettings : IMambuApiKeySettings
 {
     public int ExpirationInSeconds { get; set; }
 
-    public string KeyVaultSecretName { get; set; }
+    public string KeyVaultValueName { get; set; }
 }

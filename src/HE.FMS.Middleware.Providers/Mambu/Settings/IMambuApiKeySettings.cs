@@ -4,5 +4,5 @@ public interface IMambuApiKeySettings
 {
     int ExpirationInSeconds { get; }
 
-    string KeyVaultSecretName { get; }
+    string KeyVaultValueName { get; }
 }
