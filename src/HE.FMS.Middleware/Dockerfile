@@ -13,8 +13,9 @@ COPY ["src/HE.FMS.Middleware.Providers/HE.FMS.Middleware.Providers.csproj","src/
 RUN dotnet restore "src/HE.FMS.Middleware/HE.FMS.Middleware.csproj"
 
 COPY . /src/dotnet-function-app
-RUN cd /src/dotnet-function-app && \
-    mkdir -p /home/site/wwwroot && \
+WORKDIR /src/dotnet-function-app
+
+RUN mkdir -p /home/site/wwwroot && \
     dotnet publish src/HE.FMS.Middleware/HE.FMS.Middleware.csproj -c Release -o /home/site/wwwroot
 
 FROM mcr.microsoft.com/azure-functions/dotnet-isolated:4-dotnet-isolated8.0
