@@ -50,7 +50,7 @@ Configuration for local development is stored in `local.settings.json`. It shoul
 - `Mambu:Api:BaseUrl` base url to Mambu API
 - `Mambu:Api:RetryCount` number of retries for Mambu API calls
 - `Mambu:Api:RetryDelayInMilliseconds` delay between retries for Mambu API calls
-- `Mambu:ApiKey:KeyVaultSecretName` secret name which stores ApiKey in Azure Key Vault
+- `Mambu:ApiKey:KeyVaultValueName` secret name which stores ApiKey in Azure Key Vault
 - `Mambu:ApiKey:ExpirationInSeconds` expiration in seconds of Mambu API key which is used for rotating
 - `KeyVault:Url` url to Azure Key Vault
 - `Grants:BranchId` id of Mambu branch (environment)

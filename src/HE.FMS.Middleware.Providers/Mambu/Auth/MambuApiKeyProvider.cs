@@ -18,7 +18,7 @@ internal sealed class MambuApiKeyProvider : IMambuApiKeyProvider
 
     public async Task<string> GetApiKey(CancellationToken cancellationToken)
     {
-        var keys = await _keyVaultClient.Get<RotateApiKeyResponse>(_settings.KeyVaultSecretName, cancellationToken);
+        var keys = await _keyVaultClient.Get<RotateApiKeyResponse>(_settings.KeyVaultValueName, cancellationToken);
         return keys.ApiKey;
     }
 
