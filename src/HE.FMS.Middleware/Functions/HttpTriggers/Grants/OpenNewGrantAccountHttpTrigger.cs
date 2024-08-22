@@ -49,7 +49,7 @@ public class OpenNewGrantAccountHttpTrigger
 
         await _topicClient.SendAsync(topicOutput);
 
-        return new OpenNewGrantAccountTriggerResponse()
+        return new OpenNewGrantAccountTriggerResponse
         {
             HttpResponse = request.CreateResponse(HttpStatusCode.Accepted),
             CosmosDbOutput = cosmosDbOutput,
