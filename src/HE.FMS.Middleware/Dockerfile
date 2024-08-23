@@ -10,7 +10,7 @@ COPY ["HE.FMS.Middleware.Common/HE.FMS.Middleware.Common.csproj", "src/HE.FMS.Mi
 COPY ["HE.FMS.Middleware.Contract/HE.FMS.Middleware.Contract.csproj", "src/HE.FMS.Middleware.Contract/"]
 COPY ["HE.FMS.Middleware.Providers/HE.FMS.Middleware.Providers.csproj", "src/HE.FMS.Middleware.Providers/"]
 
-RUN dotnet restore "src/HE.FMS.Middleware/HE.FMS.Middleware.csproj"
+RUN dotnet restore "HE.FMS.Middleware/HE.FMS.Middleware.csproj"
 
 COPY . /src/dotnet-function-app
 WORKDIR /src/dotnet-function-app
