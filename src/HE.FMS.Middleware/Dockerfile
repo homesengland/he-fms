@@ -4,11 +4,11 @@ RUN groupadd -g 999 appuser && \
  useradd -r -u 999 -g appuser appuser
 USER appuser
 
-COPY ["he-fms/src/HE.FMS.Middleware/HE.FMS.Middleware.csproj","src/HE.FMS.Middleware/"]
-COPY ["he-fms/src/HE.FMS.Middleware.BusinessLogic/HE.FMS.Middleware.BusinessLogic.csproj","src/HE.FMS.Middleware.BusinessLogic/"]
-COPY ["he-fms/src/HE.FMS.Middleware.Common/HE.FMS.Middleware.Common.csproj","src/HE.FMS.Middleware.Common/"]
-COPY ["he-fms/src/HE.FMS.Middleware.Contract/HE.FMS.Middleware.Contract.csproj","src/HE.FMS.Middleware.Contract/"]
-COPY ["he-fms/src/HE.FMS.Middleware.Providers/HE.FMS.Middleware.Providers.csproj","src/HE.FMS.Middleware.Providers/"]
+COPY ["HE.FMS.Middleware/HE.FMS.Middleware.csproj", "src/HE.FMS.Middleware/"]
+COPY ["HE.FMS.Middleware.BusinessLogic/HE.FMS.Middleware.BusinessLogic.csproj", "src/HE.FMS.Middleware.BusinessLogic/"]
+COPY ["HE.FMS.Middleware.Common/HE.FMS.Middleware.Common.csproj", "src/HE.FMS.Middleware.Common/"]
+COPY ["HE.FMS.Middleware.Contract/HE.FMS.Middleware.Contract.csproj", "src/HE.FMS.Middleware.Contract/"]
+COPY ["HE.FMS.Middleware.Providers/HE.FMS.Middleware.Providers.csproj", "src/HE.FMS.Middleware.Providers/"]
 
 RUN dotnet restore "src/HE.FMS.Middleware/HE.FMS.Middleware.csproj"
 
