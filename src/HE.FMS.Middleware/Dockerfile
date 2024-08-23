@@ -1,9 +1,5 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS installer-env
 
-RUN groupadd -g 999 appuser && \
-    useradd -r -u 999 -g appuser appuser
-USER appuser
-
 COPY ["HE.FMS.Middleware/HE.FMS.Middleware.csproj", "src/HE.FMS.Middleware/"]
 COPY ["HE.FMS.Middleware.BusinessLogic/HE.FMS.Middleware.BusinessLogic.csproj", "src/HE.FMS.Middleware.BusinessLogic/"]
 COPY ["HE.FMS.Middleware.Common/HE.FMS.Middleware.Common.csproj", "src/HE.FMS.Middleware.Common/"]
@@ -17,6 +13,10 @@ WORKDIR /src/dotnet-function-app
 
 RUN mkdir -p /home/site/wwwroot && \
     dotnet publish src/HE.FMS.Middleware/HE.FMS.Middleware.csproj -c Release -o /home/site/wwwroot
+
+RUN groupadd -g 999 appuser && \
+    useradd -r -u 999 -g appuser appuser
+USER appuser
 
 FROM mcr.microsoft.com/azure-functions/dotnet-isolated:4-dotnet-isolated8.0
 ENV AzureWebJobsScriptRoot=/home/site/wwwroot \
