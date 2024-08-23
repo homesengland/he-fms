@@ -1,10 +1,12 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS installer-env
 
-COPY ["HE.FMS.Middleware/HE.FMS.Middleware.csproj", "src/HE.FMS.Middleware/"]
-COPY ["HE.FMS.Middleware.BusinessLogic/HE.FMS.Middleware.BusinessLogic.csproj", "src/HE.FMS.Middleware.BusinessLogic/"]
-COPY ["HE.FMS.Middleware.Common/HE.FMS.Middleware.Common.csproj", "src/HE.FMS.Middleware.Common/"]
-COPY ["HE.FMS.Middleware.Contract/HE.FMS.Middleware.Contract.csproj", "src/HE.FMS.Middleware.Contract/"]
-COPY ["HE.FMS.Middleware.Providers/HE.FMS.Middleware.Providers.csproj", "src/HE.FMS.Middleware.Providers/"]
+#WORKDIR ./src
+
+# COPY ["HE.FMS.Middleware/HE.FMS.Middleware.csproj", "src/HE.FMS.Middleware/"]
+# COPY ["HE.FMS.Middleware.BusinessLogic/HE.FMS.Middleware.BusinessLogic.csproj", "src/HE.FMS.Middleware.BusinessLogic/"]
+# COPY ["HE.FMS.Middleware.Common/HE.FMS.Middleware.Common.csproj", "src/HE.FMS.Middleware.Common/"]
+# COPY ["HE.FMS.Middleware.Contract/HE.FMS.Middleware.Contract.csproj", "src/HE.FMS.Middleware.Contract/"]
+# COPY ["HE.FMS.Middleware.Providers/HE.FMS.Middleware.Providers.csproj", "src/HE.FMS.Middleware.Providers/"]
 
 RUN dotnet restore "src/HE.FMS.Middleware/HE.FMS.Middleware.csproj"
 
