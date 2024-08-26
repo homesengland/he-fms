@@ -14,6 +14,10 @@ COPY . /src/dotnet-function-app
 WORKDIR /src/dotnet-function-app
 
 RUN mkdir -p /home/site/wwwroot
+
+RUN ls -la
+
+
 RUN dotnet publish src/HE.FMS.Middleware/HE.FMS.Middleware.csproj -c Release -o /home/site/wwwroot
 
 RUN groupadd -g 999 appuser && \
