@@ -2,8 +2,8 @@ using HE.FMS.Middleware.Providers.CosmosDb;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 
-namespace HE.FMS.Middleware.Functions.HttpTriggers.Claims.Model;
-public class CreateClaimResponse
+namespace HE.FMS.Middleware.Functions.Base;
+public class ClaimBaseResponse
 {
     public HttpResponseData HttpResponse { get; set; }
 

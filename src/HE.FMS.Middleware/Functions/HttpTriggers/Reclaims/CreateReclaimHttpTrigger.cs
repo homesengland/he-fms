@@ -1,5 +1,5 @@
 using HE.FMS.Middleware.Common.Serialization;
-using HE.FMS.Middleware.Contract.Claims;
+using HE.FMS.Middleware.Contract.Reclaims;
 using HE.FMS.Middleware.Functions.Base;
 using HE.FMS.Middleware.Middlewares;
 using HE.FMS.Middleware.Providers.CosmosDb;
@@ -7,21 +7,21 @@ using HE.FMS.Middleware.Providers.ServiceBus;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 
-namespace HE.FMS.Middleware.Functions.HttpTriggers.Claims;
-public class CreateClaimHttpTrigger : ClaimBase<CreateClaimRequest>
+namespace HE.FMS.Middleware.Functions.HttpTriggers.Reclaims;
+public class CreateReclaimHttpTrigger : ClaimBase<CreateReclaimRequest>
 {
-    public CreateClaimHttpTrigger(
+    public CreateReclaimHttpTrigger(
         IStreamSerializer streamSerializer,
         IObjectSerializer objectSerializer,
         ITopicClientFactory topicClientFactory,
         CosmosDbHelper cosmosDbHelper)
-        : base(streamSerializer, objectSerializer, topicClientFactory, cosmosDbHelper, "Claims:Create:TopicName")
+        : base(streamSerializer, objectSerializer, topicClientFactory, cosmosDbHelper, "Reclaims:Create:TopicName")
     {
     }
 
-    [Function(nameof(CreateClaimHttpTrigger))]
+    [Function(nameof(CreateReclaimHttpTrigger))]
     public async Task<ClaimBaseResponse> Run(
-        [HttpTrigger(AuthorizationLevel.Function, "post", Route = "claims")]
+        [HttpTrigger(AuthorizationLevel.Function, "post", Route = "reclaims")]
         HttpRequestData request,
         CancellationToken cancellationToken)
     {
@@ -31,7 +31,7 @@ public class CreateClaimHttpTrigger : ClaimBase<CreateClaimRequest>
         }
         catch (AggregateException)
         {
-            throw new AggregateException(ConstantExceptionMessage.ClaimsValidationException);
+            throw new AggregateException(ConstantExceptionMessage.ReclaimsValidationException);
         }
     }
 }
