@@ -25,6 +25,8 @@
     "Grants:BranchId": "{mambuEnvironment}",
     "Grants:OpenGrantAccount:TopicName": "he-ahp-CreateGrantAccount-local",
     "Grants:OpenGrantAccount:SubscriptionName": "subscription-GrantCreate-local",
+    "Claims:Create:TopicName": "he-ahp-CreateClaim-local",
+    "Reclaims:Create:TopicName": "he-ahp-CreateReclaim-local",
     "AzureWebJobs.OpenNewGrantAccountHttpTrigger.Disabled": true,
     "AzureWebJobs.OpenNewGrantAccountServiceBusTrigger.Disabled": true,
     "AzureWebJobs.PushToCrmServiceBusTrigger.Disabled": true,
