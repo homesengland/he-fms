@@ -36,7 +36,8 @@ stages:
       serviceConnection: "fms-nonprod"
       environment: "fms-dev-01"
       resourceGroupName: "rg-fms-dev-01"
-      appName: "fn-claims-fms-dev-01"
+      appName: "func-1-fms-dev-01"
+      #appName: "fn-claims-fms-dev-01"
       tag: ${{ parameters.tag }}
 # Deploy to QA
 - stage: DeployQAFunction
