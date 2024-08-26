@@ -15,6 +15,7 @@ WORKDIR /src/dotnet-function-app
 
 RUN mkdir -p /home/site/wwwroot
 
+RUN cd ..
 RUN ls -la
 
 
