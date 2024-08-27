@@ -1,5 +1,7 @@
 using System.Net;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using HE.FMS.Middleware.Common.Exceptions.Validation;
 using HE.FMS.Middleware.Common.Extensions;
 using HE.FMS.Middleware.Common.Serialization;
@@ -8,7 +10,7 @@ using HE.FMS.Middleware.Providers.ServiceBus;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.ServiceBus;
 
-namespace HE.FMS.Middleware.Functions.Base;
+namespace HE.FMS.Middleware.Shared.Base;
 public class ClaimBase<T>
 {
     private readonly IStreamSerializer _streamSerializer;

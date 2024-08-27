@@ -12,6 +12,12 @@
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.15.1" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\HE.FMS.Middleware.Shared\HE.FMS.Middleware.Shared.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Using Include="System.Threading.ExecutionContext" Alias="ExecutionContext" />
+  </ItemGroup>
+  <ItemGroup>
     <None Update="host.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -19,13 +25,5 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <CopyToPublishDirectory>Never</CopyToPublishDirectory>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Using Include="System.Threading.ExecutionContext" Alias="ExecutionContext" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\HE.FMS.Middleware.BusinessLogic\HE.FMS.Middleware.BusinessLogic.csproj" />
-    <ProjectReference Include="..\HE.FMS.Middleware.Providers\HE.FMS.Middleware.Providers.csproj" />
-    <ProjectReference Include="..\HE.FMS.Middleware.Shared\HE.FMS.Middleware.Shared.csproj" />
   </ItemGroup>
 </Project>

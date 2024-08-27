@@ -1,16 +1,19 @@
+using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Threading.Tasks;
 using HE.FMS.Middleware.Common;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Middleware;
 using Microsoft.Extensions.Logging;
 
-namespace HE.FMS.Middleware.Middlewares;
+namespace HE.FMS.Middleware.Shared.Middlewares;
 
-internal sealed class ExceptionHandlingForServiceBusTriggersMiddleware : IFunctionsWorkerMiddleware
+internal sealed class ExceptionHandlingWithoutResponseMiddleware : IFunctionsWorkerMiddleware
 {
-    private readonly ILogger<ExceptionHandlingForServiceBusTriggersMiddleware> _logger;
+    private readonly ILogger<ExceptionHandlingWithoutResponseMiddleware> _logger;
 
-    public ExceptionHandlingForServiceBusTriggersMiddleware(ILogger<ExceptionHandlingForServiceBusTriggersMiddleware> logger)
+    public ExceptionHandlingWithoutResponseMiddleware(ILogger<ExceptionHandlingWithoutResponseMiddleware> logger)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
@@ -20,7 +23,9 @@ internal sealed class ExceptionHandlingForServiceBusTriggersMiddleware : IFuncti
     {
         if (context.FunctionDefinition.InputBindings.Values
              .Any(binding =>
-                    binding.Type.EndsWith(Constants.FunctionsTriggers.ServiceBusTrigger, StringComparison.OrdinalIgnoreCase)))
+                    binding.Type.EndsWith(Constants.FunctionsTriggers.TimeTrigger, StringComparison.OrdinalIgnoreCase) ||
+                    binding.Type.EndsWith(Constants.FunctionsTriggers.OrchestrationTrigger, StringComparison.OrdinalIgnoreCase) ||
+                    binding.Type.EndsWith(Constants.FunctionsTriggers.ActivityTrigger, StringComparison.OrdinalIgnoreCase)))
         {
             try
             {
@@ -29,7 +34,6 @@ internal sealed class ExceptionHandlingForServiceBusTriggersMiddleware : IFuncti
             catch (Exception ex)
             {
                 _logger.LogError(ex, ex.Message);
-                throw;
             }
         }
         else
