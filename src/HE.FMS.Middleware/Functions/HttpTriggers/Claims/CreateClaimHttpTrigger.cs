@@ -8,7 +8,7 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 
 namespace HE.FMS.Middleware.Functions.HttpTriggers.Claims;
-public class CreateClaimHttpTrigger : ClaimBase<CreateClaimRequest>
+public class CreateClaimHttpTrigger : ClaimBase<ClaimPaymentRequest>
 {
     public CreateClaimHttpTrigger(
         IStreamSerializer streamSerializer,
