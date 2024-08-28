@@ -26,7 +26,9 @@ resources:
     ref: 'master'
 
 stages:
-- template: pipelines/azure-pipelines-deploy.yml@he-fms-deployment
+- template: pipelines/azure-pipelines-deploy.yml@he-fms-
+  parameters:
+    tag: ${{ parameters.tag }}
 
 # # Deploy to Dev
 # - stage: DeployDevFunction
