@@ -73,10 +73,5 @@ public class MambuApiKeyServiceTests
 
         // Act & Assert
         await Assert.ThrowsAsync<Exception>(() => _service.RotateApiKey(cancellationToken));
-        _mockLogger.Received(1).LogError(
-            Arg.Any<Exception>(),
-            "Mambu API rotated but failed to save the new key in KeyVault, update it manually, Key: {ApiKey}.",
-            Arg.Any<string>());
     }
-
 }

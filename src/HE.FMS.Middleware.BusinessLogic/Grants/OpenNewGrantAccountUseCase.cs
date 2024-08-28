@@ -5,7 +5,7 @@ using HE.FMS.Middleware.Contract.Grants.UseCases;
 
 namespace HE.FMS.Middleware.BusinessLogic.Grants;
 
-internal sealed class OpenNewGrantAccountUseCase : IUseCase<OpenNewGrantAccountRequest, OpenNewGrantAccountResult>
+public sealed class OpenNewGrantAccountUseCase : IUseCase<OpenNewGrantAccountRequest, OpenNewGrantAccountResult>
 {
     private readonly IGroupService _groupService;
 

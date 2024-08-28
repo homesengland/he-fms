@@ -1,4 +1,4 @@
-﻿using System.Net;
+using System.Net;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Azure;
@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace HE.FMS.Middleware.Providers.KeyVault;
 
-internal sealed class KeyVaultSecretClient : IKeyVaultSecretClient
+public class KeyVaultSecretClient : IKeyVaultSecretClient
 {
     private readonly SecretClient _client;
 
@@ -26,6 +26,12 @@ internal sealed class KeyVaultSecretClient : IKeyVaultSecretClient
     public KeyVaultSecretClient(IKeyVaultSettings settings, ILogger<KeyVaultSecretClient> logger)
     {
         _client = new SecretClient(new Uri(settings.Url), new DefaultAzureCredential());
+        _logger = logger;
+    }
+
+    public KeyVaultSecretClient(SecretClient client, ILogger<KeyVaultSecretClient> logger)
+    {
+        _client = client;
         _logger = logger;
     }
 
