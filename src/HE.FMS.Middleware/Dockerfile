@@ -1,6 +1,6 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0.401 AS build-env
 
-COPY ["HE.FMS.Middleware/HE.FMS.Middleware.csproj","HE.FMS.Middleware/"]
+COPY ["HE.FMS.Middleware/","app/HE.FMS.Middleware/"]
 COPY ["HE.FMS.Middleware.Shared/","app/HE.FMS.Middleware.Shared/"]
 COPY ["HE.FMS.Middleware.BusinessLogic/","app/HE.FMS.Middleware.BusinessLogic/"]
 COPY ["HE.FMS.Middleware.Common/","app/HE.FMS.Middleware.Common/"]
