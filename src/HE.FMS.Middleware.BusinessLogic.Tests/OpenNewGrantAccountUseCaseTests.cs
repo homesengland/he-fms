@@ -42,7 +42,14 @@ public class OpenNewGrantAccountUseCaseTests
 
         var group = new GroupReadDto { EncodedKey = "groupKey" };
         var creditArrangement = new CreditArrangementReadDto { EncodedKey = "creditKey", Id = "creditId" };
-        var loanAccount = new LoanAccountReadDto { EncodedKey = "loanKey", Id = "loanId", LoanName = "loanName", CreationDate = DateTime.UtcNow, AccountState = AccountState.Active};
+        var loanAccount = new LoanAccountReadDto
+        {
+            EncodedKey = "loanKey",
+            Id = "loanId",
+            LoanName = "loanName",
+            CreationDate = DateTime.UtcNow,
+            AccountState = AccountState.Active,
+        };
 
         _groupService.GetOrCreateGroup(request.Organisation, cancellationToken).Returns(Task.FromResult(group));
         _creditArrangementService.GetOrCreateCreditArrangement(request.ApplicationId, group.EncodedKey, request.GrantDetails, cancellationToken).Returns(Task.FromResult(creditArrangement));

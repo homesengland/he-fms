@@ -10,7 +10,7 @@ using HE.FMS.Middleware.Shared.Middlewares;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 
-namespace HE.FMS.Middleware.Functions.HttpTriggers.Claims;
+namespace HE.FMS.Middleware.Claims.Functions;
 public class CreateClaimHttpTrigger : ClaimBase<ClaimPaymentRequest>
 {
     public CreateClaimHttpTrigger(
