@@ -11,8 +11,8 @@ parameters:
   type: boolean
   default: false
 
-# pool:
-#   vmImage: "ubuntu-latest"
+pool:
+  vmImage: "ubuntu-latest"
 
 resources:
   repositories:
