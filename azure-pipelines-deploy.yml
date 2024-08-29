@@ -5,10 +5,18 @@ trigger:
 variables:
   tag: "$(Build.BuildId)"
 parameters:
-- name: forcePushToProd
-  displayName: Force Push to Production
+- name: deployMiddleware
+  displayName: Deploy - Middleware ?
   type: boolean
-  default: false
+  default: true
+- name: deployClaims
+  displayName: Deploy - Claims ?
+  type: boolean
+  default: true
+- name: deployReclaims
+  displayName: Deploy - Reclaims ?
+  type: boolean
+  default: true
 - name: tag
   type: string
 
@@ -29,6 +37,9 @@ stages:
 - template: pipelines/azure-pipelines-deploy.yml@he-fms-deployment
   parameters:
     tag: ${{ parameters.tag }}
+    deployMiddleware: ${{ parameters.deployMiddleware }}
+    deployClaims: ${{ parameters.deployClaims }}
+    deployReclaims: ${{ parameters.deployReclaims }}
 
 # # Deploy to Dev
 # - stage: DeployDevFunction
