@@ -31,3 +31,4 @@ stages:
   parameters:
     tag: "$(Build.BuildId)"
     dotnetVersion: '8.0.x'
+    forcePushToProd: ${{ parameters.forcePushToProd }}
