@@ -6,7 +6,7 @@ using HE.FMS.Middleware.Providers.Mambu.Api.Group.Contract;
 
 namespace HE.FMS.Middleware.BusinessLogic.Grants.Services;
 
-internal sealed class GroupService : IGroupService
+public sealed class GroupService : IGroupService
 {
     private readonly IMambuGroupApiClient _groupApiClient;
 
