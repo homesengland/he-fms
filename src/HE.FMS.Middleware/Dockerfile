@@ -1,20 +1,19 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0.401 AS build-env
 
-COPY ["HE.FMS.Middleware", "/app/HE.FMS.Middleware"]
-COPY ["HE.FMS.Middleware.Shared","app/HE.FMS.Middleware.Shared"]
-COPY ["HE.FMS.Middleware.BusinessLogic", "/app/HE.FMS.Middleware.BusinessLogic"]
-COPY ["HE.FMS.Middleware.Common", "/app/HE.FMS.Middleware.Common"]
-COPY ["HE.FMS.Middleware.Contract", "/app/HE.FMS.Middleware.Contract"]
-COPY ["HE.FMS.Middleware.Providers", "/app/HE.FMS.Middleware.Providers"]
+COPY ["HE.FMS.Middleware/HE.FMS.Middleware.csproj","HE.FMS.Middleware/"]
+COPY ["HE.FMS.Middleware.Shared/","app/HE.FMS.Middleware.Shared/"]
+COPY ["HE.FMS.Middleware.BusinessLogic/","app/HE.FMS.Middleware.BusinessLogic/"]
+COPY ["HE.FMS.Middleware.Common/","app/HE.FMS.Middleware.Common/"]
+COPY ["HE.FMS.Middleware.Contract/","app/HE.FMS.Middleware.Contract/"]
+COPY ["HE.FMS.Middleware.Providers/","app/HE.FMS.Middleware.Providers/"]
 COPY ["nuget.config", "/app"]
 COPY ["Directory.Build.props", "/app"]
 COPY [".editorconfig", "/app"]
 
-RUN dotnet restore "/app/HE.FMS.Middleware/HE.FMS.Middleware.csproj" --configfile "/app/nuget.config"
+RUN dotnet restore "app/HE.FMS.Middleware/HE.FMS.Middleware.csproj"
 
 RUN mkdir -p /home/site/wwwroot
-#RUN dotnet build app/HE.FMS.Middleware/HE.FMS.Middleware.csproj -c Release --configfile "app/nuget.config"
-RUN dotnet publish app/HE.FMS.Middleware/HE.FMS.Middleware.csproj -c Release -o home/site/wwwroot
+RUN dotnet publish app/HE.FMS.Middleware/HE.FMS.Middleware.csproj -c Release -o /home/site/wwwroot
 
 RUN groupadd -g 999 appuser && \
     useradd -r -u 999 -g appuser appuser
