@@ -13,7 +13,7 @@ public class GroupServiceTests
 {
     private readonly IMambuGroupApiClient _groupApiClient;
     private readonly IGrantsSettings _grantsSettings;
-    private readonly IGroupService _groupService;
+    private readonly GroupService _groupService;
 
     public GroupServiceTests()
     {
@@ -61,8 +61,8 @@ public class GroupServiceTests
         {
             Id = "org1",
             GroupName = "Org Name",
-            Addresses = new List<GroupAddressDto>
-            {
+            Addresses =
+            [
                 new()
                 {
                     Country = "Country",
@@ -70,7 +70,7 @@ public class GroupServiceTests
                     Line1 = "Line1",
                     Line2 = "Line2",
                 },
-            },
+            ],
             EmailAddress = "email@example.com",
             HomePhone = "123456789",
             AssignedBranchKey = "branch1",

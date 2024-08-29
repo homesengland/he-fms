@@ -1,5 +1,7 @@
+using System.Net;
 using HE.FMS.Middleware.BusinessLogic.Grants.Settings;
 using HE.FMS.Middleware.BusinessLogic.Mambu;
+using HE.FMS.Middleware.Common.Exceptions.Communication;
 using HE.FMS.Middleware.Providers.KeyVault;
 using HE.FMS.Middleware.Providers.Mambu.Api.Group;
 using HE.FMS.Middleware.Providers.Mambu.Api.Rotation;
@@ -17,7 +19,6 @@ public class MambuApiKeyServiceTests
     private readonly IMambuRotationApiClient _mockRotationApiClient;
     private readonly IKeyVaultSecretClient _mockKeyVaultClient;
     private readonly IMambuApiKeyProvider _mockApiKeyProvider;
-    private readonly ILogger<MambuApiKeyService> _mockLogger;
     private readonly MambuApiKeyService _service;
 
     public MambuApiKeyServiceTests()
@@ -28,7 +29,7 @@ public class MambuApiKeyServiceTests
         _mockApiKeyProvider = Substitute.For<IMambuApiKeyProvider>();
         var mockSettings = Substitute.For<IMambuApiKeySettings>();
         var mockGrantsSettings = Substitute.For<IGrantsSettings>();
-        _mockLogger = Substitute.For<ILogger<MambuApiKeyService>>();
+        var mockLogger = Substitute.For<ILogger<MambuApiKeyService>>();
 
         _service = new MambuApiKeyService(
             _mockRotationApiClient,
@@ -37,7 +38,7 @@ public class MambuApiKeyServiceTests
             _mockApiKeyProvider,
             mockSettings,
             mockGrantsSettings,
-            _mockLogger);
+            mockLogger);
     }
 
     [Fact]
@@ -69,9 +70,11 @@ public class MambuApiKeyServiceTests
 
         _mockKeyVaultClient.Get<RotateApiKeyResponse>(Arg.Any<string>(), cancellationToken).Returns(Task.FromResult(key));
         _mockRotationApiClient.RotateApiKey(key.Id, key.ApiKey, key.SecretKey, cancellationToken).Returns(Task.FromResult(rotateApiKeyResponse));
-        _mockKeyVaultClient.Set(Arg.Any<string>(), rotateApiKeyResponse, cancellationToken).Returns(Task.FromException(new Exception("KeyVault set failed")));
+        _mockKeyVaultClient
+            .Set(Arg.Any<string>(), rotateApiKeyResponse, cancellationToken)
+            .Returns(Task.FromException(new ExternalSystemCommunicationException("KeyVault set failed", HttpStatusCode.BadRequest)));
 
         // Act & Assert
-        await Assert.ThrowsAsync<Exception>(() => _service.RotateApiKey(cancellationToken));
+        await Assert.ThrowsAsync<ExternalSystemCommunicationException>(() => _service.RotateApiKey(cancellationToken));
     }
 }

@@ -14,18 +14,18 @@ namespace HE.FMS.Middleware.Providers.Tests;
 
 public class KeyVaultSecretClientTests
 {
-    private readonly IKeyVaultSettings _settings;
-    private readonly ILogger<KeyVaultSecretClient> _logger;
     private readonly SecretClient _secretClient;
     private readonly KeyVaultSecretClient _keyVaultSecretClient;
 
+    private readonly JsonSerializerOptions _jsonSerializerOptions = new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+
     public KeyVaultSecretClientTests()
     {
-        _settings = Substitute.For<IKeyVaultSettings>();
-        _settings.Url.Returns("https://fake-keyvault-url");
-        _logger = Substitute.For<ILogger<KeyVaultSecretClient>>();
-        _secretClient = Substitute.For<SecretClient>(new Uri(_settings.Url), new DefaultAzureCredential());
-        _keyVaultSecretClient = new KeyVaultSecretClient(_secretClient, _logger);
+        var settings = Substitute.For<IKeyVaultSettings>();
+        settings.Url.Returns("https://fake-keyvault-url");
+        var logger = Substitute.For<ILogger<KeyVaultSecretClient>>();
+        _secretClient = Substitute.For<SecretClient>(new Uri(settings.Url), new DefaultAzureCredential());
+        _keyVaultSecretClient = new KeyVaultSecretClient(_secretClient, logger);
     }
 
     [Fact]
@@ -61,7 +61,7 @@ public class KeyVaultSecretClientTests
     {
         // Arrange
         var secretName = "test-secret";
-        var secretValue = "{\"Name\":\"Test\"}";
+        var secretValue = $"{{\"Name\":\"Test\"}}";
         var secret = SecretModel(secretName, secretValue);
         _secretClient.GetSecretAsync(secretName, cancellationToken: Arg.Any<CancellationToken>()).Returns(secret);
 
@@ -109,7 +109,7 @@ public class KeyVaultSecretClientTests
         var secretName = "test-secret";
         var secretValue = "secret-value";
         _secretClient.SetSecretAsync(Arg.Any<string>(), Arg.Any<string>(), cancellationToken: Arg.Any<CancellationToken>())
-            .Returns(Task.FromException<Response<KeyVaultSecret>>(new RequestFailedException(1,"test")));
+            .Returns(Task.FromException<Response<KeyVaultSecret>>(new RequestFailedException(1, "test")));
 
         // Act & Assert
         await Assert.ThrowsAsync<ExternalSystemCommunicationException>(() => _keyVaultSecretClient.Set(secretName, secretValue, CancellationToken.None));
@@ -121,7 +121,7 @@ public class KeyVaultSecretClientTests
         // Arrange
         var secretName = "test-secret";
         var secret = new TestSecret { Name = "Test" };
-        var secretValue = JsonSerializer.Serialize(secret, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+        var secretValue = JsonSerializer.Serialize(secret, _jsonSerializerOptions);
         var response = SecretModel(secretName, secretValue);
         _secretClient.SetSecretAsync(secretName, secretValue, Arg.Any<CancellationToken>()).Returns(response);
 
