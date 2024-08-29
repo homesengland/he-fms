@@ -22,7 +22,7 @@ public class TopicClientFactoryTests
     public void GetTopicClient_ShouldThrowArgumentNullException_WhenTopicNameIsNullOrWhiteSpace()
     {
         // Arrange
-        string topicName = null;
+        string topicName = null!;
 
         // Act & Assert
         Assert.Throws<ArgumentNullException>(() => _topicClientFactory.GetTopicClient(topicName));
@@ -33,7 +33,7 @@ public class TopicClientFactoryTests
     {
         // Arrange
         var topicName = "test-topic";
-        _configuration[topicName].Returns((string)null);
+        _configuration[topicName].Returns((string)null!);
 
         // Act & Assert
         Assert.Throws<MissingConfigurationException>(() => _topicClientFactory.GetTopicClient(topicName));

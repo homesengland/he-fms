@@ -13,14 +13,13 @@ namespace HE.FMS.Middleware.BusinessLogic.Tests;
 public class LoanAccountServiceTests
 {
     private readonly IMambuLoanAccountApiClient _loanAccountApiClient;
-    private readonly IGrantsSettings _grantsSettings;
     private readonly LoanAccountService _loanAccountService;
 
     public LoanAccountServiceTests()
     {
         _loanAccountApiClient = Substitute.For<IMambuLoanAccountApiClient>();
-        _grantsSettings = Substitute.For<IGrantsSettings>();
-        _loanAccountService = new LoanAccountService(_loanAccountApiClient, _grantsSettings);
+        var grantsSettings = Substitute.For<IGrantsSettings>();
+        _loanAccountService = new LoanAccountService(_loanAccountApiClient, grantsSettings);
     }
 
     [Fact]
@@ -35,7 +34,7 @@ public class LoanAccountServiceTests
 
         var existingAccount = new LoanAccountReadDto();
         _loanAccountApiClient.Search(Arg.Any<SearchCriteriaDto>(), Arg.Any<PageDetails>(), cancellationToken)
-            .Returns(new List<LoanAccountReadDto> { existingAccount });
+            .Returns([existingAccount]);
 
         // Act
         var (account, accountAlreadyExists) = await _loanAccountService.GetOrCreateLoanAccount(creditArrangementId, groupId, grantDetails, phaseDetails, cancellationToken);
@@ -56,16 +55,16 @@ public class LoanAccountServiceTests
         var cancellationToken = CancellationToken.None;
 
         _loanAccountApiClient.Search(Arg.Any<SearchCriteriaDto>(), Arg.Any<PageDetails>(), cancellationToken)
-            .Returns(new List<LoanAccountReadDto>());
+            .Returns([]);
 
         var newAccount = new LoanAccountReadDto();
         _loanAccountApiClient.Create(Arg.Any<LoanAccountDto>(), cancellationToken).Returns(newAccount);
 
         // Act
-        var result = await _loanAccountService.GetOrCreateLoanAccount(creditArrangementId, groupId, grantDetails, phaseDetails, cancellationToken);
+        var (account, accountAlreadyExists) = await _loanAccountService.GetOrCreateLoanAccount(creditArrangementId, groupId, grantDetails, phaseDetails, cancellationToken);
 
         // Assert
-        Assert.False(result.AccountAlreadyExists);
-        Assert.Equal(newAccount, result.Account);
+        Assert.False(accountAlreadyExists);
+        Assert.Equal(newAccount, account);
     }
 }

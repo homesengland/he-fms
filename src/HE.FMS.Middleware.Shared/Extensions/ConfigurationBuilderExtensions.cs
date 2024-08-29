@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 
-namespace HE.FMS.Middleware.Extensions;
+namespace HE.FMS.Middleware.Shared.Extensions;
 
 public static class ConfigurationBuilderExtensions
 {
