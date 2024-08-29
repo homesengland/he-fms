@@ -9,6 +9,12 @@ COPY ["nuget.config", "/app"]
 COPY ["Directory.Build.props", "/app"]
 COPY [".editorconfig", "/app"]
 
+COPY ["src/HE.FMS.Middleware/HE.FMS.Middleware.csproj","src/HE.FMS.Middleware/"]
+COPY ["src/HE.FMS.Middleware.Shared/HE.FMS.Middleware.Shared.csproj","src/HE.FMS.Middleware.Shared/"]
+COPY ["src/HE.FMS.Middleware.BusinessLogic/HE.FMS.Middleware.BusinessLogic.csproj","src/HE.FMS.Middleware.BusinessLogic/"]
+COPY ["src/HE.FMS.Middleware.Common/HE.FMS.Middleware.Common.csproj","src/HE.FMS.Middleware.Common/"]
+COPY ["src/HE.FMS.Middleware.Contract/HE.FMS.Middleware.Contract.csproj","src/HE.FMS.Middleware.Contract/"]
+COPY ["src/HE.FMS.Middleware.Providers/HE.FMS.Middleware.Providers.csproj","src/HE.FMS.Middleware.Providers/"]
 
 RUN dotnet restore "/app/HE.FMS.Middleware/HE.FMS.Middleware.csproj" --configfile "/app/nuget.config"
 

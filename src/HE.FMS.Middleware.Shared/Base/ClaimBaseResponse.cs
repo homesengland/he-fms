@@ -2,7 +2,7 @@ using HE.FMS.Middleware.Providers.CosmosDb;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 
-namespace HE.FMS.Middleware.Functions.Base;
+namespace HE.FMS.Middleware.Shared.Base;
 public class ClaimBaseResponse
 {
     public HttpResponseData HttpResponse { get; set; }

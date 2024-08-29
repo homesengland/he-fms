@@ -1,5 +1,8 @@
 using System.Net;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using HE.FMS.Middleware.Common.Exceptions.Validation;
 using HE.FMS.Middleware.Common.Extensions;
 using HE.FMS.Middleware.Common.Serialization;
 using HE.FMS.Middleware.Providers.CosmosDb;
@@ -7,7 +10,7 @@ using HE.FMS.Middleware.Providers.ServiceBus;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.ServiceBus;
 
-namespace HE.FMS.Middleware.Functions.Base;
+namespace HE.FMS.Middleware.Shared.Base;
 public class ClaimBase<T>
 {
     private readonly IStreamSerializer _streamSerializer;
@@ -32,18 +35,19 @@ public class ClaimBase<T>
     {
         var inputData = await _streamSerializer.Deserialize<T>(request.Body, cancellationToken);
 
-        var idempotencyKey = request.GetIdempotencyHeader();
-
-        var cosmosDbOutput = _cosmosDbHelper.CreateCosmosDbItem(inputData, idempotencyKey);
-
-        var topicOutput = new Message(Encoding.UTF8.GetBytes(_objectSerializer.Serialize(inputData))) { CorrelationId = idempotencyKey, };
-
-        await _topicClient.SendAsync(topicOutput);
-
-        return new ClaimBaseResponse
+        if (inputData is not null)
         {
-            HttpResponse = request.CreateResponse(HttpStatusCode.Accepted),
-            CosmosDbOutput = cosmosDbOutput,
-        };
+            var idempotencyKey = request.GetIdempotencyHeader();
+
+            var cosmosDbOutput = _cosmosDbHelper.CreateCosmosDbItem(inputData, idempotencyKey);
+
+            var topicOutput = new Message(Encoding.UTF8.GetBytes(_objectSerializer.Serialize(inputData))) { CorrelationId = idempotencyKey, };
+
+            await _topicClient.SendAsync(topicOutput);
+
+            return new ClaimBaseResponse { HttpResponse = request.CreateResponse(HttpStatusCode.Accepted), CosmosDbOutput = cosmosDbOutput, };
+        }
+
+        throw new InvalidRequestException($"Empty request body");
     }
 }
