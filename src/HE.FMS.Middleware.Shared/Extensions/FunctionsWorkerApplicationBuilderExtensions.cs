@@ -1,8 +1,8 @@
-﻿using HE.FMS.Middleware.Middlewares;
+using HE.FMS.Middleware.Shared.Middlewares;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Hosting;
 
-namespace HE.FMS.Middleware.Extensions;
+namespace HE.FMS.Middleware.Shared.Extensions;
 
 public static class FunctionsWorkerApplicationBuilderExtensions
 {

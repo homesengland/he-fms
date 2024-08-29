@@ -4,19 +4,19 @@ RUN groupadd -g 999 appuser && \
  useradd -r -u 999 -g appuser appuser
 USER appuser
 
-COPY ["src/HE.FMS.Middleware/HE.FMS.Middleware.csproj","src/HE.FMS.Middleware/"]
+COPY ["src/HE.FMS.Middleware.Claims/HE.FMS.Middleware.Claims.csproj","src/HE.FMS.Middleware.Claims/"]
 COPY ["src/HE.FMS.Middleware.Shared/HE.FMS.Middleware.Shared.csproj","src/HE.FMS.Middleware.Shared/"]
 COPY ["src/HE.FMS.Middleware.BusinessLogic/HE.FMS.Middleware.BusinessLogic.csproj","src/HE.FMS.Middleware.BusinessLogic/"]
 COPY ["src/HE.FMS.Middleware.Common/HE.FMS.Middleware.Common.csproj","src/HE.FMS.Middleware.Common/"]
 COPY ["src/HE.FMS.Middleware.Contract/HE.FMS.Middleware.Contract.csproj","src/HE.FMS.Middleware.Contract/"]
 COPY ["src/HE.FMS.Middleware.Providers/HE.FMS.Middleware.Providers.csproj","src/HE.FMS.Middleware.Providers/"]
 
-RUN dotnet restore "src/HE.FMS.Middleware/HE.FMS.Middleware.csproj"
+RUN dotnet restore "src/HE.FMS.Middleware.Claims/HE.FMS.Middleware.Claims.csproj"
 
 COPY . /src/dotnet-function-app
 RUN cd /src/dotnet-function-app && \
     mkdir -p /home/site/wwwroot && \
-    dotnet publish src/HE.FMS.Middleware/HE.FMS.Middleware.csproj -c Release -o /home/site/wwwroot
+    dotnet publish src/HE.FMS.Middleware.Claims/HE.FMS.Middleware.Claims.csproj -c Release -o /home/site/wwwroot
 
 FROM mcr.microsoft.com/azure-functions/dotnet-isolated:4-dotnet-isolated8.0
 ENV AzureWebJobsScriptRoot=/home/site/wwwroot \

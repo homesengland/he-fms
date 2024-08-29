@@ -1,5 +1,8 @@
+using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using HE.FMS.Middleware.Common;
 using HE.FMS.Middleware.Common.Exceptions;
 using HE.FMS.Middleware.Common.Exceptions.Communication;
@@ -10,7 +13,7 @@ using Microsoft.Azure.Functions.Worker.Middleware;
 using Microsoft.Extensions.Logging;
 using Polly.Timeout;
 
-namespace HE.FMS.Middleware.Middlewares;
+namespace HE.FMS.Middleware.Shared.Middlewares;
 
 internal sealed class ExceptionHandlingWithResponseMiddleware : IFunctionsWorkerMiddleware
 {

@@ -1,4 +1,4 @@
-namespace HE.FMS.Middleware.Middlewares;
+namespace HE.FMS.Middleware.Shared.Middlewares;
 public static class ConstantExceptionMessage
 {
     public const string ClaimsValidationException =

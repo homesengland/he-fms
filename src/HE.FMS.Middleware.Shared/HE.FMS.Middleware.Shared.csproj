@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <AzureFunctionsVersion>v4</AzureFunctionsVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker" Version="1.22.0" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Core" Version="1.18.0" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.CosmosDB" Version="4.10.0" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.DurableTask" Version="1.1.4" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" Version="3.2.0" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.ServiceBus" Version="5.20.0" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Timer" Version="4.3.1" />
+    <!-- Do not update Microsoft.Azure.Functions.Worker.Sdk (https://github.com/microsoft/durabletask-dotnet/issues/247) -->
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.15.1" />
+    <PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.22.0" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.ApplicationInsights" Version="1.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.1" />
+    <PackageReference Include="MiniValidation" Version="0.9.1" />
+    <PackageReference Include="Microsoft.DurableTask.Generators" Version="1.0.0-preview.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HE.FMS.Middleware.BusinessLogic\HE.FMS.Middleware.BusinessLogic.csproj" />
+    <ProjectReference Include="..\HE.FMS.Middleware.Common\HE.FMS.Middleware.Common.csproj" />
+    <ProjectReference Include="..\HE.FMS.Middleware.Contract\HE.FMS.Middleware.Contract.csproj" />
+    <ProjectReference Include="..\HE.FMS.Middleware.Providers\HE.FMS.Middleware.Providers.csproj" />
+  </ItemGroup>
+</Project>
