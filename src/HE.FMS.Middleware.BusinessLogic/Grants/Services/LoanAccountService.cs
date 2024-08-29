@@ -9,7 +9,7 @@ using HE.FMS.Middleware.Providers.Mambu.Api.LoanAccount.Contract.Enums;
 
 namespace HE.FMS.Middleware.BusinessLogic.Grants.Services;
 
-internal sealed class LoanAccountService : ILoanAccountService
+public sealed class LoanAccountService : ILoanAccountService
 {
     private readonly IMambuLoanAccountApiClient _loanAccountApiClient;
 

@@ -1,6 +1,6 @@
-﻿namespace HE.FMS.Middleware.Providers.KeyVault.Settings;
+namespace HE.FMS.Middleware.Providers.KeyVault.Settings;
 
-internal interface IKeyVaultSettings
+public interface IKeyVaultSettings
 {
     string Url { get; }
 }
