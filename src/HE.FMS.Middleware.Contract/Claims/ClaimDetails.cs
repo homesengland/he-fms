@@ -1,11 +1,12 @@
 using System.ComponentModel.DataAnnotations;
+using HE.FMS.Middleware.Contract.Constants;
 
 namespace HE.FMS.Middleware.Contract.Claims;
 
 public sealed class ClaimDetails
 {
     [Required]
-    [MaxLength(Constants.ValidatorConstants.IdMaxLength)]
+    [MaxLength(ValidatorConstants.IdMaxLength)]
     public string Id { get; set; }
 
     [Required]
@@ -13,11 +14,20 @@ public sealed class ClaimDetails
     public decimal Amount { get; set; }
 
     [Required]
-    [MaxLength(Constants.ValidatorConstants.EnumMaxLength)]
+    [MaxLength(ValidatorConstants.EnumMaxLength)]
     public string Milestone { get; set; }
 
+    public string EfinMilestoneName =>
+        Milestone switch
+        {
+            nameof(EfinConstants.Milestone.Acquisition) => EfinConstants.Milestone.Acquisition,
+            nameof(EfinConstants.Milestone.StartOnSite) => EfinConstants.Milestone.StartOnSite,
+            nameof(EfinConstants.Milestone.PracticalCompletion) => EfinConstants.Milestone.PracticalCompletion,
+            _ => string.Empty,
+        };
+
     [Required]
-    [MaxLength(Constants.ValidatorConstants.CustomNameMaxLength)]
+    [MaxLength(ValidatorConstants.CustomNameMaxLength)]
     public string AuthorisedBy { get; set; }
 
     [Required]
