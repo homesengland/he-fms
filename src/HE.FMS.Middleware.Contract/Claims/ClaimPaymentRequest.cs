@@ -20,9 +20,7 @@ public sealed class ClaimPaymentRequest
     {
         get
         {
-#pragma warning disable CA1309
-            if (string.Equals(Application.RevenueIndicator, EfinConstants.RevenueIndicator.Capital, StringComparison.InvariantCultureIgnoreCase))
-#pragma warning restore CA1309
+            if (string.Equals(Application.RevenueIndicator, EfinConstants.RevenueIndicator.Capital, StringComparison.OrdinalIgnoreCase))
             {
                 return Organisation.PartnerType.RemoveSpecialCharacters() switch
                 {
@@ -59,9 +57,7 @@ public sealed class ClaimPaymentRequest
                 };
             }
 
-#pragma warning disable CA1309
-            if (string.Equals(Application.RevenueIndicator, EfinConstants.RevenueIndicator.Revenue, StringComparison.InvariantCultureIgnoreCase))
-#pragma warning restore CA1309
+            if (string.Equals(Application.RevenueIndicator, EfinConstants.RevenueIndicator.Revenue, StringComparison.OrdinalIgnoreCase))
             {
                 return Organisation.PartnerType.RemoveSpecialCharacters() switch
                 {
