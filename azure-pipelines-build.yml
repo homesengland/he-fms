@@ -11,8 +11,6 @@ parameters:
   type: boolean
   default: false
 
-# pool:
-#   vmImage: "ubuntu-latest"
 pool: 'vmss-ado-chs-nonprod-001'
 
 resources:
@@ -20,12 +18,11 @@ resources:
   - repository: he-fms-deployment
     type: git
     name: 'FMS/he-fms-deployment'
-    ref: 'feature/semver'
+    ref: 'main'
   - repository: templates
     type: git
     name: 'Cloud Hosting Service/Templates'
-    ref: 'docer-push-git-fetch-param'
-    #ref: 'master'
+    ref: 'master'
 
 stages:
 - template: pipelines/azure-pipelines-build.yml@he-fms-deployment
