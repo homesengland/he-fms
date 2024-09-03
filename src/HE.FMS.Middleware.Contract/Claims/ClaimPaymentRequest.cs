@@ -6,7 +6,7 @@ namespace HE.FMS.Middleware.Contract.Claims;
 public sealed class ClaimPaymentRequest
 {
     [Required]
-    public ClaimDetails Claim { get; set; }
+    public ClaimDetailsBase Claim { get; set; }
 
     [Required]
     public ClaimApplicationDetails Application { get; set; }
@@ -24,35 +24,35 @@ public sealed class ClaimPaymentRequest
             {
                 return Organisation.PartnerType.RemoveSpecialCharacters() switch
                 {
-                    nameof(EfinConstants.CapitalPartnerType.ALBArmsLengthBodyofGovernment) => EfinConstants.CapitalPartnerType.ALBArmsLengthBodyofGovernment,
-                    nameof(EfinConstants.CapitalPartnerType.ALMOArmsLengthManagementOrganisation) => EfinConstants.CapitalPartnerType
+                    nameof(EfinConstants.CapitalClaimPartnerType.ALBArmsLengthBodyofGovernment) => EfinConstants.CapitalClaimPartnerType.ALBArmsLengthBodyofGovernment,
+                    nameof(EfinConstants.CapitalClaimPartnerType.ALMOArmsLengthManagementOrganisation) => EfinConstants.CapitalClaimPartnerType
                         .ALMOArmsLengthManagementOrganisation,
-                    nameof(EfinConstants.CapitalPartnerType.Bank) => EfinConstants.CapitalPartnerType.Bank,
-                    nameof(EfinConstants.CapitalPartnerType.CombinedAuthority) => EfinConstants.CapitalPartnerType.CombinedAuthority,
-                    nameof(EfinConstants.CapitalPartnerType.Consultant) => EfinConstants.CapitalPartnerType.Consultant,
-                    nameof(EfinConstants.CapitalPartnerType.Education) => EfinConstants.CapitalPartnerType.Education,
-                    nameof(EfinConstants.CapitalPartnerType.FinancialInstitution) => EfinConstants.CapitalPartnerType.FinancialInstitution,
-                    nameof(EfinConstants.CapitalPartnerType.ForProfitRegisteredProvder) => EfinConstants.CapitalPartnerType.ForProfitRegisteredProvder,
-                    nameof(EfinConstants.CapitalPartnerType.GovernmentPolicyMaker) => EfinConstants.CapitalPartnerType.GovernmentPolicyMaker,
-                    nameof(EfinConstants.CapitalPartnerType.HealthandSocialCare) => EfinConstants.CapitalPartnerType.HealthandSocialCare,
-                    nameof(EfinConstants.CapitalPartnerType.Insurer) => EfinConstants.CapitalPartnerType.Insurer,
-                    nameof(EfinConstants.CapitalPartnerType.InvestmentManager) => EfinConstants.CapitalPartnerType.InvestmentManager,
-                    nameof(EfinConstants.CapitalPartnerType.Landowner) => EfinConstants.CapitalPartnerType.Landowner,
-                    nameof(EfinConstants.CapitalPartnerType.LocalAuthority) => EfinConstants.CapitalPartnerType.LocalAuthority,
-                    nameof(EfinConstants.CapitalPartnerType.NonregisteredCharitableOrganisation) => EfinConstants.CapitalPartnerType
+                    nameof(EfinConstants.CapitalClaimPartnerType.Bank) => EfinConstants.CapitalClaimPartnerType.Bank,
+                    nameof(EfinConstants.CapitalClaimPartnerType.CombinedAuthority) => EfinConstants.CapitalClaimPartnerType.CombinedAuthority,
+                    nameof(EfinConstants.CapitalClaimPartnerType.Consultant) => EfinConstants.CapitalClaimPartnerType.Consultant,
+                    nameof(EfinConstants.CapitalClaimPartnerType.Education) => EfinConstants.CapitalClaimPartnerType.Education,
+                    nameof(EfinConstants.CapitalClaimPartnerType.FinancialInstitution) => EfinConstants.CapitalClaimPartnerType.FinancialInstitution,
+                    nameof(EfinConstants.CapitalClaimPartnerType.ForProfitRegisteredProvder) => EfinConstants.CapitalClaimPartnerType.ForProfitRegisteredProvder,
+                    nameof(EfinConstants.CapitalClaimPartnerType.GovernmentPolicyMaker) => EfinConstants.CapitalClaimPartnerType.GovernmentPolicyMaker,
+                    nameof(EfinConstants.CapitalClaimPartnerType.HealthandSocialCare) => EfinConstants.CapitalClaimPartnerType.HealthandSocialCare,
+                    nameof(EfinConstants.CapitalClaimPartnerType.Insurer) => EfinConstants.CapitalClaimPartnerType.Insurer,
+                    nameof(EfinConstants.CapitalClaimPartnerType.InvestmentManager) => EfinConstants.CapitalClaimPartnerType.InvestmentManager,
+                    nameof(EfinConstants.CapitalClaimPartnerType.Landowner) => EfinConstants.CapitalClaimPartnerType.Landowner,
+                    nameof(EfinConstants.CapitalClaimPartnerType.LocalAuthority) => EfinConstants.CapitalClaimPartnerType.LocalAuthority,
+                    nameof(EfinConstants.CapitalClaimPartnerType.NonregisteredCharitableOrganisation) => EfinConstants.CapitalClaimPartnerType
                         .NonregisteredCharitableOrganisation,
-                    nameof(EfinConstants.CapitalPartnerType.NonBankLender) => EfinConstants.CapitalPartnerType.NonBankLender,
-                    nameof(EfinConstants.CapitalPartnerType.NotForProfitRegisteredProvider) => EfinConstants.CapitalPartnerType.NotForProfitRegisteredProvider,
-                    nameof(EfinConstants.CapitalPartnerType.Other) => EfinConstants.CapitalPartnerType.Other,
-                    nameof(EfinConstants.CapitalPartnerType.OtherFinancialInstitutionorAdvisory) => EfinConstants.CapitalPartnerType
+                    nameof(EfinConstants.CapitalClaimPartnerType.NonBankLender) => EfinConstants.CapitalClaimPartnerType.NonBankLender,
+                    nameof(EfinConstants.CapitalClaimPartnerType.NotForProfitRegisteredProvider) => EfinConstants.CapitalClaimPartnerType.NotForProfitRegisteredProvider,
+                    nameof(EfinConstants.CapitalClaimPartnerType.Other) => EfinConstants.CapitalClaimPartnerType.Other,
+                    nameof(EfinConstants.CapitalClaimPartnerType.OtherFinancialInstitutionorAdvisory) => EfinConstants.CapitalClaimPartnerType
                         .OtherFinancialInstitutionorAdvisory,
-                    nameof(EfinConstants.CapitalPartnerType.PrivateContractor) => EfinConstants.CapitalPartnerType.PrivateContractor,
-                    nameof(EfinConstants.CapitalPartnerType.PrivateSectorHousebuilder) => EfinConstants.CapitalPartnerType.PrivateSectorHousebuilder,
-                    nameof(EfinConstants.CapitalPartnerType.PublicPrivatePartnership) => EfinConstants.CapitalPartnerType.PublicPrivatePartnership,
-                    nameof(EfinConstants.CapitalPartnerType.RegisteredCharitableOrganisation) => EfinConstants.CapitalPartnerType
+                    nameof(EfinConstants.CapitalClaimPartnerType.PrivateContractor) => EfinConstants.CapitalClaimPartnerType.PrivateContractor,
+                    nameof(EfinConstants.CapitalClaimPartnerType.PrivateSectorHousebuilder) => EfinConstants.CapitalClaimPartnerType.PrivateSectorHousebuilder,
+                    nameof(EfinConstants.CapitalClaimPartnerType.PublicPrivatePartnership) => EfinConstants.CapitalClaimPartnerType.PublicPrivatePartnership,
+                    nameof(EfinConstants.CapitalClaimPartnerType.RegisteredCharitableOrganisation) => EfinConstants.CapitalClaimPartnerType
                         .RegisteredCharitableOrganisation,
-                    nameof(EfinConstants.CapitalPartnerType.TradeAssociation) => EfinConstants.CapitalPartnerType.TradeAssociation,
-                    nameof(EfinConstants.CapitalPartnerType.UnregisteredHousingAssociation) => EfinConstants.CapitalPartnerType.UnregisteredHousingAssociation,
+                    nameof(EfinConstants.CapitalClaimPartnerType.TradeAssociation) => EfinConstants.CapitalClaimPartnerType.TradeAssociation,
+                    nameof(EfinConstants.CapitalClaimPartnerType.UnregisteredHousingAssociation) => EfinConstants.CapitalClaimPartnerType.UnregisteredHousingAssociation,
                     _ => default,
                 };
             }
@@ -61,35 +61,35 @@ public sealed class ClaimPaymentRequest
             {
                 return Organisation.PartnerType.RemoveSpecialCharacters() switch
                 {
-                    nameof(EfinConstants.RevenuePartnerType.ALBArmsLengthBodyofGovernment) => EfinConstants.RevenuePartnerType.ALBArmsLengthBodyofGovernment,
-                    nameof(EfinConstants.RevenuePartnerType.ALMOArmsLengthManagementOrganisation) => EfinConstants.RevenuePartnerType
+                    nameof(EfinConstants.RevenueClaimPartnerType.ALBArmsLengthBodyofGovernment) => EfinConstants.RevenueClaimPartnerType.ALBArmsLengthBodyofGovernment,
+                    nameof(EfinConstants.RevenueClaimPartnerType.ALMOArmsLengthManagementOrganisation) => EfinConstants.RevenueClaimPartnerType
                         .ALMOArmsLengthManagementOrganisation,
-                    nameof(EfinConstants.RevenuePartnerType.Bank) => EfinConstants.RevenuePartnerType.Bank,
-                    nameof(EfinConstants.RevenuePartnerType.CombinedAuthority) => EfinConstants.RevenuePartnerType.CombinedAuthority,
-                    nameof(EfinConstants.RevenuePartnerType.Consultant) => EfinConstants.RevenuePartnerType.Consultant,
-                    nameof(EfinConstants.RevenuePartnerType.Education) => EfinConstants.RevenuePartnerType.Education,
-                    nameof(EfinConstants.RevenuePartnerType.FinancialInstitution) => EfinConstants.RevenuePartnerType.FinancialInstitution,
-                    nameof(EfinConstants.RevenuePartnerType.ForProfitRegisteredProvder) => EfinConstants.RevenuePartnerType.ForProfitRegisteredProvder,
-                    nameof(EfinConstants.RevenuePartnerType.GovernmentPolicyMaker) => EfinConstants.RevenuePartnerType.GovernmentPolicyMaker,
-                    nameof(EfinConstants.RevenuePartnerType.HealthandSocialCare) => EfinConstants.RevenuePartnerType.HealthandSocialCare,
-                    nameof(EfinConstants.RevenuePartnerType.Insurer) => EfinConstants.RevenuePartnerType.Insurer,
-                    nameof(EfinConstants.RevenuePartnerType.InvestmentManager) => EfinConstants.RevenuePartnerType.InvestmentManager,
-                    nameof(EfinConstants.RevenuePartnerType.Landowner) => EfinConstants.RevenuePartnerType.Landowner,
-                    nameof(EfinConstants.RevenuePartnerType.LocalAuthority) => EfinConstants.RevenuePartnerType.LocalAuthority,
-                    nameof(EfinConstants.RevenuePartnerType.NonregisteredCharitableOrganisation) => EfinConstants.RevenuePartnerType
+                    nameof(EfinConstants.RevenueClaimPartnerType.Bank) => EfinConstants.RevenueClaimPartnerType.Bank,
+                    nameof(EfinConstants.RevenueClaimPartnerType.CombinedAuthority) => EfinConstants.RevenueClaimPartnerType.CombinedAuthority,
+                    nameof(EfinConstants.RevenueClaimPartnerType.Consultant) => EfinConstants.RevenueClaimPartnerType.Consultant,
+                    nameof(EfinConstants.RevenueClaimPartnerType.Education) => EfinConstants.RevenueClaimPartnerType.Education,
+                    nameof(EfinConstants.RevenueClaimPartnerType.FinancialInstitution) => EfinConstants.RevenueClaimPartnerType.FinancialInstitution,
+                    nameof(EfinConstants.RevenueClaimPartnerType.ForProfitRegisteredProvder) => EfinConstants.RevenueClaimPartnerType.ForProfitRegisteredProvder,
+                    nameof(EfinConstants.RevenueClaimPartnerType.GovernmentPolicyMaker) => EfinConstants.RevenueClaimPartnerType.GovernmentPolicyMaker,
+                    nameof(EfinConstants.RevenueClaimPartnerType.HealthandSocialCare) => EfinConstants.RevenueClaimPartnerType.HealthandSocialCare,
+                    nameof(EfinConstants.RevenueClaimPartnerType.Insurer) => EfinConstants.RevenueClaimPartnerType.Insurer,
+                    nameof(EfinConstants.RevenueClaimPartnerType.InvestmentManager) => EfinConstants.RevenueClaimPartnerType.InvestmentManager,
+                    nameof(EfinConstants.RevenueClaimPartnerType.Landowner) => EfinConstants.RevenueClaimPartnerType.Landowner,
+                    nameof(EfinConstants.RevenueClaimPartnerType.LocalAuthority) => EfinConstants.RevenueClaimPartnerType.LocalAuthority,
+                    nameof(EfinConstants.RevenueClaimPartnerType.NonregisteredCharitableOrganisation) => EfinConstants.RevenueClaimPartnerType
                         .NonregisteredCharitableOrganisation,
-                    nameof(EfinConstants.RevenuePartnerType.NonBankLender) => EfinConstants.RevenuePartnerType.NonBankLender,
-                    nameof(EfinConstants.RevenuePartnerType.NotForProfitRegisteredProvider) => EfinConstants.RevenuePartnerType.NotForProfitRegisteredProvider,
-                    nameof(EfinConstants.RevenuePartnerType.Other) => EfinConstants.RevenuePartnerType.Other,
-                    nameof(EfinConstants.RevenuePartnerType.OtherFinancialInstitutionorAdvisory) => EfinConstants.RevenuePartnerType
+                    nameof(EfinConstants.RevenueClaimPartnerType.NonBankLender) => EfinConstants.RevenueClaimPartnerType.NonBankLender,
+                    nameof(EfinConstants.RevenueClaimPartnerType.NotForProfitRegisteredProvider) => EfinConstants.RevenueClaimPartnerType.NotForProfitRegisteredProvider,
+                    nameof(EfinConstants.RevenueClaimPartnerType.Other) => EfinConstants.RevenueClaimPartnerType.Other,
+                    nameof(EfinConstants.RevenueClaimPartnerType.OtherFinancialInstitutionorAdvisory) => EfinConstants.RevenueClaimPartnerType
                         .OtherFinancialInstitutionorAdvisory,
-                    nameof(EfinConstants.RevenuePartnerType.PrivateContractor) => EfinConstants.RevenuePartnerType.PrivateContractor,
-                    nameof(EfinConstants.RevenuePartnerType.PrivateSectorHousebuilder) => EfinConstants.RevenuePartnerType.PrivateSectorHousebuilder,
-                    nameof(EfinConstants.RevenuePartnerType.PublicPrivatePartnership) => EfinConstants.RevenuePartnerType.PublicPrivatePartnership,
-                    nameof(EfinConstants.RevenuePartnerType.RegisteredCharitableOrganisation) => EfinConstants.RevenuePartnerType
+                    nameof(EfinConstants.RevenueClaimPartnerType.PrivateContractor) => EfinConstants.RevenueClaimPartnerType.PrivateContractor,
+                    nameof(EfinConstants.RevenueClaimPartnerType.PrivateSectorHousebuilder) => EfinConstants.RevenueClaimPartnerType.PrivateSectorHousebuilder,
+                    nameof(EfinConstants.RevenueClaimPartnerType.PublicPrivatePartnership) => EfinConstants.RevenueClaimPartnerType.PublicPrivatePartnership,
+                    nameof(EfinConstants.RevenueClaimPartnerType.RegisteredCharitableOrganisation) => EfinConstants.RevenueClaimPartnerType
                         .RegisteredCharitableOrganisation,
-                    nameof(EfinConstants.RevenuePartnerType.TradeAssociation) => EfinConstants.RevenuePartnerType.TradeAssociation,
-                    nameof(EfinConstants.RevenuePartnerType.UnregisteredHousingAssociation) => EfinConstants.RevenuePartnerType.UnregisteredHousingAssociation,
+                    nameof(EfinConstants.RevenueClaimPartnerType.TradeAssociation) => EfinConstants.RevenueClaimPartnerType.TradeAssociation,
+                    nameof(EfinConstants.RevenueClaimPartnerType.UnregisteredHousingAssociation) => EfinConstants.RevenueClaimPartnerType.UnregisteredHousingAssociation,
                     _ => default,
                 };
             }

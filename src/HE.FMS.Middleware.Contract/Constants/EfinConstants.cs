@@ -22,7 +22,7 @@ public static class EfinConstants
         public const string Capital = "Capital";
     }
 
-    public static class CapitalPartnerType
+    public static class CapitalClaimPartnerType
     {
         // ReSharper disable once InconsistentNaming
         public const int ALBArmsLengthBodyofGovernment = 1552;
@@ -54,7 +54,7 @@ public static class EfinConstants
         public const int UnregisteredHousingAssociation = 1558;
     }
 
-    public static class RevenuePartnerType
+    public static class RevenueClaimPartnerType
     {
         // ReSharper disable once InconsistentNaming
         public const int ALBArmsLengthBodyofGovernment = 1554;
@@ -84,5 +84,69 @@ public static class EfinConstants
         public const int RegisteredCharitableOrganisation = 1559;
         public const int TradeAssociation = 1575;
         public const int UnregisteredHousingAssociation = 1559;
+    }
+
+    public static class AmountReclaim
+    {
+        // ReSharper disable once InconsistentNaming
+        public const int ALBArmsLengthBodyofGovernment = 0028;
+
+        // ReSharper disable once InconsistentNaming
+        public const int ALMOArmsLengthManagementOrganisation = 0027;
+        public const int Bank = 0029;
+        public const int CombinedAuthority = 0027;
+        public const int Consultant = 0029;
+        public const int Education = 0028;
+        public const int FinancialInstitution = 0029;
+        public const int ForProfitRegisteredProvder = 0030;
+        public const int GovernmentPolicyMaker = 0028;
+        public const int HealthandSocialCare = 0028;
+        public const int Insurer = 0029;
+        public const int InvestmentManager = 0029;
+        public const int Landowner = 0029;
+        public const int LocalAuthority = 0027;
+        public const int NonregisteredCharitableOrganisation = 0029;
+        public const int NonBankLender = 0030;
+        public const int NotForProfitRegisteredProvider = 0030;
+        public const int Other = 0029;
+        public const int OtherFinancialInstitutionorAdvisory = 0029;
+        public const int PrivateContractor = 0029;
+        public const int PrivateSectorHousebuilder = 0029;
+        public const int PublicPrivatePartnership = 0028;
+        public const int RegisteredCharitableOrganisation = 0030;
+        public const int TradeAssociation = 0029;
+        public const int UnregisteredHousingAssociation = 0030;
+    }
+
+    public static class InterestAmount
+    {
+        // ReSharper disable once InconsistentNaming
+        public const int ALBArmsLengthBodyofGovernment = 0067;
+
+        // ReSharper disable once InconsistentNaming
+        public const int ALMOArmsLengthManagementOrganisation = 0067;
+        public const int Bank = 0067;
+        public const int CombinedAuthority = 0067;
+        public const int Consultant = 0067;
+        public const int Education = 0067;
+        public const int FinancialInstitution = 0067;
+        public const int ForProfitRegisteredProvder = 0067;
+        public const int GovernmentPolicyMaker = 0067;
+        public const int HealthandSocialCare = 0067;
+        public const int Insurer = 0067;
+        public const int InvestmentManager = 0067;
+        public const int Landowner = 0067;
+        public const int LocalAuthority = 0067;
+        public const int NonregisteredCharitableOrganisation = 0067;
+        public const int NonBankLender = 0067;
+        public const int NotForProfitRegisteredProvider = 0067;
+        public const int Other = 0067;
+        public const int OtherFinancialInstitutionorAdvisory = 0067;
+        public const int PrivateContractor = 0067;
+        public const int PrivateSectorHousebuilder = 0067;
+        public const int PublicPrivatePartnership = 0067;
+        public const int RegisteredCharitableOrganisation = 0067;
+        public const int TradeAssociation = 0067;
+        public const int UnregisteredHousingAssociation = 0067;
     }
 }
