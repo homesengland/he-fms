@@ -11,7 +11,7 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 
 namespace HE.FMS.Middleware.Reclaims.Functions;
-public class CreateReclaimHttpTrigger : ClaimBase<CreateReclaimRequest>
+public class CreateReclaimHttpTrigger : ClaimBase<ReclaimPaymentRequest>
 {
     public CreateReclaimHttpTrigger(
         IStreamSerializer streamSerializer,

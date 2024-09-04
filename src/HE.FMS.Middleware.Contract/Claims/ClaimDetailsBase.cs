@@ -3,7 +3,7 @@ using HE.FMS.Middleware.Contract.Constants;
 
 namespace HE.FMS.Middleware.Contract.Claims;
 
-public sealed class ClaimDetails
+public class ClaimDetailsBase
 {
     [Required]
     [MaxLength(ValidatorConstants.IdMaxLength)]
