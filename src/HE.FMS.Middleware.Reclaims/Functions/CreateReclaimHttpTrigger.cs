@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using HE.FMS.Middleware.Common.Serialization;
 using HE.FMS.Middleware.Contract.Reclaims;
 using HE.FMS.Middleware.Providers.CosmosDb;
-using HE.FMS.Middleware.Providers.ServiceBus;
 using HE.FMS.Middleware.Shared.Base;
 using HE.FMS.Middleware.Shared.Middlewares;
 using Microsoft.Azure.Functions.Worker;
@@ -15,10 +14,8 @@ public class CreateReclaimHttpTrigger : ClaimBase<ReclaimPaymentRequest>
 {
     public CreateReclaimHttpTrigger(
         IStreamSerializer streamSerializer,
-        IObjectSerializer objectSerializer,
-        ITopicClientFactory topicClientFactory,
         ICosmosDbClient cosmosDbClient)
-        : base(streamSerializer, objectSerializer, topicClientFactory, "Reclaims:Create:TopicName", cosmosDbClient)
+        : base(streamSerializer, cosmosDbClient)
     {
     }
 
@@ -30,7 +27,7 @@ public class CreateReclaimHttpTrigger : ClaimBase<ReclaimPaymentRequest>
     {
         try
         {
-            return await Trigger(request, cancellationToken);
+            return await Trigger(request, CosmosDbItemType.Reclaim, cancellationToken);
         }
         catch (AggregateException)
         {
