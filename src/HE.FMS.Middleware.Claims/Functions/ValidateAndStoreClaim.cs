@@ -10,16 +10,16 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 
 namespace HE.FMS.Middleware.Claims.Functions;
-public class CreateClaimHttpTrigger : ClaimBase<ClaimPaymentRequest>
+public class ValidateAndStoreClaim : ClaimBase<ClaimPaymentRequest>
 {
-    public CreateClaimHttpTrigger(
+    public ValidateAndStoreClaim(
         IStreamSerializer streamSerializer,
         ICosmosDbClient cosmosDbClient)
         : base(streamSerializer, cosmosDbClient)
     {
     }
 
-    [Function(nameof(CreateClaimHttpTrigger))]
+    [Function(nameof(ValidateAndStoreClaim))]
     public async Task<HttpResponseData> Run(
         [HttpTrigger(AuthorizationLevel.Function, "post", Route = "claims")]
         HttpRequestData request,
