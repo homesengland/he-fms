@@ -31,7 +31,7 @@ public class PushToCrmServiceBusTrigger
     {
         var inputData = await _streamSerializer.Deserialize<OpenNewGrantAccountResult>(message.Body.ToStream(), cancellationToken);
 
-        var cosmosDbOutput = CosmosDbItem.CreateCosmosDbItem(inputData, message.CorrelationId);
+        var cosmosDbOutput = CosmosDbItem.CreateCosmosDbItem(inputData, message.CorrelationId, CosmosDbItemType.Log);
 
         _logger.LogInformation("Message Id: {Id}", message.MessageId);
         _logger.LogInformation("Message Correlation Id: {CorrelationId}", message.CorrelationId);

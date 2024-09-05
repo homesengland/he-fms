@@ -25,7 +25,7 @@ public class CosmosDbHelperTests
         _configuration["CosmosDb:PartitionKey"].Returns(partitionKey);
 
         // Act
-        var result = CosmosDbItem.CreateCosmosDbItem(value, idempotencyKey);
+        var result = CosmosDbItem.CreateCosmosDbItem(value, idempotencyKey, CosmosDbItemType.Log);
 
         // Assert
         Assert.NotNull(result);
@@ -45,7 +45,7 @@ public class CosmosDbHelperTests
         _configuration["CosmosDb:PartitionKey"].Returns((string)null!);
 
         // Act
-        var result = CosmosDbItem.CreateCosmosDbItem(value, idempotencyKey);
+        var result = CosmosDbItem.CreateCosmosDbItem(value, idempotencyKey, CosmosDbItemType.Log);
 
         // Assert
         Assert.NotNull(result);

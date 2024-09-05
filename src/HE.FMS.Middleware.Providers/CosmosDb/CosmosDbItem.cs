@@ -15,15 +15,21 @@ public class CosmosDbItem : ICosmosDbItem
 
     public object Value { get; set; }
 
-    public static CosmosDbItem CreateCosmosDbItem(object value, string idempotencyKey)
+    public CosmosDbItemStatus Status { get; set; }
+
+    public CosmosDbItemType Type { get; set; }
+
+    public static CosmosDbItem CreateCosmosDbItem(object value, string idempotencyKey, CosmosDbItemType type)
     {
-        return new CosmosDbItem()
+        return new CosmosDbItem
         {
             Id = Guid.NewGuid().ToString(),
             PartitionKey = Constants.CosmosDBConfiguration.PartitonKey,
             IdempotencyKey = idempotencyKey,
-            CreationTime = DateTime.Now,
+            CreationTime = DateTime.UtcNow,
             Value = value,
+            Status = CosmosDbItemStatus.New,
+            Type = type,
         };
     }
 }
