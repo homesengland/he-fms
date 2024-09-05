@@ -13,15 +13,12 @@ public class PushToCrmServiceBusTrigger
     private readonly ILogger<PushToCrmServiceBusTrigger> _logger;
 
     private readonly IStreamSerializer _streamSerializer;
-    private readonly CosmosDbHelper _cosmosDbHelper;
 
     public PushToCrmServiceBusTrigger(
         IStreamSerializer streamSerializer,
-        CosmosDbHelper cosmosDbHelper,
         ILogger<PushToCrmServiceBusTrigger> logger)
     {
         _streamSerializer = streamSerializer;
-        _cosmosDbHelper = cosmosDbHelper;
         _logger = logger;
     }
 
@@ -34,7 +31,7 @@ public class PushToCrmServiceBusTrigger
     {
         var inputData = await _streamSerializer.Deserialize<OpenNewGrantAccountResult>(message.Body.ToStream(), cancellationToken);
 
-        var cosmosDbOutput = _cosmosDbHelper.CreateCosmosDbItem(inputData, message.CorrelationId);
+        var cosmosDbOutput = CosmosDbItem.CreateCosmosDbItem(inputData, message.CorrelationId);
 
         _logger.LogInformation("Message Id: {Id}", message.MessageId);
         _logger.LogInformation("Message Correlation Id: {CorrelationId}", message.CorrelationId);

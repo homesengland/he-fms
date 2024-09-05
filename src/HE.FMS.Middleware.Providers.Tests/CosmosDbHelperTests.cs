@@ -9,12 +9,10 @@ namespace HE.FMS.Middleware.Providers.Tests;
 public class CosmosDbHelperTests
 {
     private readonly IConfiguration _configuration;
-    private readonly CosmosDbHelper _cosmosDbHelper;
 
     public CosmosDbHelperTests()
     {
         _configuration = Substitute.For<IConfiguration>();
-        _cosmosDbHelper = new CosmosDbHelper(_configuration);
     }
 
     [Fact]
@@ -27,7 +25,7 @@ public class CosmosDbHelperTests
         _configuration["CosmosDb:PartitionKey"].Returns(partitionKey);
 
         // Act
-        var result = _cosmosDbHelper.CreateCosmosDbItem(value, idempotencyKey);
+        var result = CosmosDbItem.CreateCosmosDbItem(value, idempotencyKey);
 
         // Assert
         Assert.NotNull(result);
@@ -47,7 +45,7 @@ public class CosmosDbHelperTests
         _configuration["CosmosDb:PartitionKey"].Returns((string)null!);
 
         // Act
-        var result = _cosmosDbHelper.CreateCosmosDbItem(value, idempotencyKey);
+        var result = CosmosDbItem.CreateCosmosDbItem(value, idempotencyKey);
 
         // Assert
         Assert.NotNull(result);

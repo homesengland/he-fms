@@ -15,39 +15,36 @@ public class ClaimBase<T>
 {
     private readonly IStreamSerializer _streamSerializer;
     private readonly IObjectSerializer _objectSerializer;
-    private readonly CosmosDbHelper _cosmosDbHelper;
+    private readonly ICosmosDbClient _cosmosDbClient;
     private readonly TopicClient _topicClient;
 
     protected ClaimBase(
         IStreamSerializer streamSerializer,
         IObjectSerializer objectSerializer,
         ITopicClientFactory topicClientFactory,
-        CosmosDbHelper cosmosDbHelper,
-        string topicName)
+        string topicName,
+        ICosmosDbClient cosmosDbClient)
     {
         _streamSerializer = streamSerializer;
         _objectSerializer = objectSerializer;
-        _cosmosDbHelper = cosmosDbHelper;
+        _cosmosDbClient = cosmosDbClient;
         _topicClient = topicClientFactory.GetTopicClient(topicName);
     }
 
-    protected async Task<ClaimBaseResponse> Trigger(HttpRequestData request, CancellationToken cancellationToken)
+    protected async Task<HttpResponseData> Trigger(HttpRequestData request, CancellationToken cancellationToken)
     {
-        var inputData = await _streamSerializer.Deserialize<T>(request.Body, cancellationToken);
+        var inputData = await _streamSerializer.Deserialize<T>(request.Body, cancellationToken) ?? throw new InvalidRequestException($"Empty request body");
 
-        if (inputData is not null)
-        {
-            var idempotencyKey = request.GetIdempotencyHeader();
+        var idempotencyKey = request.GetIdempotencyHeader();
 
-            var cosmosDbOutput = _cosmosDbHelper.CreateCosmosDbItem(inputData, idempotencyKey);
+        var cosmosDbOutput = CosmosDbItem.CreateCosmosDbItem(inputData, idempotencyKey);
 
-            var topicOutput = new Message(Encoding.UTF8.GetBytes(_objectSerializer.Serialize(inputData))) { CorrelationId = idempotencyKey, };
+        await _cosmosDbClient.UpsertItem(cosmosDbOutput, cancellationToken);
 
-            await _topicClient.SendAsync(topicOutput);
+        var topicOutput = new Message(Encoding.UTF8.GetBytes(_objectSerializer.Serialize(inputData))) { CorrelationId = idempotencyKey, };
 
-            return new ClaimBaseResponse { HttpResponse = request.CreateResponse(HttpStatusCode.Accepted), CosmosDbOutput = cosmosDbOutput, };
-        }
+        await _topicClient.SendAsync(topicOutput);
 
-        throw new InvalidRequestException($"Empty request body");
+        return request.CreateResponse(HttpStatusCode.Accepted);
     }
 }

@@ -17,13 +17,13 @@ public class CreateClaimHttpTrigger : ClaimBase<ClaimPaymentRequest>
         IStreamSerializer streamSerializer,
         IObjectSerializer objectSerializer,
         ITopicClientFactory topicClientFactory,
-        CosmosDbHelper cosmosDbHelper)
-        : base(streamSerializer, objectSerializer, topicClientFactory, cosmosDbHelper, "Claims:Create:TopicName")
+        ICosmosDbClient cosmosDbClient)
+        : base(streamSerializer, objectSerializer, topicClientFactory, "Claims:Create:TopicName", cosmosDbClient)
     {
     }
 
     [Function(nameof(CreateClaimHttpTrigger))]
-    public async Task<ClaimBaseResponse> Run(
+    public async Task<HttpResponseData> Run(
         [HttpTrigger(AuthorizationLevel.Function, "post", Route = "claims")]
         HttpRequestData request,
         CancellationToken cancellationToken)
