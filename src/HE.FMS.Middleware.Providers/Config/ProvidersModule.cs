@@ -1,5 +1,6 @@
 using HE.FMS.Middleware.Common.Extensions;
 using HE.FMS.Middleware.Providers.CosmosDb;
+using HE.FMS.Middleware.Providers.CosmosDb.Settings;
 using HE.FMS.Middleware.Providers.KeyVault;
 using HE.FMS.Middleware.Providers.KeyVault.Settings;
 using HE.FMS.Middleware.Providers.Mambu;
@@ -43,7 +44,8 @@ public static class ProvidersModule
 
     private static IServiceCollection AddCosmosDb(this IServiceCollection services)
     {
-        services.AddSingleton<CosmosDbHelper>();
+        services.AddAppConfiguration<ICosmosDbSettings, CosmosDbSettings>("CosmosDb");
+        services.AddScoped<ICosmosDbClient, CosmosDbClient>();
 
         return services;
     }

@@ -18,18 +18,15 @@ public class OpenNewGrantAccountHttpTrigger
     private readonly IStreamSerializer _streamSerializer;
     private readonly IObjectSerializer _objectSerializer;
     private readonly TopicClient _topicClient;
-    private readonly CosmosDbHelper _cosmosDbHelper;
 
     public OpenNewGrantAccountHttpTrigger(
         IStreamSerializer streamSerializer,
         IObjectSerializer objectSerializer,
-        ITopicClientFactory topicClientFactory,
-        CosmosDbHelper cosmosDbHelper)
+        ITopicClientFactory topicClientFactory)
     {
         _streamSerializer = streamSerializer;
         _objectSerializer = objectSerializer;
         _topicClient = topicClientFactory.GetTopicClient("Grants:OpenGrantAccount:TopicName");
-        _cosmosDbHelper = cosmosDbHelper;
     }
 
     [Function(nameof(OpenNewGrantAccountHttpTrigger))]
@@ -42,7 +39,7 @@ public class OpenNewGrantAccountHttpTrigger
 
         var idempotencyKey = request.GetIdempotencyHeader();
 
-        var cosmosDbOutput = _cosmosDbHelper.CreateCosmosDbItem(inputData, idempotencyKey);
+        var cosmosDbOutput = CosmosDbItem.CreateCosmosDbItem(inputData, idempotencyKey);
 
         var topicOutput = new Message(Encoding.UTF8.GetBytes(_objectSerializer.Serialize(inputData)))
         {
