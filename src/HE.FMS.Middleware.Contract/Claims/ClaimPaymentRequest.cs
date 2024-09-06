@@ -16,7 +16,7 @@ public sealed class ClaimPaymentRequest
 
     public string EfinSchemeName => Application.Name.Truncate(24) + Claim.EfinMilestoneName;
 
-    public int EfiPartnerType
+    public int EfinPartnerType
     {
         get
         {
