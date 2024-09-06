@@ -34,7 +34,7 @@ public class OpenNewGrantAccountHttpTrigger
 
     [Function(nameof(OpenNewGrantAccountHttpTrigger))]
     public async Task<HttpResponseData> Run(
-        [HttpTrigger(AuthorizationLevel.Function, "post", Route = "grants")]
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "grants")]
         HttpRequestData request,
         CancellationToken cancellationToken)
     {
