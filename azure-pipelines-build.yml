@@ -22,7 +22,7 @@ resources:
   - repository: he-fms-deployment
     type: git
     name: 'FMS/he-fms-deployment'
-    ref: 'main'
+    ref: 'feature/semver'
   - repository: templates
     type: git
     name: 'Cloud Hosting Service/Templates'
