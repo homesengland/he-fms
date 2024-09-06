@@ -1,6 +1,42 @@
+using System.Globalization;
+
 namespace HE.FMS.Middleware.Contract.Constants;
 public static class EfinConstants
 {
+    public static class Default
+    {
+        public static class Claim
+        {
+            public const string SubLedger = "PL4";
+            public const string User = "AH GRANTS";
+            public const string Grouping = "C";
+            public const string Amount = "0";
+            public const string UOM = "EA";
+            public const string UnitQuantity = "1";
+            public const string Volume = "1";
+            public const string TransType = "PI";
+            public const string TermsCode = "00";
+        }
+
+        public static class Reclaim
+        {
+            public const string SubLedger = "SL4";
+            public const string Description = "AHP-RECLAIM";
+            public const string User = "GRANTS";
+            public const string Prefix = "H";
+            public const string HeaderFooter = "H";
+            public const string TransType = "I";
+            public const string TermsCode = "00";
+            public const string ItemSequence = "1";
+            public const string PrintSequence = "1";
+            public const string Product = "GRANT RECLAIM";
+            public const string Line = "1";
+            public const string Text = "HOUSING FOR RENT GRANT RECLAIM";
+            public const string UOM = "EA";
+            public const string PrePay = "N";
+        }
+    }
+
     public static class Milestone
     {
         public const string Acquisition = "ACQ";
@@ -148,5 +184,15 @@ public static class EfinConstants
         public const int RegisteredCharitableOrganisation = 0067;
         public const int TradeAssociation = 0067;
         public const int UnregisteredHousingAssociation = 0067;
+    }
+
+    public static class Tenure
+    {
+        public const int AffordableRent = 7572;
+        public const int SocialRent = 7667;
+        public const int SharedOwnership = 7666;
+        public const int RentToBuy = 7655;
+        public const int HOLD = 7666;
+        public const int OPSO = 7666;
     }
 }
