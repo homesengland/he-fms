@@ -1,4 +1,4 @@
-﻿using HE.FMS.Middleware.Providers.Mambu.Api.Group.Contract;
+﻿using HE.FMS.Middleware.Contract.Mambu.Group;
 using Microsoft.Extensions.Logging;
 
 namespace HE.FMS.Middleware.Providers.Mambu.Api.Group;

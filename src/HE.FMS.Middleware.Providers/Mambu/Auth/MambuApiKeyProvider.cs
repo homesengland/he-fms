@@ -1,5 +1,5 @@
-﻿using HE.FMS.Middleware.Providers.KeyVault;
-using HE.FMS.Middleware.Providers.Mambu.Api.Rotation.Contract;
+﻿using HE.FMS.Middleware.Contract.Mambu.Rotation;
+using HE.FMS.Middleware.Providers.KeyVault;
 using HE.FMS.Middleware.Providers.Mambu.Settings;
 
 namespace HE.FMS.Middleware.Providers.Mambu.Auth;

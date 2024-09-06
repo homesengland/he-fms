@@ -1,9 +1,9 @@
 ﻿using System.Net;
 using HE.FMS.Middleware.Common.Exceptions.Communication;
 using HE.FMS.Middleware.Common.Extensions;
-using HE.FMS.Middleware.Providers.Mambu.Api.Common;
-using HE.FMS.Middleware.Providers.Mambu.Api.Common.Contract;
-using HE.FMS.Middleware.Providers.Mambu.Api.Common.Enums;
+using HE.FMS.Middleware.Contract.Mambu.Common;
+using HE.FMS.Middleware.Contract.Mambu.Common.Contract;
+using HE.FMS.Middleware.Contract.Mambu.Common.Enums;
 using HE.FMS.Middleware.Providers.Mambu.Extensions;
 using Microsoft.Extensions.Logging;
 

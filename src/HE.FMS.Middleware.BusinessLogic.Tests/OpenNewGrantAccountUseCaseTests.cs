@@ -3,10 +3,10 @@ using HE.FMS.Middleware.BusinessLogic.Grants.Services;
 using HE.FMS.Middleware.Contract.Common;
 using HE.FMS.Middleware.Contract.Grants;
 using HE.FMS.Middleware.Contract.Grants.UseCases;
-using HE.FMS.Middleware.Providers.Mambu.Api.CreditArrangement.Contract;
-using HE.FMS.Middleware.Providers.Mambu.Api.Group.Contract;
-using HE.FMS.Middleware.Providers.Mambu.Api.LoanAccount.Contract;
-using HE.FMS.Middleware.Providers.Mambu.Api.LoanAccount.Contract.Enums;
+using HE.FMS.Middleware.Contract.Mambu.CreditArrangement;
+using HE.FMS.Middleware.Contract.Mambu.Group;
+using HE.FMS.Middleware.Contract.Mambu.LoanAccount;
+using HE.FMS.Middleware.Contract.Mambu.LoanAccount.Enums;
 using NSubstitute;
 using Xunit;
 

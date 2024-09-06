@@ -1,6 +1,6 @@
-﻿using HE.FMS.Middleware.Providers.Mambu.Api.Common;
-using HE.FMS.Middleware.Providers.Mambu.Api.Common.Contract;
-using HE.FMS.Middleware.Providers.Mambu.Api.Common.Enums;
+﻿using HE.FMS.Middleware.Contract.Mambu.Common;
+using HE.FMS.Middleware.Contract.Mambu.Common.Contract;
+using HE.FMS.Middleware.Contract.Mambu.Common.Enums;
 
 namespace HE.FMS.Middleware.Providers.Mambu;
 
