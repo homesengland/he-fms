@@ -3,7 +3,9 @@ trigger:
     include:
     - main
 variables:
-  tag: "$(Build.BuildId)"
+  buildMajor: 1
+  buildMinor: 1
+  buildBranch: $[replace(variables['Build.SourceBranch'], '/', '.')]
 
 parameters:
 - name: forcePushToProd
@@ -12,6 +14,8 @@ parameters:
   default: false
 
 pool: 'vmss-ado-chs-nonprod-001'
+
+name: $(buildMajor).$(buildMinor).$(Rev:r)-$(buildBranch)
 
 resources:
   repositories:
@@ -27,6 +31,6 @@ resources:
 stages:
 - template: pipelines/azure-pipelines-build.yml@he-fms-deployment
   parameters:
-    tag: "$(Build.BuildId)"
+    tag: "$(Build.BuildNumber)"
     dotnetVersion: '8.0.x'
     forcePushToProd: ${{ parameters.forcePushToProd }}
