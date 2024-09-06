@@ -53,7 +53,7 @@ public class CLI_IW_INV
         {
             cliwi_sub_ledger_id = EfinConstants.Default.Reclaim.SubLedger,
 
-            //cliwi_inv_ref = <unique_value>
+            // cliwi_inv_ref = <unique_value>
             cliwi_batch_ref = batch.cliwb_batch_ref,
             cliwi_invoice_to_id = reclaimPayment.Reclaim.Id,
             cliwi_net_amount = reclaimPayment.Reclaim.Amount.ToString("F", CultureInfo.InvariantCulture),

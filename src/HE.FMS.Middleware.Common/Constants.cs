@@ -22,8 +22,9 @@ public static class Constants
         public const string DelayInterval = "00:00:30";
     }
 
-    public static class CosmosDBConfiguration
+    public static class CosmosDbConfiguration
     {
         public const string PartitonKey = "fms";
+        public const string ConfigPartitonKey = "fms-config";
     }
 }

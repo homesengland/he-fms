@@ -73,6 +73,7 @@ public static class ProvidersModule
     private static IServiceCollection AddServiceBus(this IServiceCollection services)
     {
         services.AddSingleton<ITopicClientFactory, TopicClientFactory>();
+        services.AddScoped<IConfigurationClient, ConfigurationClient>();
 
         return services;
     }

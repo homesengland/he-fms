@@ -24,7 +24,7 @@ public class CosmosDbItem : ICosmosDbItem
         return new CosmosDbItem
         {
             Id = Guid.NewGuid().ToString(),
-            PartitionKey = Constants.CosmosDBConfiguration.PartitonKey,
+            PartitionKey = Constants.CosmosDbConfiguration.PartitonKey,
             IdempotencyKey = idempotencyKey,
             CreationTime = DateTime.UtcNow,
             Value = value,
