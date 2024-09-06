@@ -1,5 +1,5 @@
 ﻿using HE.FMS.Middleware.Contract.Common;
-using HE.FMS.Middleware.Providers.Mambu.Api.Group.Contract;
+using HE.FMS.Middleware.Contract.Mambu.Group;
 
 namespace HE.FMS.Middleware.BusinessLogic.Grants.Services;
 

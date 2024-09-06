@@ -1,4 +1,4 @@
-﻿using HE.FMS.Middleware.Providers.Mambu.Api.Rotation.Contract;
+﻿using HE.FMS.Middleware.Contract.Mambu.Rotation;
 using HE.FMS.Middleware.Providers.Mambu.Settings;
 using Microsoft.Extensions.Logging;
 

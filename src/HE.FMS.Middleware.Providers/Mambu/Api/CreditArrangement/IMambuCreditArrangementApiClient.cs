@@ -1,5 +1,5 @@
-﻿using HE.FMS.Middleware.Providers.Mambu.Api.Common.Enums;
-using HE.FMS.Middleware.Providers.Mambu.Api.CreditArrangement.Contract;
+﻿using HE.FMS.Middleware.Contract.Mambu.Common.Enums;
+using HE.FMS.Middleware.Contract.Mambu.CreditArrangement;
 
 namespace HE.FMS.Middleware.Providers.Mambu.Api.CreditArrangement;
 
