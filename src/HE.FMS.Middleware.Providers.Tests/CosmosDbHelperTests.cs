@@ -21,7 +21,7 @@ public class CosmosDbHelperTests
         // Arrange
         var value = new { Name = "Test" };
         var idempotencyKey = "test-key";
-        var partitionKey = "test-partition-key";
+        var partitionKey = "fms";
         _configuration["CosmosDb:PartitionKey"].Returns(partitionKey);
 
         // Act
@@ -49,7 +49,7 @@ public class CosmosDbHelperTests
 
         // Assert
         Assert.NotNull(result);
-        Assert.Equal(Constants.CosmosDBConfiguration.PartitonKey, result.PartitionKey);
+        Assert.Equal(Constants.CosmosDbConfiguration.PartitonKey, result.PartitionKey);
         Assert.Equal(idempotencyKey, result.IdempotencyKey);
         Assert.Equal(value, result.Value);
         Assert.NotEqual(default, result.CreationTime);

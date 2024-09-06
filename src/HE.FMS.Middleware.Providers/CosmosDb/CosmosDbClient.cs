@@ -30,6 +30,28 @@ internal sealed class CosmosDbClient : ICosmosDbClient, IDisposable
             cancellationToken: cancellationToken);
     }
 
+    public async Task<List<TMessage>> GetItems<TMessage>(QueryDefinition definition, string partitionKey)
+        where TMessage : ICosmosDbItem
+    {
+        var database = _client.GetDatabase(_settings.DatabaseId);
+        var container = database.GetContainer(_settings.ContainerId);
+
+        var feedIterator = container.GetItemQueryIterator<TMessage>(definition, null, new QueryRequestOptions { PartitionKey = new PartitionKey(partitionKey) });
+
+        var output = new List<TMessage>();
+
+        while (feedIterator.HasMoreResults)
+        {
+            var items = await feedIterator.ReadNextAsync();
+            if (items.Count > 0)
+            {
+                output.AddRange(items);
+            }
+        }
+
+        return output;
+    }
+
     public void Dispose()
     {
         _client.Dispose();
