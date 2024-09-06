@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Text.Json.Serialization;
 
 namespace HE.FMS.Middleware.Providers.CosmosDb;
@@ -32,6 +33,6 @@ public class CosmosDbConfigItem : ICosmosDbItem
     public string GetNextIndex()
     {
         Index += 1;
-        return Prefix + Index.ToString().PadLeft(IndexLength, '0');
+        return Prefix + Index.ToString(CultureInfo.InvariantCulture).PadLeft(IndexLength, '0');
     }
 }

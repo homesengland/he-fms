@@ -15,13 +15,7 @@ public class ConfigurationClient : IConfigurationClient
 
     public async Task<string> GetNextIndex(string fieldName, CosmosDbItemType type)
     {
-        var item = (await GetItems(fieldName, type)).FirstOrDefault();
-
-        if (item is null)
-        {
-            throw new MissingConfigurationException($"{fieldName} in {type}");
-        }
-
+        var item = (await GetItems(fieldName, type)).FirstOrDefault() ?? throw new MissingConfigurationException($"{fieldName} in {type}");
         var nextIndex = item.GetNextIndex();
         await _cosmosDbClient.UpsertItem(item, CancellationToken.None);
 
