@@ -18,7 +18,7 @@ public class MambuHealthCheckHttpTrigger
 
     [Function(nameof(MambuHealthCheckHttpTrigger))]
     public async Task<HttpResponseData> Run(
-        [HttpTrigger(AuthorizationLevel.Function, "get", Route = "mambu/hc")]
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "mambu/hc")]
         HttpRequestData req,
         FunctionContext executionContext,
         CancellationToken cancellationToken)
