@@ -21,7 +21,7 @@ public class ValidateAndStoreClaim : ClaimBase<ClaimPaymentRequest>
 
     [Function(nameof(ValidateAndStoreClaim))]
     public async Task<HttpResponseData> Run(
-        [HttpTrigger(AuthorizationLevel.Function, "post", Route = "claims")]
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "claims")]
         HttpRequestData request,
         CancellationToken cancellationToken)
     {

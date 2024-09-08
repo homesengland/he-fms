@@ -1,4 +1,4 @@
-﻿using HE.FMS.Middleware.Providers.Mambu.Api.LoanAccount.Contract;
+﻿using HE.FMS.Middleware.Contract.Mambu.LoanAccount;
 using Microsoft.Extensions.Logging;
 
 namespace HE.FMS.Middleware.Providers.Mambu.Api.LoanAccount;

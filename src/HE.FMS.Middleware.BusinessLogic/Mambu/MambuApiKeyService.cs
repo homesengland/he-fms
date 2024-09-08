@@ -1,11 +1,11 @@
 using System.Text.Json;
 using HE.FMS.Middleware.BusinessLogic.Grants.Settings;
+using HE.FMS.Middleware.Contract.Mambu.Common;
+using HE.FMS.Middleware.Contract.Mambu.Group;
+using HE.FMS.Middleware.Contract.Mambu.Rotation;
 using HE.FMS.Middleware.Providers.KeyVault;
-using HE.FMS.Middleware.Providers.Mambu.Api.Common;
 using HE.FMS.Middleware.Providers.Mambu.Api.Group;
-using HE.FMS.Middleware.Providers.Mambu.Api.Group.Contract;
 using HE.FMS.Middleware.Providers.Mambu.Api.Rotation;
-using HE.FMS.Middleware.Providers.Mambu.Api.Rotation.Contract;
 using HE.FMS.Middleware.Providers.Mambu.Auth;
 using HE.FMS.Middleware.Providers.Mambu.Settings;
 using Microsoft.Extensions.Logging;

@@ -1,8 +1,8 @@
 using HE.FMS.Middleware.BusinessLogic.Grants.Settings;
 using HE.FMS.Middleware.Contract.Common;
-using HE.FMS.Middleware.Providers.Mambu.Api.Common.Enums;
+using HE.FMS.Middleware.Contract.Mambu.Common.Enums;
+using HE.FMS.Middleware.Contract.Mambu.Group;
 using HE.FMS.Middleware.Providers.Mambu.Api.Group;
-using HE.FMS.Middleware.Providers.Mambu.Api.Group.Contract;
 
 namespace HE.FMS.Middleware.BusinessLogic.Grants.Services;
 
