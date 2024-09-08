@@ -1,14 +1,26 @@
-using System;
+using System.Threading;
+using System.Threading.Tasks;
+using HE.FMS.Middleware.Providers.CosmosDb;
+using HE.FMS.Middleware.Providers.CsvFile;
+using HE.FMS.Middleware.Shared.Base;
 using Microsoft.Azure.Functions.Worker;
-using Microsoft.Extensions.Logging;
 
 namespace HE.FMS.Middleware.Reclaims.Functions;
 
-public class ProcessCreateReclaim
+public class ProcessCreateReclaim : DataExportFunctionBase
 {
-    [Function("ProcessCreateReclaim")]
-    public void Run([TimerTrigger("0 */5 * * * *")] TimerInfo myTimer)
+    public ProcessCreateReclaim(
+        IDbItemClient dbItemClient,
+        ICsvFileWriter csvFileWriter)
+        : base(dbItemClient, csvFileWriter)
     {
-        // TODO: Get Reclaims from Cosmos and write to SCV
+    }
+
+    [Function("ProcessCreateReclaim")]
+    public async Task Run(
+        [TimerTrigger("0 */5 * * * *")] TimerInfo myTimer,
+        CancellationToken cancellationToken)
+    {
+        await Process(CosmosDbItemType.Reclaim, cancellationToken);
     }
 }
