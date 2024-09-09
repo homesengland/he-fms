@@ -1,55 +1,61 @@
+using System.Linq.Expressions;
+using System.Reflection;
 using Azure.Identity;
 using HE.FMS.Middleware.Providers.CosmosDb.Settings;
 using Microsoft.Azure.Cosmos;
+using Microsoft.Azure.Cosmos.Linq;
 
 namespace HE.FMS.Middleware.Providers.CosmosDb;
 
 internal sealed class CosmosDbClient : ICosmosDbClient, IDisposable
 {
-    private readonly ICosmosDbSettings _settings;
-
     private readonly CosmosClient _client;
+
+    private readonly Container _container;
 
     public CosmosDbClient(ICosmosDbSettings settings)
     {
-        _settings = settings;
-        _client = !string.IsNullOrEmpty(_settings.AccountEndpoint)
-            ? new CosmosClient(accountEndpoint: _settings.AccountEndpoint, new DefaultAzureCredential())
-            : new CosmosClient(connectionString: _settings.ConnectionString);
+        _client = !string.IsNullOrEmpty(settings.AccountEndpoint)
+            ? new CosmosClient(accountEndpoint: settings.AccountEndpoint, new DefaultAzureCredential())
+            : new CosmosClient(connectionString: settings.ConnectionString);
+
+        var database = _client.GetDatabase(settings.DatabaseId);
+        _container = database.GetContainer(settings.ContainerId);
     }
 
     public async Task UpsertItem<TMessage>(TMessage message, CancellationToken cancellationToken)
-        where TMessage : ICosmosDbItem
-    {
-        var database = _client.GetDatabase(_settings.DatabaseId);
-        var container = database.GetContainer(_settings.ContainerId);
-
-        await container.UpsertItemAsync(
+        where TMessage : ICosmosDbItem =>
+        await _container.UpsertItemAsync(
             item: message,
             partitionKey: new PartitionKey(message.PartitionKey),
             cancellationToken: cancellationToken);
-    }
 
-    public async Task<List<TMessage>> GetItems<TMessage>(QueryDefinition definition, string partitionKey)
+    public async Task<IList<TMessage>> FindAllItems<TMessage>(Expression<Func<TMessage, bool>> predicate, string partitionKey)
         where TMessage : ICosmosDbItem
     {
-        var database = _client.GetDatabase(_settings.DatabaseId);
-        var container = database.GetContainer(_settings.ContainerId);
+        var queryable = _container
+            .GetItemLinqQueryable<TMessage>(requestOptions: new QueryRequestOptions { PartitionKey = new PartitionKey(partitionKey) })
+            .Where(predicate).ToFeedIterator();
+        var results = new List<TMessage>();
 
-        var feedIterator = container.GetItemQueryIterator<TMessage>(definition, null, new QueryRequestOptions { PartitionKey = new PartitionKey(partitionKey) });
-
-        var output = new List<TMessage>();
-
-        while (feedIterator.HasMoreResults)
+        while (queryable.HasMoreResults)
         {
-            var items = await feedIterator.ReadNextAsync();
-            if (items.Count > 0)
-            {
-                output.AddRange(items);
-            }
+            results.AddRange(await queryable.ReadNextAsync());
         }
 
-        return output;
+        return results;
+    }
+
+    public async Task UpdateFieldAsync<TMessage>(TMessage item, string fieldName, object fieldValue, string partitionKey)
+        where TMessage : ICosmosDbItem
+    {
+        var property = typeof(TMessage).GetProperty(fieldName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase);
+        if (property != null && property.CanWrite)
+        {
+            property.SetValue(item, fieldValue);
+        }
+
+        await _container.ReplaceItemAsync(item, item.Id, new PartitionKey(partitionKey));
     }
 
     public void Dispose()

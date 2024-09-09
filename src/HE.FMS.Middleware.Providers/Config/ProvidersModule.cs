@@ -1,6 +1,9 @@
+using Azure.Storage.Blobs;
 using HE.FMS.Middleware.Common.Extensions;
 using HE.FMS.Middleware.Providers.CosmosDb;
 using HE.FMS.Middleware.Providers.CosmosDb.Settings;
+using HE.FMS.Middleware.Providers.CsvFile;
+using HE.FMS.Middleware.Providers.CsvFile.Settings;
 using HE.FMS.Middleware.Providers.KeyVault;
 using HE.FMS.Middleware.Providers.KeyVault.Settings;
 using HE.FMS.Middleware.Providers.Mambu;
@@ -45,7 +48,11 @@ public static class ProvidersModule
     private static IServiceCollection AddCosmosDb(this IServiceCollection services)
     {
         services.AddAppConfiguration<ICosmosDbSettings, CosmosDbSettings>("CosmosDb");
-        services.AddScoped<ICosmosDbClient, CosmosDbClient>();
+        services.AddSingleton<ICosmosDbClient, CosmosDbClient>();
+        services.AddSingleton<IDbItemClient, DbItemClient>();
+        services.AddAppConfiguration<IBlobStorageSettings, BlobStorageSettings>("BlobStorage");
+        services.AddSingleton(sp => new BlobServiceClient(sp.GetRequiredService<IBlobStorageSettings>().ConnectionString));
+        services.AddSingleton<ICsvFileWriter, CsvFileBlobWriter>();
 
         return services;
     }

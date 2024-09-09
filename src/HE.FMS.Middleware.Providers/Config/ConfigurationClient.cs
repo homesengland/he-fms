@@ -39,10 +39,8 @@ public class ConfigurationClient : IConfigurationClient
 
     private async Task<IEnumerable<CosmosDbConfigItem>> GetItems(string fieldName, CosmosDbItemType type)
     {
-        return await _cosmosDbClient.GetItems<CosmosDbConfigItem>(
-            new QueryDefinition($"SELECT * FROM c WHERE c.{nameof(CosmosDbConfigItem.FieldName)} = @fieldName and c.{nameof(CosmosDbConfigItem.Type)} = @type")
-                .WithParameter("@fieldName", fieldName)
-                .WithParameter("@type", (int)type),
+        return await _cosmosDbClient.FindAllItems<CosmosDbConfigItem>(
+            x => x.FieldName == fieldName && x.Type == type,
             Constants.CosmosDbConfiguration.ConfigPartitonKey);
     }
 }
