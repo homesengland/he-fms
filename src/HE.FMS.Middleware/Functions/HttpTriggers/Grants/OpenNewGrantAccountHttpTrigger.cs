@@ -18,23 +18,23 @@ public class OpenNewGrantAccountHttpTrigger
     private readonly IStreamSerializer _streamSerializer;
     private readonly IObjectSerializer _objectSerializer;
     private readonly TopicClient _topicClient;
-    private readonly CosmosDbHelper _cosmosDbHelper;
+    private readonly ICosmosDbClient _cosmosDbClient;
 
     public OpenNewGrantAccountHttpTrigger(
         IStreamSerializer streamSerializer,
         IObjectSerializer objectSerializer,
         ITopicClientFactory topicClientFactory,
-        CosmosDbHelper cosmosDbHelper)
+        ICosmosDbClient cosmosDbClient)
     {
         _streamSerializer = streamSerializer;
         _objectSerializer = objectSerializer;
+        _cosmosDbClient = cosmosDbClient;
         _topicClient = topicClientFactory.GetTopicClient("Grants:OpenGrantAccount:TopicName");
-        _cosmosDbHelper = cosmosDbHelper;
     }
 
     [Function(nameof(OpenNewGrantAccountHttpTrigger))]
-    public async Task<OpenNewGrantAccountTriggerResponse> Run(
-        [HttpTrigger(AuthorizationLevel.Function, "post", Route = "grants")]
+    public async Task<HttpResponseData> Run(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "grants")]
         HttpRequestData request,
         CancellationToken cancellationToken)
     {
@@ -42,7 +42,9 @@ public class OpenNewGrantAccountHttpTrigger
 
         var idempotencyKey = request.GetIdempotencyHeader();
 
-        var cosmosDbOutput = _cosmosDbHelper.CreateCosmosDbItem(inputData, idempotencyKey);
+        var cosmosDbOutput = CosmosDbItem.CreateCosmosDbItem(inputData, idempotencyKey, CosmosDbItemType.Grant);
+
+        await _cosmosDbClient.UpsertItem(cosmosDbOutput, cancellationToken);
 
         var topicOutput = new Message(Encoding.UTF8.GetBytes(_objectSerializer.Serialize(inputData)))
         {
@@ -51,18 +53,6 @@ public class OpenNewGrantAccountHttpTrigger
 
         await _topicClient.SendAsync(topicOutput);
 
-        return new OpenNewGrantAccountTriggerResponse
-        {
-            HttpResponse = request.CreateResponse(HttpStatusCode.Accepted),
-            CosmosDbOutput = cosmosDbOutput,
-        };
-    }
-
-    public class OpenNewGrantAccountTriggerResponse
-    {
-        public HttpResponseData HttpResponse { get; set; }
-
-        [CosmosDBOutput("%CosmosDb:DatabaseId%", "%CosmosDb:ContainerId%", Connection = "CosmosDb:ConnectionString")]
-        public CosmosDbItem CosmosDbOutput { get; set; }
+        return request.CreateResponse(HttpStatusCode.Accepted);
     }
 }

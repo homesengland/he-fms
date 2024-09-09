@@ -18,9 +18,8 @@ public class MambuRotateApiKeyHttpTrigger
 
     [Function(nameof(MambuRotateApiKeyHttpTrigger))]
     public async Task<HttpResponseData> Run(
-        [HttpTrigger(AuthorizationLevel.Function, "get", Route = "mambu/rotate-api-key")]
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "mambu/rotate-api-key")]
         HttpRequestData req,
-        FunctionContext executionContext,
         CancellationToken cancellationToken)
     {
         await _mambuService.RotateApiKey(cancellationToken);

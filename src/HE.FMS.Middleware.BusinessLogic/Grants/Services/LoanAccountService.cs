@@ -1,11 +1,11 @@
 using HE.FMS.Middleware.BusinessLogic.Grants.Settings;
 using HE.FMS.Middleware.Contract.Grants;
-using HE.FMS.Middleware.Providers.Mambu.Api.Common;
-using HE.FMS.Middleware.Providers.Mambu.Api.Common.Contract;
-using HE.FMS.Middleware.Providers.Mambu.Api.Common.Enums;
+using HE.FMS.Middleware.Contract.Mambu.Common;
+using HE.FMS.Middleware.Contract.Mambu.Common.Contract;
+using HE.FMS.Middleware.Contract.Mambu.Common.Enums;
+using HE.FMS.Middleware.Contract.Mambu.LoanAccount;
+using HE.FMS.Middleware.Contract.Mambu.LoanAccount.Enums;
 using HE.FMS.Middleware.Providers.Mambu.Api.LoanAccount;
-using HE.FMS.Middleware.Providers.Mambu.Api.LoanAccount.Contract;
-using HE.FMS.Middleware.Providers.Mambu.Api.LoanAccount.Contract.Enums;
 
 namespace HE.FMS.Middleware.BusinessLogic.Grants.Services;
 

@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace HE.FMS.Middleware.Contract.Claims;
-
 public sealed class ClaimOrganisationDetails
 {
     [Required]

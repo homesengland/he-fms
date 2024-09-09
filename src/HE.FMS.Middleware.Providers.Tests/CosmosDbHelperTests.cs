@@ -9,12 +9,10 @@ namespace HE.FMS.Middleware.Providers.Tests;
 public class CosmosDbHelperTests
 {
     private readonly IConfiguration _configuration;
-    private readonly CosmosDbHelper _cosmosDbHelper;
 
     public CosmosDbHelperTests()
     {
         _configuration = Substitute.For<IConfiguration>();
-        _cosmosDbHelper = new CosmosDbHelper(_configuration);
     }
 
     [Fact]
@@ -23,11 +21,11 @@ public class CosmosDbHelperTests
         // Arrange
         var value = new { Name = "Test" };
         var idempotencyKey = "test-key";
-        var partitionKey = "test-partition-key";
+        var partitionKey = "fms";
         _configuration["CosmosDb:PartitionKey"].Returns(partitionKey);
 
         // Act
-        var result = _cosmosDbHelper.CreateCosmosDbItem(value, idempotencyKey);
+        var result = CosmosDbItem.CreateCosmosDbItem(value, idempotencyKey, CosmosDbItemType.Log);
 
         // Assert
         Assert.NotNull(result);
@@ -47,11 +45,11 @@ public class CosmosDbHelperTests
         _configuration["CosmosDb:PartitionKey"].Returns((string)null!);
 
         // Act
-        var result = _cosmosDbHelper.CreateCosmosDbItem(value, idempotencyKey);
+        var result = CosmosDbItem.CreateCosmosDbItem(value, idempotencyKey, CosmosDbItemType.Log);
 
         // Assert
         Assert.NotNull(result);
-        Assert.Equal(Constants.CosmosDBConfiguration.PartitonKey, result.PartitionKey);
+        Assert.Equal(Constants.CosmosDbConfiguration.PartitonKey, result.PartitionKey);
         Assert.Equal(idempotencyKey, result.IdempotencyKey);
         Assert.Equal(value, result.Value);
         Assert.NotEqual(default, result.CreationTime);

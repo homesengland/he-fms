@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using HE.FMS.Middleware.Providers.Mambu.Api.LoanAccount.Contract.Enums;
+using HE.FMS.Middleware.Contract.Mambu.LoanAccount.Enums;
 
 namespace HE.FMS.Middleware.Contract.Grants.Results;
 
