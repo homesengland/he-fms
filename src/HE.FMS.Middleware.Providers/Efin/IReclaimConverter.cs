@@ -5,4 +5,6 @@ namespace HE.FMS.Middleware.Providers.Efin;
 public interface IReclaimConverter
 {
     ReclaimItemSet Convert(IEnumerable<ReclaimPaymentRequest> paymentRequests);
+
+    Task<ReclaimItem> Convert(ReclaimPaymentRequest reclaimPaymentRequest);
 }

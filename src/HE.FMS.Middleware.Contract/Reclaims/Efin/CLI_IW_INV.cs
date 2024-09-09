@@ -60,6 +60,7 @@ public class CLI_IW_INV
     [EfinFileRowIndex(544, 583)]
     public string cliwi_description { get; set; }
 
+    // TODO REMOVE
     public static CLI_IW_INV Create(CLI_IW_BAT batch, ReclaimPaymentRequest reclaimPayment)
     {
         return new CLI_IW_INV()
@@ -68,6 +69,31 @@ public class CLI_IW_INV
 
             // cliwi_inv_ref = <unique_value>
             cliwi_batch_ref = batch.cliwb_batch_ref,
+            cliwi_invoice_to_id = reclaimPayment.Reclaim.Id,
+            cliwi_net_amount = reclaimPayment.Reclaim.Amount.ToString("F", CultureInfo.InvariantCulture),
+            cliwi_their_ref = reclaimPayment.Application.Id,
+            cliwi_trans_type = EfinConstants.Default.Reclaim.TransType,
+            cliwi_date = DateTime.UtcNow.ToString("d-MMM-yy", CultureInfo.InvariantCulture),
+            cliwi_terms_code = EfinConstants.Default.Reclaim.TermsCode,
+            cliwi_cost_centre = reclaimPayment.Application.EfinRegion,
+            cliwi_job = reclaimPayment.Application.Id,
+            cliwi_account = reclaimPayment.Organisation.PartnerType,
+            cliwi_activity = reclaimPayment.Application.EfinTenure,
+            cliwi_entry_date = DateTime.UtcNow.ToString("F", CultureInfo.InvariantCulture),
+            cliwi_invoice_prefix = EfinConstants.Default.Reclaim.Prefix,
+            cliwi_tax_point = DateTime.UtcNow.ToString("F", CultureInfo.InvariantCulture),
+            cliwi_description = string.Format(CultureInfo.InvariantCulture, "{0} {1} {2}", reclaimPayment.Reclaim.Milestone[..3], reclaimPayment.Reclaim.Id, reclaimPayment.Application.Id),
+        };
+    }
+
+    public static CLI_IW_INV Create(ReclaimPaymentRequest reclaimPayment, string invoiceRef)
+    {
+        return new CLI_IW_INV()
+        {
+            cliwi_sub_ledger_id = EfinConstants.Default.Reclaim.SubLedger,
+
+            cliwi_inv_ref = invoiceRef,
+            cliwi_batch_ref = string.Empty,
             cliwi_invoice_to_id = reclaimPayment.Reclaim.Id,
             cliwi_net_amount = reclaimPayment.Reclaim.Amount.ToString("F", CultureInfo.InvariantCulture),
             cliwi_their_ref = reclaimPayment.Application.Id,

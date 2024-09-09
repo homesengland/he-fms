@@ -1,6 +1,6 @@
 namespace HE.FMS.Middleware.Providers.CosmosDb.Settings;
 
-internal interface ICosmosDbSettings
+public interface ICosmosDbSettings
 {
     string? AccountEndpoint { get; }
 

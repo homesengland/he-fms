@@ -93,6 +93,32 @@ public class CLI_Invoice
             cli_activity = claimPayment.Application.EfinTenure,
         };
     }
+
+    public static CLI_Invoice Create(ClaimPaymentRequest claimPayment, string invoiceRef)
+    {
+        return new CLI_Invoice()
+        {
+            cli_sub_ledger = EfinConstants.Default.Claim.SubLedger,
+            cli_inv_ref = invoiceRef,
+            cli_batch_ref = string.Empty,
+            cli_cfacs_customer = claimPayment.Claim.Id,
+            cli_net_amount = claimPayment.Claim.Amount.ToString("F", CultureInfo.InvariantCulture),
+            cli_vat = EfinConstants.Default.Claim.Amount,
+            cli_gross = claimPayment.Claim.Amount.ToString("F", CultureInfo.InvariantCulture),
+            cli_volume = EfinConstants.Default.Claim.Volume,
+            cli_uom = EfinConstants.Default.Claim.UOM,
+            cli_our_ref_2 = claimPayment.Application.Id,
+            cli_their_ref = claimPayment.Application.Id,
+            cli_trans_type = EfinConstants.Default.Claim.TransType,
+            cli_date = claimPayment.Claim.AuthorisedOn.ToString(CultureInfo.InvariantCulture),
+            cli_description = string.Format(CultureInfo.InvariantCulture, "{0} {1} {2}", claimPayment.Claim.Milestone[..3], claimPayment.Claim.Id, claimPayment.Application.Id),
+            cli_terms_code = EfinConstants.Default.Claim.TermsCode,
+            cli_due_date = claimPayment.Claim.AuthorisedOn.AddDays(7).ToString(CultureInfo.InvariantCulture),
+            cli_cost_centre = claimPayment.Application.EfinRegion,
+            cli_job = claimPayment.Application.Id,
+            cli_activity = claimPayment.Application.EfinTenure,
+        };
+    }
 }
 #pragma warning restore IDE1006 // Naming Styles
 #pragma warning restore SA1300 // Element should begin with upper-case letter

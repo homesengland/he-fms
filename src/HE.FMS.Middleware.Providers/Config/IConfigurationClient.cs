@@ -3,7 +3,7 @@ using HE.FMS.Middleware.Providers.CosmosDb;
 namespace HE.FMS.Middleware.Providers.Config;
 public interface IConfigurationClient
 {
-    Task<string> GetNextIndex(string fieldName, CosmosDbItemType type);
+    Task<string> GetNextIndex(string indexName, CosmosDbItemType type);
 
-    Task<CosmosDbConfigItem> CreateItem(string fieldName, CosmosDbItemType type, string indexPrefix, int indexLength);
+    Task<CosmosDbConfigItem> CreateItem(string indexName, CosmosDbItemType type, string indexPrefix, int indexLength);
 }

@@ -9,6 +9,7 @@ using HE.FMS.Middleware.Contract.Claims;
 using HE.FMS.Middleware.Contract.Claims.Efin;
 using HE.FMS.Middleware.Contract.Common;
 using HE.FMS.Middleware.Providers.CosmosDb;
+using HE.FMS.Middleware.Providers.CosmosDb.Trace;
 using HE.FMS.Middleware.Providers.CsvFile;
 using HE.FMS.Middleware.Providers.Efin;
 using HE.FMS.Middleware.Providers.ServiceBus;
@@ -17,12 +18,12 @@ using Microsoft.Azure.Functions.Worker;
 
 namespace HE.FMS.Middleware.Claims.Functions;
 
-public class ProcessCreateClaim : DataExportFunctionBase<ClaimItemSet>
+public class ProcessAndStoreClaimTimeTrigger : DataExportFunctionBase<ClaimItemSet>
 {
     private readonly IClaimConverter _claimConverter;
     private readonly ICsvFileGenerator _csvFileGenerator;
 
-    public ProcessCreateClaim(
+    public ProcessAndStoreClaimTimeTrigger(
         IDbItemClient dbItemClient,
         ICsvFileWriter csvFileWriter,
         IClaimConverter claimConverter,
@@ -47,7 +48,7 @@ public class ProcessCreateClaim : DataExportFunctionBase<ClaimItemSet>
         await Process(CosmosDbItemType.Claim, cancellationToken);
     }
 
-    protected override ClaimItemSet Convert(IEnumerable<CosmosDbItem> items)
+    protected override ClaimItemSet Convert(IEnumerable<TraceItem> items)
     {
         var claims = items.Where(x => x.Value is ClaimPaymentRequest)
             .Select(x => x.Value as ClaimPaymentRequest).WhereNotNull();

@@ -11,9 +11,9 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 
 namespace HE.FMS.Middleware.Reclaims.Functions;
-public class ValidateAndStoreReclaim : ClaimBase<ReclaimPaymentRequest>
+public class ValidateReclaimHttpTrigger : ClaimBase<ReclaimPaymentRequest>
 {
-    public ValidateAndStoreReclaim(
+    public ValidateReclaimHttpTrigger(
         IStreamSerializer streamSerializer,
         ICosmosDbClient cosmosDbClient,
         IObjectSerializer objectSerializer,
@@ -22,7 +22,7 @@ public class ValidateAndStoreReclaim : ClaimBase<ReclaimPaymentRequest>
     {
     }
 
-    [Function(nameof(ValidateAndStoreReclaim))]
+    [Function(nameof(ValidateReclaimHttpTrigger))]
     public async Task<HttpResponseData> Run(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "reclaims")]
         HttpRequestData request,

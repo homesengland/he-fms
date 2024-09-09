@@ -11,6 +11,7 @@ using HE.FMS.Middleware.Contract.Common;
 using HE.FMS.Middleware.Contract.Reclaims;
 using HE.FMS.Middleware.Contract.Reclaims.Efin;
 using HE.FMS.Middleware.Providers.CosmosDb;
+using HE.FMS.Middleware.Providers.CosmosDb.Trace;
 using HE.FMS.Middleware.Providers.CsvFile;
 using HE.FMS.Middleware.Providers.Efin;
 using HE.FMS.Middleware.Providers.ServiceBus;
@@ -20,12 +21,12 @@ using Microsoft.Azure.ServiceBus;
 
 namespace HE.FMS.Middleware.Reclaims.Functions;
 
-public class ProcessCreateReclaim : DataExportFunctionBase<ReclaimItemSet>
+public class ProcessAndStoreReclaimTimeTrigger : DataExportFunctionBase<ReclaimItemSet>
 {
     private readonly IReclaimConverter _reclaimConverter;
     private readonly ICsvFileGenerator _csvFileGenerator;
 
-    public ProcessCreateReclaim(
+    public ProcessAndStoreReclaimTimeTrigger(
         IDbItemClient dbItemClient,
         ICsvFileWriter csvFileWriter,
         IReclaimConverter reclaimConverter,
@@ -50,7 +51,7 @@ public class ProcessCreateReclaim : DataExportFunctionBase<ReclaimItemSet>
         await Process(CosmosDbItemType.Reclaim, cancellationToken);
     }
 
-    protected override ReclaimItemSet Convert(IEnumerable<CosmosDbItem> items)
+    protected override ReclaimItemSet Convert(IEnumerable<TraceItem> items)
     {
         var reclaims = items.Where(x => x.Value is ReclaimPaymentRequest)
             .Select(x => x.Value as ReclaimPaymentRequest).WhereNotNull();

@@ -1,8 +1,9 @@
 using System.Globalization;
 using System.Text.Json.Serialization;
+using HE.FMS.Middleware.Providers.CosmosDb.Base;
 
 namespace HE.FMS.Middleware.Providers.CosmosDb;
-public class CosmosDbConfigItem : ICosmosDbItem
+public class CosmosDbConfigItem : IDbItem
 {
     [JsonPropertyName("id")]
     public string Id { get; set; }
@@ -15,16 +16,16 @@ public class CosmosDbConfigItem : ICosmosDbItem
 
     public CosmosDbItemType Type { get; set; }
 
-    public string FieldName { get; set; }
+    public string IndexName { get; set; }
 
     public string Prefix { get; set; }
 
-    public static CosmosDbConfigItem Create(string partitionKey, CosmosDbItemType type, string fieldName, int indexLength, string prefix) => new()
+    public static CosmosDbConfigItem Create(string partitionKey, CosmosDbItemType type, string indexName, int indexLength, string prefix) => new()
     {
         Id = Guid.NewGuid().ToString(),
         PartitionKey = partitionKey,
         Type = type,
-        FieldName = fieldName,
+        IndexName = indexName,
         Index = 0,
         IndexLength = indexLength,
         Prefix = prefix,

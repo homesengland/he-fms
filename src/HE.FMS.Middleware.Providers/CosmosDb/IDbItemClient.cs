@@ -1,8 +1,10 @@
+using HE.FMS.Middleware.Providers.CosmosDb.Trace;
+
 namespace HE.FMS.Middleware.Providers.CosmosDb;
 
 public interface IDbItemClient
 {
-    Task<IList<CosmosDbItem>> GetAllNewItemsAsync(CosmosDbItemType type);
+    Task<IList<TraceItem>> GetAllNewItemsAsync(CosmosDbItemType type);
 
-    Task UpdateItemStatusAsync(IEnumerable<CosmosDbItem> items, CosmosDbItemStatus status, CancellationToken cancellationToken);
+    Task UpdateItemStatusAsync(IEnumerable<TraceItem> items, CosmosDbItemStatus status, CancellationToken cancellationToken);
 }

@@ -9,6 +9,7 @@ using HE.FMS.Middleware.Common.Serialization;
 using HE.FMS.Middleware.Contract.Claims;
 using HE.FMS.Middleware.Contract.Common;
 using HE.FMS.Middleware.Providers.CosmosDb;
+using HE.FMS.Middleware.Providers.CosmosDb.Trace;
 using HE.FMS.Middleware.Providers.CsvFile;
 using HE.FMS.Middleware.Providers.ServiceBus;
 using Microsoft.Azure.ServiceBus;
@@ -63,7 +64,7 @@ public abstract class DataExportFunctionBase<T>
         await _topicClient.SendAsync(topicOutput);
     }
 
-    protected abstract T Convert(IEnumerable<CosmosDbItem> items);
+    protected abstract T Convert(IEnumerable<TraceItem> items);
 
     protected abstract IEnumerable<BlobData> PrepareFiles(T convertedData);
 }

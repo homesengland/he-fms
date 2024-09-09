@@ -1,7 +1,9 @@
 using Azure.Storage.Blobs;
 using HE.FMS.Middleware.Common.Extensions;
 using HE.FMS.Middleware.Providers.CosmosDb;
+using HE.FMS.Middleware.Providers.CosmosDb.Efin;
 using HE.FMS.Middleware.Providers.CosmosDb.Settings;
+using HE.FMS.Middleware.Providers.CosmosDb.Trace;
 using HE.FMS.Middleware.Providers.CsvFile;
 using HE.FMS.Middleware.Providers.CsvFile.Settings;
 using HE.FMS.Middleware.Providers.Efin;
@@ -56,9 +58,13 @@ public static class ProvidersModule
 
     private static IServiceCollection AddCosmosDb(this IServiceCollection services)
     {
-        services.AddAppConfiguration<ICosmosDbSettings, CosmosDbSettings>("CosmosDb");
+        services.AddAppConfiguration<CosmosDbSettings>("CosmosDb");
+        services.AddAppConfiguration<EfinDbSettings>("EfinDb");
+        services.AddAppConfiguration<TraceDbSettings>("TraceDb");
         services.AddSingleton<ICosmosDbClient, CosmosDbClient>();
-        services.AddSingleton<IConfigurationClient, ConfigurationClient>();
+        services.AddScoped<IEfinClient, EfinClient>(x => new EfinClient(x.GetService<EfinDbSettings>()!));
+        services.AddScoped<ITraceClient, TraceClient>(x => new TraceClient(x.GetService<EfinDbSettings>()!));
+        services.AddSingleton<IConfigurationClient, ConfigurationClient>(x => new ConfigurationClient(x.GetService<CosmosDbSettings>()!));
         services.AddSingleton<IDbItemClient, DbItemClient>();
         services.AddAppConfiguration<IBlobStorageSettings, BlobStorageSettings>("BlobStorage");
         services.AddSingleton(sp => new BlobServiceClient(sp.GetRequiredService<IBlobStorageSettings>().ConnectionString));

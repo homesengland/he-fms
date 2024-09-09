@@ -39,6 +39,20 @@ public class CLI_IW_ILT
             cliwt_text = EfinConstants.Default.Reclaim.Text,
         };
     }
+
+    public static CLI_IW_ILT Create( ReclaimPaymentRequest reclaimPayment, string invoiceRef)
+    {
+        return new CLI_IW_ILT()
+        {
+            cliwt_sub_ledger_id = EfinConstants.Default.Reclaim.SubLedger,
+
+            cliwt_inv_ref = invoiceRef,
+            cliwt_batch_ref = string.Empty,
+            cliwt_item_sequence = EfinConstants.Default.Reclaim.ItemSequence,
+            cliwt_print_sequence = EfinConstants.Default.Reclaim.PrintSequence,
+            cliwt_text = EfinConstants.Default.Reclaim.Text,
+        };
+    }
 }
 #pragma warning restore IDE1006 // Naming Styles
 #pragma warning restore SA1300 // Element should begin with upper-case letter

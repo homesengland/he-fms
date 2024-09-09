@@ -6,6 +6,7 @@ using HE.FMS.Middleware.Common.Extensions;
 using HE.FMS.Middleware.Common.Serialization;
 using HE.FMS.Middleware.Contract.Grants.UseCases;
 using HE.FMS.Middleware.Providers.CosmosDb;
+using HE.FMS.Middleware.Providers.CosmosDb.Trace;
 using HE.FMS.Middleware.Providers.ServiceBus;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
@@ -42,7 +43,7 @@ public class OpenNewGrantAccountHttpTrigger
 
         var idempotencyKey = request.GetIdempotencyHeader();
 
-        var cosmosDbOutput = CosmosDbItem.CreateCosmosDbItem(inputData, idempotencyKey, CosmosDbItemType.Grant);
+        var cosmosDbOutput = TraceItem.CreateTraceItem(inputData, idempotencyKey, CosmosDbItemType.Grant);
 
         await _cosmosDbClient.UpsertItem(cosmosDbOutput, cancellationToken);
 

@@ -1,13 +1,14 @@
 using System.Linq.Expressions;
 using System.Reflection;
 using Azure.Identity;
+using HE.FMS.Middleware.Providers.CosmosDb.Base;
 using HE.FMS.Middleware.Providers.CosmosDb.Settings;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Linq;
 
 namespace HE.FMS.Middleware.Providers.CosmosDb;
 
-internal sealed class CosmosDbClient : ICosmosDbClient, IDisposable
+public class CosmosDbClient : ICosmosDbClient, IDisposable
 {
     private readonly CosmosClient _client;
 
@@ -24,14 +25,14 @@ internal sealed class CosmosDbClient : ICosmosDbClient, IDisposable
     }
 
     public async Task UpsertItem<TMessage>(TMessage message, CancellationToken cancellationToken)
-        where TMessage : ICosmosDbItem =>
+        where TMessage : IDbItem =>
         await _container.UpsertItemAsync(
             item: message,
             partitionKey: new PartitionKey(message.PartitionKey),
             cancellationToken: cancellationToken);
 
     public async Task<IList<TMessage>> FindAllItems<TMessage>(Expression<Func<TMessage, bool>> predicate, string partitionKey)
-        where TMessage : ICosmosDbItem
+        where TMessage : IDbItem
     {
         var queryable = _container
             .GetItemLinqQueryable<TMessage>(requestOptions: new QueryRequestOptions { PartitionKey = new PartitionKey(partitionKey) })
@@ -47,7 +48,7 @@ internal sealed class CosmosDbClient : ICosmosDbClient, IDisposable
     }
 
     public async Task UpdateFieldAsync<TMessage>(TMessage item, string fieldName, object fieldValue, string partitionKey)
-        where TMessage : ICosmosDbItem
+        where TMessage : IDbItem
     {
         var property = typeof(TMessage).GetProperty(fieldName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase);
         if (property != null && property.CanWrite)

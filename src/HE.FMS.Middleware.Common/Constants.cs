@@ -27,4 +27,21 @@ public static class Constants
         public const string PartitonKey = "fms";
         public const string ConfigPartitonKey = "fms-config";
     }
+
+    public static class IndexConfiguration
+    {
+        public static class Claim
+        {
+            public const string InvoiceIndex = nameof(InvoiceIndex);
+            public const string InvoiceIndexPrefix = "CS";
+            public const int InvoiceIndexLength = 6;
+        }
+
+        public static class Reclaim
+        {
+            public const string InvoiceIndex = nameof(InvoiceIndex);
+            public const string InvoiceIndexPrefix = "J";
+            public const int InvoiceIndexLength = 7;
+        }
+    }
 }

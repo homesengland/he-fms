@@ -6,6 +6,7 @@ using HE.FMS.Middleware.Common.Exceptions.Validation;
 using HE.FMS.Middleware.Common.Extensions;
 using HE.FMS.Middleware.Common.Serialization;
 using HE.FMS.Middleware.Providers.CosmosDb;
+using HE.FMS.Middleware.Providers.CosmosDb.Trace;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.ServiceBus;
 
@@ -35,7 +36,7 @@ public abstract class ClaimBase<T>
 
         var idempotencyKey = request.GetIdempotencyHeader();
 
-        var cosmosDbOutput = CosmosDbItem.CreateCosmosDbItem(inputData, idempotencyKey, type);
+        var cosmosDbOutput = TraceItem.CreateTraceItem(inputData, idempotencyKey, type);
 
         await _cosmosDbClient.UpsertItem(cosmosDbOutput, cancellationToken);
 

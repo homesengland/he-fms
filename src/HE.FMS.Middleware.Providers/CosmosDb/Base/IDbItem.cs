@@ -1,8 +1,8 @@
 using Newtonsoft.Json;
 
-namespace HE.FMS.Middleware.Providers.CosmosDb;
+namespace HE.FMS.Middleware.Providers.CosmosDb.Base;
 
-public interface ICosmosDbItem
+public interface IDbItem
 {
     [JsonProperty("id")]
     string Id { get; }

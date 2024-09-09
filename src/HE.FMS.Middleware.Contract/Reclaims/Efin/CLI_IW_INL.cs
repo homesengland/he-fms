@@ -52,6 +52,23 @@ public class CLI_IW_INL
             cliwl_line_ref = EfinConstants.Default.Reclaim.Line,
         };
     }
+
+    public static CLI_IW_INL Create(ReclaimPaymentRequest reclaimPayment, string invoiceRef)
+    {
+        return new CLI_IW_INL()
+        {
+            cliwl_sub_ledger_id = EfinConstants.Default.Reclaim.SubLedger,
+
+            cliwl_inv_ref = invoiceRef,
+            cliwl_batch_ref = string.Empty,
+            cliwl_item_sequence = EfinConstants.Default.Reclaim.ItemSequence,
+            cliwl_product_id = EfinConstants.Default.Reclaim.Product,
+            cliwl_goods_value = reclaimPayment.Reclaim.Amount.ToString("F", CultureInfo.InvariantCulture),
+            cliwl_vat_code = reclaimPayment.Application.VatCode,
+            cliwl_vat_amount = (reclaimPayment.Reclaim.Amount * reclaimPayment.Application.VatRate).ToString("F", CultureInfo.InvariantCulture),
+            cliwl_line_ref = EfinConstants.Default.Reclaim.Line,
+        };
+    }
 }
 #pragma warning restore IDE1006 // Naming Styles
 #pragma warning restore SA1300 // Element should begin with upper-case letter
