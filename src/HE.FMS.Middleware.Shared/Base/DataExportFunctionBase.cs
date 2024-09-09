@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -6,14 +5,10 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using HE.FMS.Middleware.Common.Serialization;
-using HE.FMS.Middleware.Contract.Claims;
 using HE.FMS.Middleware.Contract.Common;
-using HE.FMS.Middleware.Providers.CosmosDb;
 using HE.FMS.Middleware.Providers.CosmosDb.Base;
 using HE.FMS.Middleware.Providers.CosmosDb.Efin;
-using HE.FMS.Middleware.Providers.CosmosDb.Trace;
 using HE.FMS.Middleware.Providers.CsvFile;
-using HE.FMS.Middleware.Providers.ServiceBus;
 using Microsoft.Azure.ServiceBus;
 
 namespace HE.FMS.Middleware.Shared.Base;
@@ -42,7 +37,7 @@ public abstract class DataExportFunctionBase<T>
     {
         var items = await _efinCosmosDbClient.GetAllNewItemsAsync(type);
 
-        var convertedData = Convert(items);
+        var convertedData = await Convert(items);
 
         var blobs = PrepareFiles(convertedData);
 
@@ -66,7 +61,7 @@ public abstract class DataExportFunctionBase<T>
         await _topicClient.SendAsync(topicOutput);
     }
 
-    protected abstract T Convert(IEnumerable<EfinItem> items);
+    protected abstract Task<T> Convert(IEnumerable<EfinItem> items);
 
     protected abstract IEnumerable<BlobData> PrepareFiles(T convertedData);
 }

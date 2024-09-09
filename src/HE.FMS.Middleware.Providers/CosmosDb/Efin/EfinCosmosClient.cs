@@ -1,7 +1,6 @@
 using HE.FMS.Middleware.Common;
 using HE.FMS.Middleware.Providers.CosmosDb.Base;
 using HE.FMS.Middleware.Providers.CosmosDb.Settings;
-using HE.FMS.Middleware.Providers.CosmosDb.Trace;
 
 namespace HE.FMS.Middleware.Providers.CosmosDb.Efin;
 

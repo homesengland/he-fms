@@ -5,9 +5,9 @@ public class ClaimItemSet : IItemSet
 {
     public CLCLB_Batch CLCLB_Batch { get; set; }
 
-    public IEnumerable<CLI_Invoice> CLI_Invoices { get; set; }
+    public IList<CLI_Invoice> CLI_Invoices { get; set; } = new List<CLI_Invoice>();
 
-    public IEnumerable<CLA_InvoiceAnalysis> CLA_InvoiceAnalyses { get; set; }
+    public IList<CLA_InvoiceAnalysis> CLA_InvoiceAnalyses { get; set; } = new List<CLA_InvoiceAnalysis>();
 
     public string IdempotencyKey { get; set; }
 }
