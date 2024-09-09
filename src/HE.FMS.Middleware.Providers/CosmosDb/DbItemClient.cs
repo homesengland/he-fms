@@ -15,7 +15,7 @@ public class DbItemClient : IDbItemClient
     public async Task<IList<CosmosDbItem>> GetAllNewItemsAsync(CosmosDbItemType type)
     {
         return await _cosmosDbClient.FindAllItems<CosmosDbItem>(
-            x => x.Status == CosmosDbItemStatus.New && x.Type == type,
+            x => x.Type == type,
             Constants.CosmosDbConfiguration.PartitonKey);
     }
 
@@ -23,7 +23,8 @@ public class DbItemClient : IDbItemClient
     {
         foreach (var item in items)
         {
-            await _cosmosDbClient.UpdateFieldAsync(item, nameof(CosmosDbItem.Status), status, Constants.CosmosDbConfiguration.PartitonKey);
+            // TODO: FIELDNAME IS DELETED
+            await _cosmosDbClient.UpdateFieldAsync(item, "", status, Constants.CosmosDbConfiguration.PartitonKey);
         }
     }
 }
