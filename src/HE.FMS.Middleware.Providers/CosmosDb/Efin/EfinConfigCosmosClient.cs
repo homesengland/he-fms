@@ -1,13 +1,18 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using HE.FMS.Middleware.Common;
 using HE.FMS.Middleware.Common.Exceptions.Internal;
-using HE.FMS.Middleware.Providers.CosmosDb;
+using HE.FMS.Middleware.Providers.CosmosDb.Base;
 using HE.FMS.Middleware.Providers.CosmosDb.Settings;
 
-namespace HE.FMS.Middleware.Providers.Config;
-public class ConfigurationClient : CosmosDbClient, IConfigurationClient
+namespace HE.FMS.Middleware.Providers.CosmosDb.Efin;
+public sealed class EfinConfigCosmosClient : CosmosDbClient<EfinConfigItem>, IEfinCosmosConfigClient
 {
-
-    public ConfigurationClient(ICosmosDbSettings settings): base(settings)
+    public EfinConfigCosmosClient(ICosmosDbSettings settings)
+        : base(settings)
     {
     }
 
@@ -20,7 +25,7 @@ public class ConfigurationClient : CosmosDbClient, IConfigurationClient
         return nextIndex;
     }
 
-    public async Task<CosmosDbConfigItem> CreateItem(string indexName, CosmosDbItemType type, string indexPrefix, int indexLength)
+    public async Task<EfinConfigItem> CreateItem(string indexName, CosmosDbItemType type, string indexPrefix, int indexLength)
     {
         var item = (await GetItems(indexName, type)).FirstOrDefault();
 
@@ -29,15 +34,15 @@ public class ConfigurationClient : CosmosDbClient, IConfigurationClient
             return item;
         }
 
-        item = CosmosDbConfigItem.Create(Constants.CosmosDbConfiguration.ConfigPartitonKey, CosmosDbItemType.Claim, indexName, indexLength, indexPrefix);
+        item = EfinConfigItem.Create(Constants.CosmosDbConfiguration.ConfigPartitonKey, CosmosDbItemType.Claim, indexName, indexLength, indexPrefix);
         await UpsertItem(item, CancellationToken.None);
 
         return item;
     }
 
-    private async Task<IEnumerable<CosmosDbConfigItem>> GetItems(string fieldName, CosmosDbItemType type)
+    private async Task<IEnumerable<EfinConfigItem>> GetItems(string fieldName, CosmosDbItemType type)
     {
-        return await FindAllItems<CosmosDbConfigItem>(
+        return await FindAllItems(
             x => x.IndexName == fieldName && x.Type == type,
             Constants.CosmosDbConfiguration.ConfigPartitonKey);
     }

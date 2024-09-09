@@ -4,6 +4,7 @@ using Azure.Messaging.ServiceBus;
 using HE.FMS.Middleware.Common.Serialization;
 using HE.FMS.Middleware.Contract.Claims;
 using HE.FMS.Middleware.Providers.CosmosDb;
+using HE.FMS.Middleware.Providers.CosmosDb.Base;
 using HE.FMS.Middleware.Providers.CosmosDb.Efin;
 using HE.FMS.Middleware.Providers.Efin;
 using Microsoft.Azure.Functions.Worker;
@@ -14,17 +15,18 @@ public class TransformClaimServiceBusTrigger
 {
     private readonly IStreamSerializer _streamSerializer;
     private readonly IClaimConverter _claimConverter;
-    private readonly ICosmosDbClient _cosmosDbClient;
+    private readonly IEfinCosmosClient _efinCosmosDbClient;
     private readonly ILogger<TransformClaimServiceBusTrigger> _logger;
 
-    public TransformClaimServiceBusTrigger(IStreamSerializer streamSerializer,
+    public TransformClaimServiceBusTrigger(
+        IStreamSerializer streamSerializer,
         IClaimConverter claimConverter,
-        ICosmosDbClient cosmosDbClient,
+        IEfinCosmosClient efinCosmosDbClient,
         ILogger<TransformClaimServiceBusTrigger> logger)
     {
         _streamSerializer = streamSerializer;
         _claimConverter = claimConverter;
-        _cosmosDbClient = cosmosDbClient;
+        _efinCosmosDbClient = efinCosmosDbClient;
         _logger = logger;
     }
 
@@ -35,10 +37,12 @@ public class TransformClaimServiceBusTrigger
         CancellationToken cancellationToken)
     {
         _logger.LogInformation($"{nameof(TransformClaimServiceBusTrigger)} function started");
+
         var inputData = await _streamSerializer.Deserialize<ClaimPaymentRequest>(message.Body.ToStream(), cancellationToken);
         var convertedData = await _claimConverter.Convert(inputData);
         var cosmosDbOutput = EfinItem.CreateEfinItem(convertedData, message.CorrelationId, CosmosDbItemType.Claim);
-        await _cosmosDbClient.UpsertItem(cosmosDbOutput, cancellationToken);
+        await _efinCosmosDbClient.UpsertItem(cosmosDbOutput, cancellationToken);
+
         _logger.LogInformation($"{nameof(TransformClaimServiceBusTrigger)} function ended");
     }
 }

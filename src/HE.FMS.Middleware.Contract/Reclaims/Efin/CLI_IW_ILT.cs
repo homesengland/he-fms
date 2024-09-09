@@ -40,7 +40,7 @@ public class CLI_IW_ILT
         };
     }
 
-    public static CLI_IW_ILT Create( ReclaimPaymentRequest reclaimPayment, string invoiceRef)
+    public static CLI_IW_ILT Create(ReclaimPaymentRequest reclaimPayment, string invoiceRef)
     {
         return new CLI_IW_ILT()
         {

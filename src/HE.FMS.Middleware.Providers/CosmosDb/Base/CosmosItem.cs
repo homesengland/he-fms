@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 
 namespace HE.FMS.Middleware.Providers.CosmosDb.Base;
-public class DbItem : IDbItem
+public class CosmosItem : ICosmosItem
 {
     [JsonPropertyName("id")]
     public string Id { get; set; }

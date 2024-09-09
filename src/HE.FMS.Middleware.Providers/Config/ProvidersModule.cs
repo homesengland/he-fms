@@ -30,6 +30,7 @@ public static class ProvidersModule
             .AddCosmosDb()
             .AddKeyVault()
             .AddServiceBus()
+            .AddBlobStorage()
             .AddClaimReclaimServices();
     }
 
@@ -37,7 +38,8 @@ public static class ProvidersModule
     {
         return services.AddSingleton<IClaimConverter, ClaimConverter>()
             .AddSingleton<IReclaimConverter, ReclaimConverter>()
-            .AddSingleton<ICsvFileGenerator, EfinCsvFileGenerator>();
+            .AddSingleton<ICsvFileGenerator, EfinCsvFileGenerator>()
+            .AddSingleton<ICsvFileWriter, CsvFileBlobWriter>();
     }
 
     private static IServiceCollection AddMambu(this IServiceCollection services)
@@ -58,17 +60,12 @@ public static class ProvidersModule
 
     private static IServiceCollection AddCosmosDb(this IServiceCollection services)
     {
-        services.AddAppConfiguration<CosmosDbSettings>("CosmosDb");
-        services.AddAppConfiguration<EfinDbSettings>("EfinDb");
+        services.AddAppConfiguration<EfinConfigDbSettings>("EfinConfigDb");
+        services.AddAppConfiguration<EfinDataDbSettings>("EfinDb");
         services.AddAppConfiguration<TraceDbSettings>("TraceDb");
-        services.AddSingleton<ICosmosDbClient, CosmosDbClient>();
-        services.AddScoped<IEfinClient, EfinClient>(x => new EfinClient(x.GetService<EfinDbSettings>()!));
-        services.AddScoped<ITraceClient, TraceClient>(x => new TraceClient(x.GetService<EfinDbSettings>()!));
-        services.AddSingleton<IConfigurationClient, ConfigurationClient>(x => new ConfigurationClient(x.GetService<CosmosDbSettings>()!));
-        services.AddSingleton<IDbItemClient, DbItemClient>();
-        services.AddAppConfiguration<IBlobStorageSettings, BlobStorageSettings>("BlobStorage");
-        services.AddSingleton(sp => new BlobServiceClient(sp.GetRequiredService<IBlobStorageSettings>().ConnectionString));
-        services.AddSingleton<ICsvFileWriter, CsvFileBlobWriter>();
+        services.AddScoped<IEfinCosmosClient, EfinCosmosClient>(x => new EfinCosmosClient(x.GetService<EfinDataDbSettings>()!));
+        services.AddSingleton<IEfinCosmosConfigClient, EfinConfigCosmosClient>(x => new EfinConfigCosmosClient(x.GetService<EfinConfigDbSettings>()!));
+        services.AddScoped<ITraceCosmosClient, TraceCosmosClient>(x => new TraceCosmosClient(x.GetService<EfinDataDbSettings>()!));
 
         return services;
     }
@@ -96,6 +93,14 @@ public static class ProvidersModule
     private static IServiceCollection AddServiceBus(this IServiceCollection services)
     {
         services.AddSingleton<ITopicClientFactory, TopicClientFactory>();
+
+        return services;
+    }
+
+    private static IServiceCollection AddBlobStorage(this IServiceCollection services)
+    {
+        services.AddAppConfiguration<IBlobStorageSettings, BlobStorageSettings>("BlobStorage");
+        services.AddSingleton(sp => new BlobServiceClient(sp.GetRequiredService<IBlobStorageSettings>().ConnectionString));
 
         return services;
     }

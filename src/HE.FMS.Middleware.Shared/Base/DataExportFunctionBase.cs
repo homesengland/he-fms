@@ -9,6 +9,8 @@ using HE.FMS.Middleware.Common.Serialization;
 using HE.FMS.Middleware.Contract.Claims;
 using HE.FMS.Middleware.Contract.Common;
 using HE.FMS.Middleware.Providers.CosmosDb;
+using HE.FMS.Middleware.Providers.CosmosDb.Base;
+using HE.FMS.Middleware.Providers.CosmosDb.Efin;
 using HE.FMS.Middleware.Providers.CosmosDb.Trace;
 using HE.FMS.Middleware.Providers.CsvFile;
 using HE.FMS.Middleware.Providers.ServiceBus;
@@ -19,26 +21,26 @@ namespace HE.FMS.Middleware.Shared.Base;
 public abstract class DataExportFunctionBase<T>
     where T : IItemSet
 {
-    private readonly IDbItemClient _dbItemClient;
+    private readonly IEfinCosmosClient _efinCosmosDbClient;
     private readonly ICsvFileWriter _csvFileWriter;
     private readonly TopicClient _topicClient;
     private readonly IObjectSerializer _objectSerializer;
 
     protected DataExportFunctionBase(
-        IDbItemClient dbItemClient,
+        IEfinCosmosClient efinCosmosDbClient,
         ICsvFileWriter csvFileWriter,
         TopicClient topicClient,
         IObjectSerializer objectSerializer)
     {
         _csvFileWriter = csvFileWriter;
-        _dbItemClient = dbItemClient;
+        _efinCosmosDbClient = efinCosmosDbClient;
         _topicClient = topicClient;
         _objectSerializer = objectSerializer;
     }
 
     protected async Task Process(CosmosDbItemType type, CancellationToken cancellationToken)
     {
-        var items = await _dbItemClient.GetAllNewItemsAsync(type);
+        var items = await _efinCosmosDbClient.GetAllNewItemsAsync(type);
 
         var convertedData = Convert(items);
 
@@ -53,7 +55,7 @@ public abstract class DataExportFunctionBase<T>
                     blob);
             }
 
-            await _dbItemClient.UpdateItemStatusAsync(items, CosmosDbItemStatus.Completed, cancellationToken);
+            await _efinCosmosDbClient.ChangeItemsStatusAsync(items, CosmosDbItemStatus.Completed, cancellationToken);
         }
 
         var topicOutput = new Message(Encoding.UTF8.GetBytes(_objectSerializer.Serialize(convertedData!)))
@@ -64,7 +66,7 @@ public abstract class DataExportFunctionBase<T>
         await _topicClient.SendAsync(topicOutput);
     }
 
-    protected abstract T Convert(IEnumerable<TraceItem> items);
+    protected abstract T Convert(IEnumerable<EfinItem> items);
 
     protected abstract IEnumerable<BlobData> PrepareFiles(T convertedData);
 }

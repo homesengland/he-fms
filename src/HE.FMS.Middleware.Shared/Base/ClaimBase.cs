@@ -6,6 +6,7 @@ using HE.FMS.Middleware.Common.Exceptions.Validation;
 using HE.FMS.Middleware.Common.Extensions;
 using HE.FMS.Middleware.Common.Serialization;
 using HE.FMS.Middleware.Providers.CosmosDb;
+using HE.FMS.Middleware.Providers.CosmosDb.Base;
 using HE.FMS.Middleware.Providers.CosmosDb.Trace;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.ServiceBus;
@@ -14,18 +15,18 @@ namespace HE.FMS.Middleware.Shared.Base;
 public abstract class ClaimBase<T>
 {
     private readonly IStreamSerializer _streamSerializer;
-    private readonly ICosmosDbClient _cosmosDbClient;
+    private readonly ITraceCosmosClient _traceCosmosDbClient;
     private readonly TopicClient _topicClient;
     private readonly IObjectSerializer _objectSerializer;
 
     protected ClaimBase(
         IStreamSerializer streamSerializer,
-        ICosmosDbClient cosmosDbClient,
+        ITraceCosmosClient traceComsmosDbClient,
         IObjectSerializer objectSerializer,
         TopicClient topicClient)
     {
         _streamSerializer = streamSerializer;
-        _cosmosDbClient = cosmosDbClient;
+        _traceCosmosDbClient = traceComsmosDbClient;
         _objectSerializer = objectSerializer;
         _topicClient = topicClient;
     }
@@ -38,7 +39,7 @@ public abstract class ClaimBase<T>
 
         var cosmosDbOutput = TraceItem.CreateTraceItem(inputData, idempotencyKey, type);
 
-        await _cosmosDbClient.UpsertItem(cosmosDbOutput, cancellationToken);
+        await _traceCosmosDbClient.UpsertItem(cosmosDbOutput, cancellationToken);
 
         var topicOutput = new Message(Encoding.UTF8.GetBytes(_objectSerializer.Serialize(inputData)))
         {

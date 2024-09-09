@@ -2,8 +2,8 @@ using System.Globalization;
 using System.Text.Json.Serialization;
 using HE.FMS.Middleware.Providers.CosmosDb.Base;
 
-namespace HE.FMS.Middleware.Providers.CosmosDb;
-public class CosmosDbConfigItem : IDbItem
+namespace HE.FMS.Middleware.Providers.CosmosDb.Efin;
+public class EfinConfigItem : ICosmosItem
 {
     [JsonPropertyName("id")]
     public string Id { get; set; }
@@ -20,7 +20,7 @@ public class CosmosDbConfigItem : IDbItem
 
     public string Prefix { get; set; }
 
-    public static CosmosDbConfigItem Create(string partitionKey, CosmosDbItemType type, string indexName, int indexLength, string prefix) => new()
+    public static EfinConfigItem Create(string partitionKey, CosmosDbItemType type, string indexName, int indexLength, string prefix) => new()
     {
         Id = Guid.NewGuid().ToString(),
         PartitionKey = partitionKey,

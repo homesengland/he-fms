@@ -9,6 +9,8 @@ using HE.FMS.Middleware.Contract.Claims;
 using HE.FMS.Middleware.Contract.Claims.Efin;
 using HE.FMS.Middleware.Contract.Common;
 using HE.FMS.Middleware.Providers.CosmosDb;
+using HE.FMS.Middleware.Providers.CosmosDb.Base;
+using HE.FMS.Middleware.Providers.CosmosDb.Efin;
 using HE.FMS.Middleware.Providers.CosmosDb.Trace;
 using HE.FMS.Middleware.Providers.CsvFile;
 using HE.FMS.Middleware.Providers.Efin;
@@ -24,14 +26,14 @@ public class ProcessAndStoreClaimTimeTrigger : DataExportFunctionBase<ClaimItemS
     private readonly ICsvFileGenerator _csvFileGenerator;
 
     public ProcessAndStoreClaimTimeTrigger(
-        IDbItemClient dbItemClient,
+        IEfinCosmosClient efinCosmosDbClient,
         ICsvFileWriter csvFileWriter,
         IClaimConverter claimConverter,
         ICsvFileGenerator csvFileGenerator,
         ITopicClientFactory topicClientFactory,
         IObjectSerializer objectSerializer)
         : base(
-            dbItemClient,
+            efinCosmosDbClient,
             csvFileWriter,
             topicClientFactory.GetTopicClient("Claims:Create:TopicName"),
             objectSerializer)

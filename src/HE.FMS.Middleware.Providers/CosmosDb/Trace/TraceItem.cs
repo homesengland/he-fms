@@ -2,7 +2,7 @@ using HE.FMS.Middleware.Common;
 using HE.FMS.Middleware.Providers.CosmosDb.Base;
 
 namespace HE.FMS.Middleware.Providers.CosmosDb.Trace;
-public class TraceItem : DbItem
+public class TraceItem : CosmosItem
 {
     public static TraceItem CreateTraceItem(object value, string idempotencyKey, CosmosDbItemType type)
     {

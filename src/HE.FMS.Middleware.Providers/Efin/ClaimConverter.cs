@@ -1,31 +1,17 @@
 using HE.FMS.Middleware.Contract.Claims;
 using HE.FMS.Middleware.Contract.Claims.Efin;
-using HE.FMS.Middleware.Providers.Config;
-using HE.FMS.Middleware.Providers.CosmosDb;
+using HE.FMS.Middleware.Providers.CosmosDb.Base;
+using HE.FMS.Middleware.Providers.CosmosDb.Efin;
 using static HE.FMS.Middleware.Common.Constants;
 
 namespace HE.FMS.Middleware.Providers.Efin;
 public class ClaimConverter : IClaimConverter
 {
-    private readonly IConfigurationClient _configurationClient;
+    private readonly IEfinCosmosConfigClient _configurationClient;
 
-    public ClaimConverter(IConfigurationClient configurationClient)
+    public ClaimConverter(IEfinCosmosConfigClient configurationClient)
     {
         _configurationClient = configurationClient;
-    }
-
-    public ClaimItemSet Convert(IEnumerable<ClaimPaymentRequest> paymentRequests)
-    {
-        var batch = CLCLB_Batch.Create(paymentRequests);
-        var invoices = paymentRequests.Select(x => CLI_Invoice.Create(batch, x));
-        var invoiceAnalysises = paymentRequests.Select(x => CLA_InvoiceAnalysis.Create(batch, x));
-
-        return new ClaimItemSet()
-        {
-            CLCLB_Batch = batch,
-            CLI_Invoices = invoices,
-            CLA_InvoiceAnalyses = invoiceAnalysises,
-        };
     }
 
     public async Task<ClaimItem> Convert(ClaimPaymentRequest claimPaymentRequest)

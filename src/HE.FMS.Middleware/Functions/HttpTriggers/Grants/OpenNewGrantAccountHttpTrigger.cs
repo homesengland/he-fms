@@ -6,6 +6,7 @@ using HE.FMS.Middleware.Common.Extensions;
 using HE.FMS.Middleware.Common.Serialization;
 using HE.FMS.Middleware.Contract.Grants.UseCases;
 using HE.FMS.Middleware.Providers.CosmosDb;
+using HE.FMS.Middleware.Providers.CosmosDb.Base;
 using HE.FMS.Middleware.Providers.CosmosDb.Trace;
 using HE.FMS.Middleware.Providers.ServiceBus;
 using Microsoft.Azure.Functions.Worker;
@@ -19,13 +20,13 @@ public class OpenNewGrantAccountHttpTrigger
     private readonly IStreamSerializer _streamSerializer;
     private readonly IObjectSerializer _objectSerializer;
     private readonly TopicClient _topicClient;
-    private readonly ICosmosDbClient _cosmosDbClient;
+    private readonly ITraceCosmosClient _cosmosDbClient;
 
     public OpenNewGrantAccountHttpTrigger(
         IStreamSerializer streamSerializer,
         IObjectSerializer objectSerializer,
         ITopicClientFactory topicClientFactory,
-        ICosmosDbClient cosmosDbClient)
+        ITraceCosmosClient cosmosDbClient)
     {
         _streamSerializer = streamSerializer;
         _objectSerializer = objectSerializer;

@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace HE.FMS.Middleware.Providers.CosmosDb.Base;
 
-public interface IDbItem
+public interface ICosmosItem
 {
     [JsonProperty("id")]
     string Id { get; }

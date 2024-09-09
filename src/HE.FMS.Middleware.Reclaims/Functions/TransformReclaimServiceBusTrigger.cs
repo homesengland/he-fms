@@ -4,6 +4,7 @@ using Azure.Messaging.ServiceBus;
 using HE.FMS.Middleware.Common.Serialization;
 using HE.FMS.Middleware.Contract.Reclaims;
 using HE.FMS.Middleware.Providers.CosmosDb;
+using HE.FMS.Middleware.Providers.CosmosDb.Base;
 using HE.FMS.Middleware.Providers.CosmosDb.Efin;
 using HE.FMS.Middleware.Providers.Efin;
 using Microsoft.Azure.Functions.Worker;
@@ -14,17 +15,18 @@ public class TransformReclaimServiceBusTrigger
 {
     private readonly IStreamSerializer _streamSerializer;
     private readonly IReclaimConverter _reclaimConverter;
-    private readonly ICosmosDbClient _cosmosDbClient;
+    private readonly IEfinCosmosClient _efinCosmosDbClient;
     private readonly ILogger<TransformReclaimServiceBusTrigger> _logger;
 
-    public TransformReclaimServiceBusTrigger(IStreamSerializer streamSerializer,
+    public TransformReclaimServiceBusTrigger(
+        IStreamSerializer streamSerializer,
         IReclaimConverter reclaimConverter,
-        ICosmosDbClient cosmosDbClient,
+        IEfinCosmosClient efinCosmosDbClient,
         ILogger<TransformReclaimServiceBusTrigger> logger)
     {
         _streamSerializer = streamSerializer;
         _reclaimConverter = reclaimConverter;
-        _cosmosDbClient = cosmosDbClient;
+        _efinCosmosDbClient = efinCosmosDbClient;
         _logger = logger;
     }
 
@@ -35,12 +37,11 @@ public class TransformReclaimServiceBusTrigger
         CancellationToken cancellationToken)
     {
         _logger.LogInformation($"{nameof(TransformReclaimServiceBusTrigger)} function started");
+
         var inputData = await _streamSerializer.Deserialize<ReclaimPaymentRequest>(message.Body.ToStream(), cancellationToken);
-
         var dataConvert = await _reclaimConverter.Convert(inputData);
-
         var cosmosDbOutput = EfinItem.CreateEfinItem(dataConvert, message.CorrelationId, CosmosDbItemType.Reclaim);
-        await _cosmosDbClient.UpsertItem(cosmosDbOutput, cancellationToken);
+        await _efinCosmosDbClient.UpsertItem(cosmosDbOutput, cancellationToken);
 
         _logger.LogInformation($"{nameof(TransformReclaimServiceBusTrigger)} function ended");
     }

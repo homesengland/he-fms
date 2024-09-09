@@ -1,5 +1,5 @@
 using HE.FMS.Middleware.Common;
-using HE.FMS.Middleware.Providers.CosmosDb;
+using HE.FMS.Middleware.Providers.CosmosDb.Base;
 using HE.FMS.Middleware.Providers.CosmosDb.Trace;
 using Microsoft.Extensions.Configuration;
 using NSubstitute;

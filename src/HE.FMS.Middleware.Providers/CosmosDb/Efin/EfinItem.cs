@@ -2,7 +2,7 @@ using HE.FMS.Middleware.Common;
 using HE.FMS.Middleware.Providers.CosmosDb.Base;
 
 namespace HE.FMS.Middleware.Providers.CosmosDb.Efin;
-public class EfinItem : DbItem
+public class EfinItem : CosmosItem
 {
     public CosmosDbItemStatus Status { get; set; } = CosmosDbItemStatus.New;
 
