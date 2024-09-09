@@ -21,4 +21,16 @@ public static class EnumerableExtensions
 
         return collection;
     }
+
+    public static IEnumerable<T> WhereNotNull<T>(this IEnumerable<T?> collection)
+    {
+        return from item in collection
+               where item is not null
+               select item;
+    }
+
+    public static IEnumerable<T> AsEnumerable<T>(this T item)
+    {
+        return [item];
+    }
 }

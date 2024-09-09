@@ -4,6 +4,7 @@ using HE.FMS.Middleware.Providers.CosmosDb;
 using HE.FMS.Middleware.Providers.CosmosDb.Settings;
 using HE.FMS.Middleware.Providers.CsvFile;
 using HE.FMS.Middleware.Providers.CsvFile.Settings;
+using HE.FMS.Middleware.Providers.Efin;
 using HE.FMS.Middleware.Providers.KeyVault;
 using HE.FMS.Middleware.Providers.KeyVault.Settings;
 using HE.FMS.Middleware.Providers.Mambu;
@@ -26,7 +27,15 @@ public static class ProvidersModule
         return services.AddMambu()
             .AddCosmosDb()
             .AddKeyVault()
-            .AddServiceBus();
+            .AddServiceBus()
+            .AddClaimReclaimServices();
+    }
+
+    private static IServiceCollection AddClaimReclaimServices(this IServiceCollection services)
+    {
+        return services.AddSingleton<IClaimConverter, ClaimConverter>()
+            .AddSingleton<IReclaimConverter, ReclaimConverter>()
+            .AddSingleton<ICsvFileGenerator, EfinCsvFileGenerator>();
     }
 
     private static IServiceCollection AddMambu(this IServiceCollection services)
@@ -49,6 +58,7 @@ public static class ProvidersModule
     {
         services.AddAppConfiguration<ICosmosDbSettings, CosmosDbSettings>("CosmosDb");
         services.AddSingleton<ICosmosDbClient, CosmosDbClient>();
+        services.AddSingleton<IConfigurationClient, ConfigurationClient>();
         services.AddSingleton<IDbItemClient, DbItemClient>();
         services.AddAppConfiguration<IBlobStorageSettings, BlobStorageSettings>("BlobStorage");
         services.AddSingleton(sp => new BlobServiceClient(sp.GetRequiredService<IBlobStorageSettings>().ConnectionString));
@@ -80,7 +90,6 @@ public static class ProvidersModule
     private static IServiceCollection AddServiceBus(this IServiceCollection services)
     {
         services.AddSingleton<ITopicClientFactory, TopicClientFactory>();
-        services.AddScoped<IConfigurationClient, ConfigurationClient>();
 
         return services;
     }
