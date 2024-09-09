@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using HE.FMS.Middleware.Common.Serialization;
 using HE.FMS.Middleware.Contract.Claims;
 using HE.FMS.Middleware.Providers.CosmosDb;
+using HE.FMS.Middleware.Providers.ServiceBus;
 using HE.FMS.Middleware.Shared.Base;
 using HE.FMS.Middleware.Shared.Middlewares;
 using Microsoft.Azure.Functions.Worker;
@@ -14,8 +15,10 @@ public class ValidateAndStoreClaim : ClaimBase<ClaimPaymentRequest>
 {
     public ValidateAndStoreClaim(
         IStreamSerializer streamSerializer,
-        ICosmosDbClient cosmosDbClient)
-        : base(streamSerializer, cosmosDbClient)
+        ICosmosDbClient cosmosDbClient,
+        IObjectSerializer objectSerializer,
+        ITopicClientFactory topicClientFactory)
+        : base(streamSerializer, cosmosDbClient, objectSerializer, topicClientFactory.GetTopicClient("Claims:Create:TopicName"))
     {
     }
 
