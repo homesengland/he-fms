@@ -1,5 +1,7 @@
+using HE.FMS.Middleware.Contract.Common;
+
 namespace HE.FMS.Middleware.Contract.Reclaims.Efin;
-public class ReclaimItemSet
+public class ReclaimItemSet : IItemSet
 {
     public CLI_IW_BAT CLI_IW_BAT { get; set; }
 
@@ -12,4 +14,6 @@ public class ReclaimItemSet
     public IEnumerable<CLI_IW_INV> CLI_IW_INVes { get; set; }
 
     public IEnumerable<CLI_IW_ITL> CLI_IW_ITLes { get; set; }
+
+    public string IdempotencyKey { get; set; }
 }
