@@ -1,13 +1,17 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using HE.FMS.Middleware.Contract.Claims;
+using HE.FMS.Middleware.Contract.Common;
 using HE.FMS.Middleware.Providers.CosmosDb;
 using HE.FMS.Middleware.Providers.CsvFile;
 
 namespace HE.FMS.Middleware.Shared.Base;
 
-public class DataExportFunctionBase
+public abstract class DataExportFunctionBase
 {
     private readonly IDbItemClient _dbItemClient;
     private readonly ICsvFileWriter _csvFileWriter;
@@ -22,14 +26,20 @@ public class DataExportFunctionBase
     {
         var items = await _dbItemClient.GetAllNewItemsAsync(type);
 
-        if (items.Count > 0)
+        var blobs = Convert(items);
+
+        if (blobs.Any())
         {
-            await _csvFileWriter.WriteToCsvAsync(
-                items,
-                $"{type.ToString().ToLower(CultureInfo.InvariantCulture)}-container",
-                $"{type}-{DateTime.Now:yyyyMMdd_HHmmss}.csv");
+            foreach (var blob in blobs)
+            {
+                await _csvFileWriter.WriteToBlobAsync(
+                    $"{type.ToString().ToLower(CultureInfo.InvariantCulture)}-container",
+                    blob);
+            }
 
             await _dbItemClient.UpdateItemStatusAsync(items, CosmosDbItemStatus.Completed, cancellationToken);
         }
     }
+
+    protected abstract IEnumerable<BlobData> Convert(IEnumerable<CosmosDbItem> items);
 }

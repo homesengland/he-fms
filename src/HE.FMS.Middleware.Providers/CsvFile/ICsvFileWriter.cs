@@ -1,6 +1,8 @@
+using HE.FMS.Middleware.Contract.Common;
+
 namespace HE.FMS.Middleware.Providers.CsvFile;
 
 public interface ICsvFileWriter
 {
-    Task WriteToCsvAsync<T>(IEnumerable<T> data, string blobContainerName, string blobName);
+    Task WriteToBlobAsync(string blobContainerName, BlobData blobData);
 }
