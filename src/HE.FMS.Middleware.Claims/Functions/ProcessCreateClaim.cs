@@ -21,7 +21,6 @@ public class ProcessCreateClaim : DataExportFunctionBase
         [TimerTrigger("0 */5 * * * *")] TimerInfo myTimer,
         CancellationToken cancellationToken)
     {
-        // TODO: Get Claims from Cosmos and write to SCV
         await Process(CosmosDbItemType.Claim, cancellationToken);
     }
 }
