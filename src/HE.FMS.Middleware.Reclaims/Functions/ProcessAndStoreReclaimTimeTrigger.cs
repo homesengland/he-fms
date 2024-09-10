@@ -30,9 +30,7 @@ public class ProcessAndStoreReclaimTimeTrigger : DataExportFunctionBase<ReclaimI
         IObjectSerializer objectSerializer)
         : base(
             efinCosmosDbClient,
-            csvFileWriter,
-            topicClientFactory.GetTopicClient("Reclaims:Create:TopicName"),
-            objectSerializer)
+            csvFileWriter)
     {
         _csvFileGenerator = csvFileGenerator;
     }
@@ -57,7 +55,7 @@ public class ProcessAndStoreReclaimTimeTrigger : DataExportFunctionBase<ReclaimI
         var itemSet = new ReclaimItemSet
         {
             CLI_IW_BAT = CLI_IW_BAT.Create(reclaims),
-            IdempotencyKey = items.First().IdempotencyKey
+            IdempotencyKey = items.First().IdempotencyKey,
         };
 
         foreach (var reclaimItem in reclaims)
@@ -74,14 +72,15 @@ public class ProcessAndStoreReclaimTimeTrigger : DataExportFunctionBase<ReclaimI
 
     protected override IEnumerable<BlobData> PrepareFiles(ReclaimItemSet convertedData)
     {
-        return new[]
-            {
+        return
+        [
+
             _csvFileGenerator.GenerateFile(convertedData.CLI_IW_BAT.AsEnumerable()),
             _csvFileGenerator.GenerateFile(convertedData.CLI_IW_ILTes),
             _csvFileGenerator.GenerateFile(convertedData.CLI_IW_INAes),
             _csvFileGenerator.GenerateFile(convertedData.CLI_IW_INLes),
             _csvFileGenerator.GenerateFile(convertedData.CLI_IW_INVes),
             _csvFileGenerator.GenerateFile(convertedData.CLI_IW_ITLes),
-        };
+        ];
     }
 }

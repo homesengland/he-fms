@@ -1,3 +1,4 @@
+using HE.FMS.Middleware.Common.Exceptions.Internal;
 using HE.FMS.Middleware.Contract.Reclaims;
 using HE.FMS.Middleware.Contract.Reclaims.Efin;
 using HE.FMS.Middleware.Providers.CosmosDb.Base;
@@ -21,7 +22,7 @@ public class ReclaimConverter : IReclaimConverter
         {
             invoiceNumber = await _configurationClient.GetNextIndex(IndexConfiguration.Reclaim.InvoiceIndex, CosmosDbItemType.Claim);
         }
-        catch (MissingFieldException)
+        catch (MissingConfigurationException)
         {
             await _configurationClient.CreateItem(IndexConfiguration.Reclaim.InvoiceIndex, CosmosDbItemType.Claim, IndexConfiguration.Reclaim.InvoiceIndexPrefix, IndexConfiguration.Reclaim.InvoiceIndexLength);
             invoiceNumber = await _configurationClient.GetNextIndex(IndexConfiguration.Reclaim.InvoiceIndex, CosmosDbItemType.Claim);

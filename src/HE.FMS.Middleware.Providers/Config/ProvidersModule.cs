@@ -62,13 +62,9 @@ public static class ProvidersModule
         services.AddAppConfiguration<EfinConfigDbSettings>("EfinConfigDb");
         services.AddAppConfiguration<EfinDataDbSettings>("EfinDb");
         services.AddAppConfiguration<TraceDbSettings>("TraceDb");
-        services.AddSingleton<IEfinCosmosClient, EfinCosmosClient>(x =>
-        {
-            var options = new EfinCosmosClient(x.GetService<EfinDataDbSettings>()!);
-            return options;
-        });
+        services.AddSingleton<IEfinCosmosClient, EfinCosmosClient>(x => new EfinCosmosClient(x.GetService<EfinDataDbSettings>()!));
         services.AddSingleton<IEfinCosmosConfigClient, EfinConfigCosmosClient>(x => new EfinConfigCosmosClient(x.GetService<EfinConfigDbSettings>()!));
-        services.AddSingleton<ITraceCosmosClient, TraceCosmosClient>(x => new TraceCosmosClient(x.GetService<EfinDataDbSettings>()!));
+        services.AddSingleton<ITraceCosmosClient, TraceCosmosClient>(x => new TraceCosmosClient(x.GetService<TraceDbSettings>()!));
 
         return services;
     }

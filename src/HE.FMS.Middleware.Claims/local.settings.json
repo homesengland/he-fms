@@ -8,12 +8,18 @@
     "ServiceBus:Connection__tenantId": "",
     "ServiceBus:Connection__clientId": "",
     "ServiceBus:Connection__clientSecret": "",
-    "CosmosDb:AccountEndpoint": "",
-    "CosmosDb:ConnectionString": "",
-    "CosmosDb:DatabaseId": "fms",
-    "CosmosDb:ContainerId": "fms-container",
-    "CosmosDb:PartitionKey": "fms",
-    "BlobStorage:ConnectionString": "",
+    "EfinConfigDb:AccountEndpoint": "",
+    "EfinConfigDb:ConnectionString": "",
+    "EfinConfigDb:DatabaseId": "fms",
+    "EfinConfigDb:ContainerId": "efin-config-container",
+    "EfinDb:AccountEndpoint": "",
+    "EfinDb:ConnectionString": "",
+    "EfinDb:DatabaseId": "fms",
+    "EfinDb:ContainerId": "efin-container",
+    "TraceDb:AccountEndpoint": "",
+    "TraceDb:ConnectionString": "",
+    "TraceDb:DatabaseId": "fms",
+    "TraceDb:ContainerId": "trace-container",
     "Mambu:RotateApiKeyTimeTrigger": "0 30 7 * * *",
     "Mambu:Api:BaseUrl": "https://{mambuInstance}.mambu.com",
     "Mambu:Api:RetryCount": "1",
@@ -22,6 +28,7 @@
     "Mambu:ApiKey:ExpirationInSeconds": "100000000",
     "KeyVault:Url": "https://{keyVault}.vault.azure.net/",
     "Grants:BranchId": "{mambuEnvironment}",
-    "Claims:Create:TopicName": "he-ahp-CreateClaim-local"
+    "Claims:Create:TopicName": "",
+    "Claims:Create:SubscriptionName": ""
   }
 }

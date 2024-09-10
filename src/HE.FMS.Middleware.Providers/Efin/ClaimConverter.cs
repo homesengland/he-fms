@@ -1,3 +1,4 @@
+using HE.FMS.Middleware.Common.Exceptions.Internal;
 using HE.FMS.Middleware.Contract.Claims;
 using HE.FMS.Middleware.Contract.Claims.Efin;
 using HE.FMS.Middleware.Providers.CosmosDb.Base;
@@ -21,7 +22,7 @@ public class ClaimConverter : IClaimConverter
         {
             invoiceNumber = await _configurationClient.GetNextIndex(IndexConfiguration.Claim.InvoiceIndex, CosmosDbItemType.Claim);
         }
-        catch (MissingFieldException)
+        catch (MissingConfigurationException)
         {
             await _configurationClient.CreateItem(IndexConfiguration.Claim.InvoiceIndex, CosmosDbItemType.Claim, IndexConfiguration.Claim.InvoiceIndexPrefix, IndexConfiguration.Claim.InvoiceIndexLength);
             invoiceNumber = await _configurationClient.GetNextIndex(IndexConfiguration.Claim.InvoiceIndex, CosmosDbItemType.Claim);
