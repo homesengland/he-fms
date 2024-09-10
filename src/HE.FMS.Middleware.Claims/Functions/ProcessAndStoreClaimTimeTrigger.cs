@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using HE.FMS.Middleware.Common.Exceptions.Internal;
 using HE.FMS.Middleware.Common.Extensions;
 using HE.FMS.Middleware.Contract.Claims.Efin;
 using HE.FMS.Middleware.Contract.Common;
@@ -13,22 +14,26 @@ using HE.FMS.Middleware.Providers.Efin;
 using HE.FMS.Middleware.Shared.Base;
 using Microsoft.Azure.Functions.Worker;
 using Newtonsoft.Json.Linq;
+using static HE.FMS.Middleware.Common.Constants;
 
 namespace HE.FMS.Middleware.Claims.Functions;
 
 public class ProcessAndStoreClaimTimeTrigger : DataExportFunctionBase<ClaimItemSet>
 {
     private readonly ICsvFileGenerator _csvFileGenerator;
+    private readonly IEfinCosmosConfigClient _configurationClient;
 
     public ProcessAndStoreClaimTimeTrigger(
         IEfinCosmosClient efinCosmosDbClient,
         ICsvFileWriter csvFileWriter,
-        ICsvFileGenerator csvFileGenerator)
+        ICsvFileGenerator csvFileGenerator,
+        IEfinCosmosConfigClient efinCosmosConfigClient)
         : base(
             efinCosmosDbClient,
             csvFileWriter)
     {
         _csvFileGenerator = csvFileGenerator;
+        _configurationClient = efinCosmosConfigClient;
     }
 
     [Function(nameof(ProcessAndStoreClaimTimeTrigger))]
@@ -39,7 +44,7 @@ public class ProcessAndStoreClaimTimeTrigger : DataExportFunctionBase<ClaimItemS
         await Process(CosmosDbItemType.Claim, cancellationToken);
     }
 
-    protected override ClaimItemSet Convert(IEnumerable<EfinItem> items)
+    protected override async Task<ClaimItemSet> Convert(IEnumerable<EfinItem> items)
     {
         var claims = items.Select(x => ((JObject)x.Value).ToObject<ClaimItem>()).WhereNotNull();
 
@@ -48,14 +53,31 @@ public class ProcessAndStoreClaimTimeTrigger : DataExportFunctionBase<ClaimItemS
             throw new ArgumentException(nameof(claims));
         }
 
+        string batchNumber;
+        try
+        {
+            batchNumber = await _configurationClient.GetNextIndex(IndexConfiguration.Claim.BatchIndex, CosmosDbItemType.Claim);
+        }
+        catch (MissingConfigurationException)
+        {
+            await _configurationClient.CreateItem(
+                IndexConfiguration.Claim.BatchIndex,
+                CosmosDbItemType.Claim,
+                IndexConfiguration.Claim.BatchIndexPrefix,
+                IndexConfiguration.Claim.BatchIndexLength);
+
+            batchNumber = await _configurationClient.GetNextIndex(IndexConfiguration.Claim.BatchIndex, CosmosDbItemType.Claim);
+        }
+
         var itemSet = new ClaimItemSet
         {
             IdempotencyKey = items.First().IdempotencyKey,
-            CLCLB_Batch = CLCLB_Batch.Create(claims),
+            CLCLB_Batch = CLCLB_Batch.Create(claims, batchNumber),
         };
 
         foreach (var claimItem in claims)
         {
+            claimItem.SetBatchIndex(batchNumber);
             itemSet.CLI_Invoices.Add(claimItem.CliInvoice);
             itemSet.CLA_InvoiceAnalyses.Add(claimItem.ClaInvoiceAnalysis);
         }

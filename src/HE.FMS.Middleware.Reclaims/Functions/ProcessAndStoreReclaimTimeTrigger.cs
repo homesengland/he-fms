@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using HE.FMS.Middleware.Common.Exceptions.Internal;
 using HE.FMS.Middleware.Common.Extensions;
 using HE.FMS.Middleware.Common.Serialization;
 using HE.FMS.Middleware.Contract.Common;
@@ -15,24 +16,26 @@ using HE.FMS.Middleware.Providers.ServiceBus;
 using HE.FMS.Middleware.Shared.Base;
 using Microsoft.Azure.Functions.Worker;
 using Newtonsoft.Json.Linq;
+using static HE.FMS.Middleware.Common.Constants;
 
 namespace HE.FMS.Middleware.Reclaims.Functions;
 
 public class ProcessAndStoreReclaimTimeTrigger : DataExportFunctionBase<ReclaimItemSet>
 {
     private readonly ICsvFileGenerator _csvFileGenerator;
+    private readonly IEfinCosmosConfigClient _configurationClient;
 
     public ProcessAndStoreReclaimTimeTrigger(
         IEfinCosmosClient efinCosmosDbClient,
         ICsvFileWriter csvFileWriter,
         ICsvFileGenerator csvFileGenerator,
-        ITopicClientFactory topicClientFactory,
-        IObjectSerializer objectSerializer)
+        IEfinCosmosConfigClient configurationClient)
         : base(
             efinCosmosDbClient,
             csvFileWriter)
     {
         _csvFileGenerator = csvFileGenerator;
+        _configurationClient = configurationClient;
     }
 
     [Function("ProcessCreateReclaim")]
@@ -43,13 +46,29 @@ public class ProcessAndStoreReclaimTimeTrigger : DataExportFunctionBase<ReclaimI
         await Process(CosmosDbItemType.Reclaim, cancellationToken);
     }
 
-    protected override ReclaimItemSet Convert(IEnumerable<EfinItem> items)
+    protected override async Task<ReclaimItemSet> Convert(IEnumerable<EfinItem> items)
     {
         var reclaims = items.Select(x => ((JObject)x.Value).ToObject<ReclaimItem>()).WhereNotNull();
 
         if (reclaims.IsNullOrEmpty())
         {
             throw new ArgumentException(nameof(reclaims));
+        }
+
+        string batchNumber;
+        try
+        {
+            batchNumber = await _configurationClient.GetNextIndex(IndexConfiguration.Reclaim.BatchIndex, CosmosDbItemType.Reclaim);
+        }
+        catch (MissingConfigurationException)
+        {
+            await _configurationClient.CreateItem(
+                IndexConfiguration.Reclaim.BatchIndex,
+                CosmosDbItemType.Reclaim,
+                IndexConfiguration.Reclaim.BatchIndexPrefix,
+                IndexConfiguration.Reclaim.BatchIndexLength);
+
+            batchNumber = await _configurationClient.GetNextIndex(IndexConfiguration.Reclaim.BatchIndex, CosmosDbItemType.Reclaim);
         }
 
         var itemSet = new ReclaimItemSet
@@ -60,6 +79,7 @@ public class ProcessAndStoreReclaimTimeTrigger : DataExportFunctionBase<ReclaimI
 
         foreach (var reclaimItem in reclaims)
         {
+            reclaimItem.SetBatchIndex(batchNumber);
             itemSet.CLI_IW_ILTes.Add(reclaimItem.CliIwIlt);
             itemSet.CLI_IW_INAes.Add(reclaimItem.CliIwIna);
             itemSet.CLI_IW_INLes.Add(reclaimItem.CliIwInl);

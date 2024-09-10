@@ -42,7 +42,7 @@ public class CLCLB_Batch
     [EfinFileRowIndex(192, 200)]
     public string clb_entry_date { get; set; }
 
-    public static CLCLB_Batch Create(IEnumerable<ClaimItem> claimInvoices)
+    public static CLCLB_Batch Create(IEnumerable<ClaimItem> claimInvoices, string batchIndex)
     {
         ArgumentNullException.ThrowIfNull(claimInvoices);
         var culture = new CultureInfo("en-GB");
@@ -50,7 +50,7 @@ public class CLCLB_Batch
         {
             clb_sub_ledger = EfinConstants.Default.Claim.SubLedger,
 
-            // clb_batch_ref = <unique_value>,
+            clb_batch_ref = batchIndex,
             clb_year = (DateTime.UtcNow.Month is >= 1 and <= 3 ? DateTime.UtcNow.Year - 1 : DateTime.UtcNow.Year).ToString(CultureInfo.InvariantCulture),
             clb_period = DateTime.UtcNow.Month.ToString(CultureInfo.InvariantCulture),
             clb_net_amount = claimInvoices.Sum(x => decimal.Parse(x.CliInvoice.cli_net_amount, NumberStyles.Any, culture)).ToString("F", CultureInfo.InvariantCulture),

@@ -33,7 +33,7 @@ public abstract class DataExportFunctionBase<T>
             return;
         }
 
-        var convertedData = Convert(items);
+        var convertedData = await Convert(items);
 
         var blobs = PrepareFiles(convertedData);
 
@@ -50,7 +50,7 @@ public abstract class DataExportFunctionBase<T>
         }
     }
 
-    protected abstract T Convert(IEnumerable<EfinItem> items);
+    protected abstract Task<T> Convert(IEnumerable<EfinItem> items);
 
     protected abstract IEnumerable<BlobData> PrepareFiles(T convertedData);
 }
