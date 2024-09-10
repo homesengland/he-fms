@@ -38,8 +38,8 @@ public class TransformReclaimServiceBusTrigger
         _logger.LogInformation($"{nameof(TransformReclaimServiceBusTrigger)} function started");
 
         var inputData = await _streamSerializer.Deserialize<ReclaimPaymentRequest>(message.Body.ToStream(), cancellationToken);
-        var dataConvert = await _reclaimConverter.Convert(inputData);
-        var cosmosDbOutput = EfinItem.CreateEfinItem(dataConvert, message.CorrelationId, CosmosDbItemType.Reclaim);
+        var convertedData = _reclaimConverter.Convert(inputData);
+        var cosmosDbOutput = EfinItem.CreateEfinItem(convertedData, message.CorrelationId, CosmosDbItemType.Reclaim);
         await _efinCosmosDbClient.UpsertItem(cosmosDbOutput, cancellationToken);
 
         _logger.LogInformation($"{nameof(TransformReclaimServiceBusTrigger)} function ended");

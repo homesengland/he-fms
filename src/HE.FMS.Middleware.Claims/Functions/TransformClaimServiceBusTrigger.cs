@@ -38,7 +38,7 @@ public class TransformClaimServiceBusTrigger
         _logger.LogInformation($"{nameof(TransformClaimServiceBusTrigger)} function started");
 
         var inputData = await _streamSerializer.Deserialize<ClaimPaymentRequest>(message.Body.ToStream(), cancellationToken);
-        var convertedData = await _claimConverter.Convert(inputData);
+        var convertedData = _claimConverter.Convert(inputData);
         var cosmosDbOutput = EfinItem.CreateEfinItem(convertedData, message.CorrelationId, CosmosDbItemType.Claim);
         await _efinCosmosDbClient.UpsertItem(cosmosDbOutput, cancellationToken);
 

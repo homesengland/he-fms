@@ -36,30 +36,12 @@ public class CLI_IW_INL
     [EfinFileRowIndex(142, 147)]
     public string cliwl_line_ref { get; set; }
 
-    public static CLI_IW_INL Create(CLI_IW_BAT batch, ReclaimPaymentRequest reclaimPayment)
+    public static CLI_IW_INL Create(ReclaimPaymentRequest reclaimPayment)
     {
         return new CLI_IW_INL()
         {
             cliwl_sub_ledger_id = EfinConstants.Default.Reclaim.SubLedger,
-
-            // cliwl_inv_ref = <unique_value>
-            cliwl_batch_ref = batch.cliwb_batch_ref,
-            cliwl_item_sequence = EfinConstants.Default.Reclaim.ItemSequence,
-            cliwl_product_id = EfinConstants.Default.Reclaim.Product,
-            cliwl_goods_value = reclaimPayment.Reclaim.Amount.ToString("F", CultureInfo.InvariantCulture),
-            cliwl_vat_code = reclaimPayment.Application.VatCode,
-            cliwl_vat_amount = (reclaimPayment.Reclaim.Amount * reclaimPayment.Application.VatRate).ToString("F", CultureInfo.InvariantCulture),
-            cliwl_line_ref = EfinConstants.Default.Reclaim.Line,
-        };
-    }
-
-    public static CLI_IW_INL Create(ReclaimPaymentRequest reclaimPayment, string invoiceRef)
-    {
-        return new CLI_IW_INL()
-        {
-            cliwl_sub_ledger_id = EfinConstants.Default.Reclaim.SubLedger,
-
-            cliwl_inv_ref = invoiceRef,
+            cliwl_inv_ref = reclaimPayment.Application.AllocationId,
             cliwl_batch_ref = string.Empty,
             cliwl_item_sequence = EfinConstants.Default.Reclaim.ItemSequence,
             cliwl_product_id = EfinConstants.Default.Reclaim.Product,
