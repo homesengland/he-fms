@@ -1,0 +1,42 @@
+trigger:
+  branches:
+    include:
+    - main
+variables:
+  tag: "$(Build.BuildId)"
+parameters:
+- name: deployMiddleware
+  displayName: Deploy - Middleware ?
+  type: boolean
+  default: true
+- name: deployClaims
+  displayName: Deploy - Claims ?
+  type: boolean
+  default: true
+- name: deployReclaims
+  displayName: Deploy - Reclaims ?
+  type: boolean
+  default: true
+- name: tag
+  type: string
+
+pool: 'vmss-ado-chs-nonprod-001'
+
+resources:
+  repositories:
+  - repository: he-fms-deployment
+    type: git
+    name: 'FMS/he-fms-deployment'
+    ref: 'main'
+  - repository: templates
+    type: git
+    name: 'Cloud Hosting Service/Templates'
+    ref: 'master'
+
+stages:
+- template: pipelines/azure-pipelines-deploy.yml@he-fms-deployment
+  parameters:
+    tag: ${{ parameters.tag }}
+    deployMiddleware: ${{ parameters.deployMiddleware }}
+    deployClaims: ${{ parameters.deployClaims }}
+    deployReclaims: ${{ parameters.deployReclaims }}

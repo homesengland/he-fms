@@ -13,7 +13,7 @@ COPY [".editorconfig", "/app"]
 RUN dotnet restore "app/HE.FMS.Middleware.Reclaims/HE.FMS.Middleware.Reclaims.csproj"
 
 RUN mkdir -p /home/site/wwwroot
-RUN dotnet publish app/HE.FMS.Middleware.Claims/HE.FMS.Middleware.Reclaims.csproj -c Release -o /home/site/wwwroot
+RUN dotnet publish app/HE.FMS.Middleware.Reclaims/HE.FMS.Middleware.Reclaims.csproj -c Release -o /home/site/wwwroot
 
 RUN groupadd -g 999 appuser && \
     useradd -r -u 999 -g appuser appuser

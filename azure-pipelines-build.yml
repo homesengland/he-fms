@@ -1,0 +1,35 @@
+trigger:
+  branches:
+    include:
+    - main
+variables:
+  buildMajor: 1
+  buildMinor: 1
+  buildBranch: $[replace(variables['Build.SourceBranch'], '/', '.')]
+
+parameters:
+- name: forcePushToProd
+  displayName: Force Push to Production
+  type: boolean
+  default: false
+
+pool: 'vmss-ado-chs-nonprod-001'
+
+name: $(buildMajor).$(buildMinor).$(Rev:r)-$(buildBranch)
+
+resources:
+  repositories:
+  - repository: he-fms-deployment
+    type: git
+    name: 'FMS/he-fms-deployment'
+    ref: 'main'
+  - repository: templates
+    type: git
+    name: 'Cloud Hosting Service/Templates'
+    ref: 'master'
+
+stages:
+- template: pipelines/azure-pipelines-build.yml@he-fms-deployment
+  parameters:
+    dotnetVersion: '8.0.x'
+    forcePushToProd: ${{ parameters.forcePushToProd }}

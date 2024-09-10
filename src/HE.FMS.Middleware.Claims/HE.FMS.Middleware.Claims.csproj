@@ -12,7 +12,7 @@
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.15.1" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\HE.FMS.Middleware.Shared\HE.FMS.Middleware.Shared.csproj" />
+    <ProjectReference Include="..\HE.FMS.Middleware.Shared\HE.FMS.Middleware.Shared.csproj"/>
   </ItemGroup>
   <ItemGroup>
     <Using Include="System.Threading.ExecutionContext" Alias="ExecutionContext" />
