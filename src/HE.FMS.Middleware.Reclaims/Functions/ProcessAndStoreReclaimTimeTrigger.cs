@@ -1,37 +1,30 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using HE.FMS.Middleware.Common.Extensions;
 using HE.FMS.Middleware.Common.Serialization;
-using HE.FMS.Middleware.Contract.Claims.Efin;
 using HE.FMS.Middleware.Contract.Common;
-using HE.FMS.Middleware.Contract.Reclaims;
 using HE.FMS.Middleware.Contract.Reclaims.Efin;
-using HE.FMS.Middleware.Providers.CosmosDb;
 using HE.FMS.Middleware.Providers.CosmosDb.Base;
 using HE.FMS.Middleware.Providers.CosmosDb.Efin;
-using HE.FMS.Middleware.Providers.CosmosDb.Trace;
 using HE.FMS.Middleware.Providers.CsvFile;
 using HE.FMS.Middleware.Providers.Efin;
 using HE.FMS.Middleware.Providers.ServiceBus;
 using HE.FMS.Middleware.Shared.Base;
 using Microsoft.Azure.Functions.Worker;
-using Microsoft.Azure.ServiceBus;
+using Newtonsoft.Json.Linq;
 
 namespace HE.FMS.Middleware.Reclaims.Functions;
 
 public class ProcessAndStoreReclaimTimeTrigger : DataExportFunctionBase<ReclaimItemSet>
 {
-    private readonly IReclaimConverter _reclaimConverter;
     private readonly ICsvFileGenerator _csvFileGenerator;
 
     public ProcessAndStoreReclaimTimeTrigger(
         IEfinCosmosClient efinCosmosDbClient,
         ICsvFileWriter csvFileWriter,
-        IReclaimConverter reclaimConverter,
         ICsvFileGenerator csvFileGenerator,
         ITopicClientFactory topicClientFactory,
         IObjectSerializer objectSerializer)
@@ -41,7 +34,6 @@ public class ProcessAndStoreReclaimTimeTrigger : DataExportFunctionBase<ReclaimI
             topicClientFactory.GetTopicClient("Reclaims:Create:TopicName"),
             objectSerializer)
     {
-        _reclaimConverter = reclaimConverter;
         _csvFileGenerator = csvFileGenerator;
     }
 
@@ -55,8 +47,7 @@ public class ProcessAndStoreReclaimTimeTrigger : DataExportFunctionBase<ReclaimI
 
     protected override async Task<ReclaimItemSet> Convert(IEnumerable<EfinItem> items)
     {
-        var reclaims = items.Where(x => x.Value is ReclaimPaymentRequest)
-            .Select(x => x.Value as ReclaimPaymentRequest).WhereNotNull().ToList();
+        var reclaims = items.Select(x => ((JObject)x.Value).ToObject<ReclaimItem>()).WhereNotNull();
 
         if (reclaims.IsNullOrEmpty())
         {
@@ -69,14 +60,13 @@ public class ProcessAndStoreReclaimTimeTrigger : DataExportFunctionBase<ReclaimI
             IdempotencyKey = items.First().IdempotencyKey
         };
 
-        foreach (var reclaimPaymentRequest in reclaims)
+        foreach (var reclaimItem in reclaims)
         {
-            var item = await _reclaimConverter.Convert(reclaimPaymentRequest);
-            itemSet.CLI_IW_ILTes.Add(item.CliIwIlt);
-            itemSet.CLI_IW_INAes.Add(item.CliIwIna);
-            itemSet.CLI_IW_INLes.Add(item.CliIwInl);
-            itemSet.CLI_IW_INVes.Add(item.CliIwInv);
-            itemSet.CLI_IW_ITLes.Add(item.CliIwItl);
+            itemSet.CLI_IW_ILTes.Add(reclaimItem.CliIwIlt);
+            itemSet.CLI_IW_INAes.Add(reclaimItem.CliIwIna);
+            itemSet.CLI_IW_INLes.Add(reclaimItem.CliIwInl);
+            itemSet.CLI_IW_INVes.Add(reclaimItem.CliIwInv);
+            itemSet.CLI_IW_ITLes.Add(reclaimItem.CliIwItl);
         }
 
         return itemSet;

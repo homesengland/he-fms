@@ -25,7 +25,7 @@ public class EfinCsvFileGenerator : ICsvFileGenerator
 
         return new BlobData()
         {
-            Name = $"{type}_{DateTime.Now:yyyyMMdd_HHmmss}.csv",
+            Name = $"{type.Name}_{DateTime.Now:yyyyMMdd_HHmmss}.csv",
             Content = string.Join(Environment.NewLine, rows),
         };
     }
@@ -45,7 +45,7 @@ public class EfinCsvFileGenerator : ICsvFileGenerator
         foreach (var property in properties)
         {
             var (startIndex, endIndex) = property.GetPropertyAttributeValue((EfinFileRowIndexAttribute rowIndexAttribute) => (rowIndexAttribute.StartIndex, rowIndexAttribute.EndIndex));
-            var length = endIndex - startIndex + 1;
+            var length = endIndex - startIndex;// + 1;
             var value = property.GetValue(item, null)?.ToString() ?? string.Empty;
 
             row = row.ReplaceAt(startIndex, length, value, ' ');

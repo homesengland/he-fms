@@ -5,7 +5,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using HE.FMS.Middleware.Common.Extensions;
 using HE.FMS.Middleware.Common.Serialization;
-using HE.FMS.Middleware.Contract.Claims;
 using HE.FMS.Middleware.Contract.Claims.Efin;
 using HE.FMS.Middleware.Contract.Common;
 using HE.FMS.Middleware.Providers.CosmosDb.Base;
@@ -15,18 +14,17 @@ using HE.FMS.Middleware.Providers.Efin;
 using HE.FMS.Middleware.Providers.ServiceBus;
 using HE.FMS.Middleware.Shared.Base;
 using Microsoft.Azure.Functions.Worker;
+using Newtonsoft.Json.Linq;
 
 namespace HE.FMS.Middleware.Claims.Functions;
 
 public class ProcessAndStoreClaimTimeTrigger : DataExportFunctionBase<ClaimItemSet>
 {
-    private readonly IClaimConverter _claimConverter;
     private readonly ICsvFileGenerator _csvFileGenerator;
 
     public ProcessAndStoreClaimTimeTrigger(
         IEfinCosmosClient efinCosmosDbClient,
         ICsvFileWriter csvFileWriter,
-        IClaimConverter claimConverter,
         ICsvFileGenerator csvFileGenerator,
         ITopicClientFactory topicClientFactory,
         IObjectSerializer objectSerializer)
@@ -36,7 +34,6 @@ public class ProcessAndStoreClaimTimeTrigger : DataExportFunctionBase<ClaimItemS
             topicClientFactory.GetTopicClient("Claims:Create:TopicName"),
             objectSerializer)
     {
-        _claimConverter = claimConverter;
         _csvFileGenerator = csvFileGenerator;
     }
 
@@ -50,10 +47,9 @@ public class ProcessAndStoreClaimTimeTrigger : DataExportFunctionBase<ClaimItemS
 
     protected override async Task<ClaimItemSet> Convert(IEnumerable<EfinItem> items)
     {
-        var claims = items.Where(x => x.Value is ClaimPaymentRequest)
-            .Select(x => x.Value as ClaimPaymentRequest).WhereNotNull().ToList();
+        var claims = items.Select(x => ((JObject)x.Value).ToObject<ClaimItem>()).WhereNotNull();
 
-        if (claims.IsNullOrEmpty())
+        if (!claims.Any())
         {
             throw new ArgumentException(nameof(claims));
         }
@@ -64,11 +60,10 @@ public class ProcessAndStoreClaimTimeTrigger : DataExportFunctionBase<ClaimItemS
             CLCLB_Batch = CLCLB_Batch.Create(claims),
         };
 
-        foreach (var claimPaymentRequest in claims)
+        foreach (var claimItem in claims)
         {
-            var item = await _claimConverter.Convert(claimPaymentRequest);
-            itemSet.CLI_Invoices.Add(item.CliInvoice);
-            itemSet.CLA_InvoiceAnalyses.Add(item.ClaInvoiceAnalysis);
+            itemSet.CLI_Invoices.Add(claimItem.CliInvoice);
+            itemSet.CLA_InvoiceAnalyses.Add(claimItem.ClaInvoiceAnalysis);
         }
 
         return itemSet;

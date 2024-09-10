@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using HE.FMS.Middleware.Common.Exceptions.Validation;
 using HE.FMS.Middleware.Common.Extensions;
 using HE.FMS.Middleware.Common.Serialization;
-using HE.FMS.Middleware.Providers.CosmosDb;
 using HE.FMS.Middleware.Providers.CosmosDb.Base;
 using HE.FMS.Middleware.Providers.CosmosDb.Trace;
 using Microsoft.Azure.Functions.Worker.Http;

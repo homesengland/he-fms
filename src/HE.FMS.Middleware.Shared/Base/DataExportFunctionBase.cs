@@ -37,6 +37,11 @@ public abstract class DataExportFunctionBase<T>
     {
         var items = await _efinCosmosDbClient.GetAllNewItemsAsync(type);
 
+        if (!items.Any())
+        {
+            return;
+        }
+
         var convertedData = await Convert(items);
 
         var blobs = PrepareFiles(convertedData);
