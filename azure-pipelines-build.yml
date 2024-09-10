@@ -24,11 +24,11 @@ resources:
   - repository: he-fms-deployment
     type: git
     name: 'FMS/he-fms-deployment'
-    ref: 'pr-pipeline'
+    ref: 'main'
   - repository: templates
     type: git
     name: 'Cloud Hosting Service/Templates'
-    ref: 'docker-build'
+    ref: 'master'
 
 stages:
 - template: pipelines/azure-pipelines-build.yml@he-fms-deployment
