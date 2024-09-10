@@ -43,7 +43,7 @@ public class ProcessAndStoreReclaimTimeTrigger : DataExportFunctionBase<ReclaimI
         await Process(CosmosDbItemType.Reclaim, cancellationToken);
     }
 
-    protected override async Task<ReclaimItemSet> Convert(IEnumerable<EfinItem> items)
+    protected override ReclaimItemSet Convert(IEnumerable<EfinItem> items)
     {
         var reclaims = items.Select(x => ((JObject)x.Value).ToObject<ReclaimItem>()).WhereNotNull();
 

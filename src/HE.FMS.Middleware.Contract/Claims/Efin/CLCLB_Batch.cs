@@ -45,7 +45,7 @@ public class CLCLB_Batch
     public static CLCLB_Batch Create(IEnumerable<ClaimItem> claimInvoices)
     {
         ArgumentNullException.ThrowIfNull(claimInvoices);
-        CultureInfo culture = new CultureInfo("en-GB");
+        var culture = new CultureInfo("en-GB");
         return new CLCLB_Batch()
         {
             clb_sub_ledger = EfinConstants.Default.Claim.SubLedger,

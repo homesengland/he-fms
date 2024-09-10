@@ -4,14 +4,12 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using HE.FMS.Middleware.Common.Extensions;
-using HE.FMS.Middleware.Common.Serialization;
 using HE.FMS.Middleware.Contract.Claims.Efin;
 using HE.FMS.Middleware.Contract.Common;
 using HE.FMS.Middleware.Providers.CosmosDb.Base;
 using HE.FMS.Middleware.Providers.CosmosDb.Efin;
 using HE.FMS.Middleware.Providers.CsvFile;
 using HE.FMS.Middleware.Providers.Efin;
-using HE.FMS.Middleware.Providers.ServiceBus;
 using HE.FMS.Middleware.Shared.Base;
 using Microsoft.Azure.Functions.Worker;
 using Newtonsoft.Json.Linq;
@@ -25,9 +23,7 @@ public class ProcessAndStoreClaimTimeTrigger : DataExportFunctionBase<ClaimItemS
     public ProcessAndStoreClaimTimeTrigger(
         IEfinCosmosClient efinCosmosDbClient,
         ICsvFileWriter csvFileWriter,
-        ICsvFileGenerator csvFileGenerator,
-        ITopicClientFactory topicClientFactory,
-        IObjectSerializer objectSerializer)
+        ICsvFileGenerator csvFileGenerator)
         : base(
             efinCosmosDbClient,
             csvFileWriter)
@@ -43,7 +39,7 @@ public class ProcessAndStoreClaimTimeTrigger : DataExportFunctionBase<ClaimItemS
         await Process(CosmosDbItemType.Claim, cancellationToken);
     }
 
-    protected override async Task<ClaimItemSet> Convert(IEnumerable<EfinItem> items)
+    protected override ClaimItemSet Convert(IEnumerable<EfinItem> items)
     {
         var claims = items.Select(x => ((JObject)x.Value).ToObject<ClaimItem>()).WhereNotNull();
 

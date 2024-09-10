@@ -1,4 +1,5 @@
 using Azure.Storage.Blobs;
+using Azure.Storage.Files.Shares;
 using HE.FMS.Middleware.Common.Extensions;
 using HE.FMS.Middleware.Providers.CosmosDb.Efin;
 using HE.FMS.Middleware.Providers.CosmosDb.Settings;
@@ -29,6 +30,8 @@ public static class ProvidersModule
             .AddCosmosDb()
             .AddKeyVault()
             .AddServiceBus()
+            .AddStorageSettings()
+            .AddFileShareStorage()
             .AddBlobStorage()
             .AddClaimReclaimServices();
     }
@@ -38,7 +41,7 @@ public static class ProvidersModule
         return services.AddSingleton<IClaimConverter, ClaimConverter>()
             .AddSingleton<IReclaimConverter, ReclaimConverter>()
             .AddSingleton<ICsvFileGenerator, EfinCsvFileGenerator>()
-            .AddSingleton<ICsvFileWriter, CsvFileBlobWriter>();
+            .AddSingleton<ICsvFileWriter, FileShareWriter>();
     }
 
     private static IServiceCollection AddMambu(this IServiceCollection services)
@@ -96,11 +99,25 @@ public static class ProvidersModule
         return services;
     }
 
+    private static IServiceCollection AddStorageSettings(this IServiceCollection services)
+    {
+        services.AddAppConfiguration<IIntegrationStorageSettings, IntegrationStorageSettings>("IntegrationStorage");
+        return services;
+    }
+
     private static IServiceCollection AddBlobStorage(this IServiceCollection services)
     {
-        services.AddAppConfiguration<IBlobStorageSettings, BlobStorageSettings>("BlobStorage");
-        services.AddSingleton(sp => new BlobServiceClient(sp.GetRequiredService<IBlobStorageSettings>().ConnectionString));
+        services.AddSingleton(sp => new BlobServiceClient(sp.GetRequiredService<IntegrationStorageSettings>().ConnectionString));
+        return services;
+    }
 
+    private static IServiceCollection AddFileShareStorage(this IServiceCollection services)
+    {
+        services.AddSingleton(sp =>
+        {
+            var settings = sp.GetRequiredService<IIntegrationStorageSettings>();
+            return new ShareClient(settings.ConnectionString, settings.ShareName);
+        });
         return services;
     }
 }

@@ -45,7 +45,7 @@ public class EfinCsvFileGenerator : ICsvFileGenerator
         foreach (var property in properties)
         {
             var (startIndex, endIndex) = property.GetPropertyAttributeValue((EfinFileRowIndexAttribute rowIndexAttribute) => (rowIndexAttribute.StartIndex, rowIndexAttribute.EndIndex));
-            var length = endIndex - startIndex;// + 1;
+            var length = endIndex - startIndex;
             var value = property.GetValue(item, null)?.ToString() ?? string.Empty;
 
             row = row.ReplaceAt(startIndex, length, value, ' ');

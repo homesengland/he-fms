@@ -20,6 +20,8 @@
     "TraceDb:ConnectionString": "",
     "TraceDb:DatabaseId": "fms",
     "TraceDb:ContainerId": "trace-container",
+    "IntegrationStorage:ConnectionString": "",
+    "IntegrationStorage:ShareName": "",
     "Mambu:RotateApiKeyTimeTrigger": "0 30 7 * * *",
     "Mambu:Api:BaseUrl": "https://{mambuInstance}.mambu.com",
     "Mambu:Api:RetryCount": "1",
