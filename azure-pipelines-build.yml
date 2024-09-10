@@ -6,10 +6,14 @@ variables:
   buildBranch: $[replace(variables['Build.SourceBranch'], '/', '.')]
 
 parameters:
-- name: forcePushToProd
-  displayName: Force Push to Production
+- name: dockerPush
+  displayName: Push Docker Image
   type: boolean
   default: true
+- name: dockerPushProd
+  displayName: Push Docker Image to Prod
+  type: boolean
+  default: false
 
 pool: 'vmss-ado-chs-nonprod-001'
 
@@ -20,7 +24,7 @@ resources:
   - repository: he-fms-deployment
     type: git
     name: 'FMS/he-fms-deployment'
-    ref: 'main'
+    ref: 'pr-pipeline'
   - repository: templates
     type: git
     name: 'Cloud Hosting Service/Templates'
@@ -30,4 +34,5 @@ stages:
 - template: pipelines/azure-pipelines-build.yml@he-fms-deployment
   parameters:
     dotnetVersion: '8.0.x'
-    forcePushToProd: ${{ parameters.forcePushToProd }}
+    dockerPush: ${{ parameters.dockerPush }}
+    dockerPushProd: ${{ parameters.dockerPushProd }}
