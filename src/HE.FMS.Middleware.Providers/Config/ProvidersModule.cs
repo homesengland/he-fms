@@ -1,7 +1,9 @@
 using Azure.Storage.Blobs;
+using Azure.Storage.Files.Shares;
 using HE.FMS.Middleware.Common.Extensions;
-using HE.FMS.Middleware.Providers.CosmosDb;
+using HE.FMS.Middleware.Providers.CosmosDb.Efin;
 using HE.FMS.Middleware.Providers.CosmosDb.Settings;
+using HE.FMS.Middleware.Providers.CosmosDb.Trace;
 using HE.FMS.Middleware.Providers.CsvFile;
 using HE.FMS.Middleware.Providers.CsvFile.Settings;
 using HE.FMS.Middleware.Providers.Efin;
@@ -28,6 +30,9 @@ public static class ProvidersModule
             .AddCosmosDb()
             .AddKeyVault()
             .AddServiceBus()
+            .AddStorageSettings()
+            .AddFileShareStorage()
+            .AddBlobStorage()
             .AddClaimReclaimServices();
     }
 
@@ -35,7 +40,8 @@ public static class ProvidersModule
     {
         return services.AddSingleton<IClaimConverter, ClaimConverter>()
             .AddSingleton<IReclaimConverter, ReclaimConverter>()
-            .AddSingleton<ICsvFileGenerator, EfinCsvFileGenerator>();
+            .AddSingleton<ICsvFileGenerator, EfinCsvFileGenerator>()
+            .AddSingleton<ICsvFileWriter, FileShareWriter>();
     }
 
     private static IServiceCollection AddMambu(this IServiceCollection services)
@@ -56,13 +62,12 @@ public static class ProvidersModule
 
     private static IServiceCollection AddCosmosDb(this IServiceCollection services)
     {
-        services.AddAppConfiguration<ICosmosDbSettings, CosmosDbSettings>("CosmosDb");
-        services.AddSingleton<ICosmosDbClient, CosmosDbClient>();
-        services.AddSingleton<IConfigurationClient, ConfigurationClient>();
-        services.AddSingleton<IDbItemClient, DbItemClient>();
-        services.AddAppConfiguration<IBlobStorageSettings, BlobStorageSettings>("BlobStorage");
-        services.AddSingleton(sp => new BlobServiceClient(sp.GetRequiredService<IBlobStorageSettings>().ConnectionString));
-        services.AddSingleton<ICsvFileWriter, CsvFileBlobWriter>();
+        services.AddAppConfiguration<EfinConfigDbSettings>("EfinConfigDb");
+        services.AddAppConfiguration<EfinDataDbSettings>("EfinDb");
+        services.AddAppConfiguration<TraceDbSettings>("TraceDb");
+        services.AddSingleton<IEfinCosmosClient, EfinCosmosClient>(x => new EfinCosmosClient(x.GetService<EfinDataDbSettings>()!));
+        services.AddSingleton<IEfinCosmosConfigClient, EfinConfigCosmosClient>(x => new EfinConfigCosmosClient(x.GetService<EfinConfigDbSettings>()!));
+        services.AddSingleton<ITraceCosmosClient, TraceCosmosClient>(x => new TraceCosmosClient(x.GetService<TraceDbSettings>()!));
 
         return services;
     }
@@ -91,6 +96,28 @@ public static class ProvidersModule
     {
         services.AddSingleton<ITopicClientFactory, TopicClientFactory>();
 
+        return services;
+    }
+
+    private static IServiceCollection AddStorageSettings(this IServiceCollection services)
+    {
+        services.AddAppConfiguration<IIntegrationStorageSettings, IntegrationStorageSettings>("IntegrationStorage");
+        return services;
+    }
+
+    private static IServiceCollection AddBlobStorage(this IServiceCollection services)
+    {
+        services.AddSingleton(sp => new BlobServiceClient(sp.GetRequiredService<IntegrationStorageSettings>().ConnectionString));
+        return services;
+    }
+
+    private static IServiceCollection AddFileShareStorage(this IServiceCollection services)
+    {
+        services.AddSingleton(sp =>
+        {
+            var settings = sp.GetRequiredService<IIntegrationStorageSettings>();
+            return new ShareClient(settings.ConnectionString, settings.ShareName);
+        });
         return services;
     }
 }

@@ -3,7 +3,8 @@ using System.Threading.Tasks;
 using Azure.Messaging.ServiceBus;
 using HE.FMS.Middleware.Common.Serialization;
 using HE.FMS.Middleware.Contract.Grants.Results;
-using HE.FMS.Middleware.Providers.CosmosDb;
+using HE.FMS.Middleware.Providers.CosmosDb.Base;
+using HE.FMS.Middleware.Providers.CosmosDb.Trace;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 
@@ -24,14 +25,14 @@ public class PushToCrmServiceBusTrigger
 
     [Function(nameof(PushToCrmServiceBusTrigger))]
     [CosmosDBOutput("%CosmosDb:DatabaseId%", "%CosmosDb:ContainerId%", Connection = "CosmosDb:ConnectionString")]
-    public async Task<CosmosDbItem> Run(
+    public async Task<TraceItem> Run(
         [ServiceBusTrigger("%ServiceBus:PushToCrm:Topic%", "%ServiceBus:PushToCrm:Subscription%", Connection = "ServiceBus:Connection")]
         ServiceBusReceivedMessage message,
         CancellationToken cancellationToken)
     {
         var inputData = await _streamSerializer.Deserialize<OpenNewGrantAccountResult>(message.Body.ToStream(), cancellationToken);
 
-        var cosmosDbOutput = CosmosDbItem.CreateCosmosDbItem(inputData, message.CorrelationId, CosmosDbItemType.Log);
+        var cosmosDbOutput = TraceItem.CreateTraceItem(inputData, message.CorrelationId, CosmosDbItemType.Log);
 
         _logger.LogInformation("Message Id: {Id}", message.MessageId);
         _logger.LogInformation("Message Correlation Id: {CorrelationId}", message.CorrelationId);

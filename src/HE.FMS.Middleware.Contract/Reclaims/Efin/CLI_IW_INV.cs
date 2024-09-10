@@ -60,17 +60,16 @@ public class CLI_IW_INV
     [EfinFileRowIndex(544, 583)]
     public string cliwi_description { get; set; }
 
-    public static CLI_IW_INV Create(CLI_IW_BAT batch, ReclaimPaymentRequest reclaimPayment)
+    public static CLI_IW_INV Create(ReclaimPaymentRequest reclaimPayment)
     {
         return new CLI_IW_INV()
         {
             cliwi_sub_ledger_id = EfinConstants.Default.Reclaim.SubLedger,
-
-            // cliwi_inv_ref = <unique_value>
-            cliwi_batch_ref = batch.cliwb_batch_ref,
+            cliwi_inv_ref = reclaimPayment.Application.AllocationId,
+            cliwi_batch_ref = string.Empty,
             cliwi_invoice_to_id = reclaimPayment.Reclaim.Id,
             cliwi_net_amount = reclaimPayment.Reclaim.Amount.ToString("F", CultureInfo.InvariantCulture),
-            cliwi_their_ref = reclaimPayment.Application.Id,
+            cliwi_their_ref = reclaimPayment.Application.AllocationId,
             cliwi_trans_type = EfinConstants.Default.Reclaim.TransType,
             cliwi_date = DateTime.UtcNow.ToString("d-MMM-yy", CultureInfo.InvariantCulture),
             cliwi_terms_code = EfinConstants.Default.Reclaim.TermsCode,

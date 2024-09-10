@@ -36,9 +36,9 @@ public class CLI_IW_BAT
     [EfinFileRowIndex(98, 98)]
     public string cliwb_default_prefix { get; set; }
 
-    public static CLI_IW_BAT Create(IEnumerable<ReclaimPaymentRequest> reclaimPayments)
+    public static CLI_IW_BAT Create(IEnumerable<ReclaimItem> reclaims)
     {
-        ArgumentNullException.ThrowIfNull(reclaimPayments);
+        ArgumentNullException.ThrowIfNull(reclaims);
 
         return new CLI_IW_BAT()
         {
@@ -48,7 +48,7 @@ public class CLI_IW_BAT
             cliwb_description = EfinConstants.Default.Reclaim.Description,
             cliwb_year = (DateTime.Now.Month is >= 1 and <= 3 ? DateTime.Now.Year - 1 : DateTime.Now.Year).ToString(CultureInfo.InvariantCulture),
             cliwb_period = DateTime.UtcNow.Month.ToString(CultureInfo.InvariantCulture),
-            cliwb_no_invoices = reclaimPayments.Count().ToString(CultureInfo.InvariantCulture),
+            cliwb_no_invoices = reclaims.Count().ToString(CultureInfo.InvariantCulture),
             cliwb_user = EfinConstants.Default.Reclaim.User,
             cliwb_entry_date = DateTime.UtcNow.ToString("d-MMM-yy", CultureInfo.InvariantCulture),
             cliwb_default_prefix = EfinConstants.Default.Reclaim.Prefix,
