@@ -15,6 +15,10 @@ public sealed class ClaimApplicationDetails
     public string Name { get; set; }
 
     [Required]
+    [MaxLength(ValidatorConstants.CustomNameMaxLength)]
+    public string AllocationId { get; set; }
+
+    [Required]
     [MaxLength(ValidatorConstants.EnumMaxLength)]
     public string Region { get; set; }
 

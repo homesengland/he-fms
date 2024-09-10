@@ -8,30 +8,12 @@ using static HE.FMS.Middleware.Common.Constants;
 namespace HE.FMS.Middleware.Providers.Efin;
 public class ClaimConverter : IClaimConverter
 {
-    private readonly IEfinCosmosConfigClient _configurationClient;
-
-    public ClaimConverter(IEfinCosmosConfigClient configurationClient)
+    public ClaimItem Convert(ClaimPaymentRequest claimPaymentRequest)
     {
-        _configurationClient = configurationClient;
-    }
-
-    public async Task<ClaimItem> Convert(ClaimPaymentRequest claimPaymentRequest)
-    {
-        string invoiceNumber;
-        try
-        {
-            invoiceNumber = await _configurationClient.GetNextIndex(IndexConfiguration.Claim.InvoiceIndex, CosmosDbItemType.Claim);
-        }
-        catch (MissingConfigurationException)
-        {
-            await _configurationClient.CreateItem(IndexConfiguration.Claim.InvoiceIndex, CosmosDbItemType.Claim, IndexConfiguration.Claim.InvoiceIndexPrefix, IndexConfiguration.Claim.InvoiceIndexLength);
-            invoiceNumber = await _configurationClient.GetNextIndex(IndexConfiguration.Claim.InvoiceIndex, CosmosDbItemType.Claim);
-        }
-
         return new ClaimItem
         {
-            CliInvoice = CLI_Invoice.Create(claimPaymentRequest, invoiceNumber),
-            ClaInvoiceAnalysis = CLA_InvoiceAnalysis.Create(claimPaymentRequest, invoiceNumber),
+            CliInvoice = CLI_Invoice.Create(claimPaymentRequest),
+            ClaInvoiceAnalysis = CLA_InvoiceAnalysis.Create(claimPaymentRequest),
         };
     }
 }
