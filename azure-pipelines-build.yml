@@ -31,6 +31,5 @@ resources:
 stages:
 - template: pipelines/azure-pipelines-build.yml@he-fms-deployment
   parameters:
-    tag: "$(Build.BuildNumber)"
     dotnetVersion: '8.0.x'
     forcePushToProd: ${{ parameters.forcePushToProd }}
