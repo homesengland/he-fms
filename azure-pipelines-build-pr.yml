@@ -1,19 +1,11 @@
-trigger: none
-
+trigger:
+  branches:
+    include:
+    - main
 variables:
   buildMajor: 1
   buildMinor: 1
   buildBranch: $[replace(variables['Build.SourceBranch'], '/', '.')]
-
-parameters:
-- name: dockerPush
-  displayName: Push Docker Image
-  type: boolean
-  default: true
-- name: dockerPushProd
-  displayName: Push Docker Image to Prod
-  type: boolean
-  default: false
 
 pool: 'vmss-ado-chs-nonprod-001'
 
@@ -34,5 +26,5 @@ stages:
 - template: pipelines/azure-pipelines-build.yml@he-fms-deployment
   parameters:
     dotnetVersion: '8.0.x'
-    dockerPush: ${{ parameters.dockerPush }}
-    dockerPushProd: ${{ parameters.dockerPushProd }}
+    dockerPush: false
+    dockerPushProd: false
