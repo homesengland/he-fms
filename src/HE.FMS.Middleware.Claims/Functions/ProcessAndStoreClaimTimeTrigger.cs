@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using HE.FMS.Middleware.Common.Extensions;
-using HE.FMS.Middleware.Common.Serialization;
 using HE.FMS.Middleware.Contract.Claims;
 using HE.FMS.Middleware.Contract.Claims.Efin;
 using HE.FMS.Middleware.Contract.Common;
@@ -12,7 +11,6 @@ using HE.FMS.Middleware.Providers.CosmosDb.Base;
 using HE.FMS.Middleware.Providers.CosmosDb.Efin;
 using HE.FMS.Middleware.Providers.CsvFile;
 using HE.FMS.Middleware.Providers.Efin;
-using HE.FMS.Middleware.Providers.ServiceBus;
 using HE.FMS.Middleware.Shared.Base;
 using Microsoft.Azure.Functions.Worker;
 
@@ -27,20 +25,16 @@ public class ProcessAndStoreClaimTimeTrigger : DataExportFunctionBase<ClaimItemS
         IEfinCosmosClient efinCosmosDbClient,
         ICsvFileWriter csvFileWriter,
         IClaimConverter claimConverter,
-        ICsvFileGenerator csvFileGenerator,
-        ITopicClientFactory topicClientFactory,
-        IObjectSerializer objectSerializer)
+        ICsvFileGenerator csvFileGenerator)
         : base(
             efinCosmosDbClient,
-            csvFileWriter,
-            topicClientFactory.GetTopicClient("Claims:Create:TopicName"),
-            objectSerializer)
+            csvFileWriter)
     {
         _claimConverter = claimConverter;
         _csvFileGenerator = csvFileGenerator;
     }
 
-    [Function("ProcessCreateClaim")]
+    [Function(nameof(ProcessAndStoreClaimTimeTrigger))]
     public async Task Run(
         [TimerTrigger("0 */5 * * * *")] TimerInfo myTimer,
         CancellationToken cancellationToken)
@@ -75,10 +69,9 @@ public class ProcessAndStoreClaimTimeTrigger : DataExportFunctionBase<ClaimItemS
     }
 
     protected override IEnumerable<BlobData> PrepareFiles(ClaimItemSet convertedData) =>
-        new[]
-        {
+        [
             _csvFileGenerator.GenerateFile(convertedData.CLCLB_Batch.AsEnumerable()),
             _csvFileGenerator.GenerateFile(convertedData.CLI_Invoices),
             _csvFileGenerator.GenerateFile(convertedData.CLA_InvoiceAnalyses),
-        };
+        ];
 }

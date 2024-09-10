@@ -1,6 +1,5 @@
 using Azure.Storage.Blobs;
 using HE.FMS.Middleware.Common.Extensions;
-using HE.FMS.Middleware.Providers.CosmosDb;
 using HE.FMS.Middleware.Providers.CosmosDb.Efin;
 using HE.FMS.Middleware.Providers.CosmosDb.Settings;
 using HE.FMS.Middleware.Providers.CosmosDb.Trace;
@@ -63,9 +62,9 @@ public static class ProvidersModule
         services.AddAppConfiguration<EfinConfigDbSettings>("EfinConfigDb");
         services.AddAppConfiguration<EfinDataDbSettings>("EfinDb");
         services.AddAppConfiguration<TraceDbSettings>("TraceDb");
-        services.AddScoped<IEfinCosmosClient, EfinCosmosClient>(x => new EfinCosmosClient(x.GetService<EfinDataDbSettings>()!));
+        services.AddSingleton<IEfinCosmosClient, EfinCosmosClient>(x => new EfinCosmosClient(x.GetService<EfinDataDbSettings>()!));
         services.AddSingleton<IEfinCosmosConfigClient, EfinConfigCosmosClient>(x => new EfinConfigCosmosClient(x.GetService<EfinConfigDbSettings>()!));
-        services.AddScoped<ITraceCosmosClient, TraceCosmosClient>(x => new TraceCosmosClient(x.GetService<EfinDataDbSettings>()!));
+        services.AddSingleton<ITraceCosmosClient, TraceCosmosClient>(x => new TraceCosmosClient(x.GetService<TraceDbSettings>()!));
 
         return services;
     }
