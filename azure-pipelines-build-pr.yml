@@ -20,7 +20,7 @@ resources:
   - repository: templates
     type: git
     name: 'Cloud Hosting Service/Templates'
-    ref: 'master'
+    ref: 'docker-build'
 
 stages:
 - template: pipelines/azure-pipelines-build.yml@he-fms-deployment
