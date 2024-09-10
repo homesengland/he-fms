@@ -1,15 +1,11 @@
-trigger: none
-
+trigger:
+  branches:
+    include:
+    - main
 variables:
   buildMajor: 1
   buildMinor: 1
   buildBranch: $[replace(variables['Build.SourceBranch'], '/', '.')]
-
-parameters:
-- name: forcePushToProd
-  displayName: Force Push to Production
-  type: boolean
-  default: true
 
 pool: 'vmss-ado-chs-nonprod-001'
 
@@ -30,4 +26,4 @@ stages:
 - template: pipelines/azure-pipelines-build.yml@he-fms-deployment
   parameters:
     dotnetVersion: '8.0.x'
-    forcePushToProd: ${{ parameters.forcePushToProd }}
+    forcePushToProd: false
