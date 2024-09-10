@@ -1,4 +1,4 @@
-namespace HE.FMS.Middleware.Providers.CosmosDb;
+namespace HE.FMS.Middleware.Providers.CosmosDb.Base;
 public enum CosmosDbItemType
 {
     Log,

@@ -1,26 +1,22 @@
+using HE.FMS.Middleware.Common.Exceptions.Internal;
 using HE.FMS.Middleware.Contract.Reclaims;
 using HE.FMS.Middleware.Contract.Reclaims.Efin;
+using HE.FMS.Middleware.Providers.CosmosDb.Base;
+using HE.FMS.Middleware.Providers.CosmosDb.Efin;
+using static HE.FMS.Middleware.Common.Constants;
 
 namespace HE.FMS.Middleware.Providers.Efin;
 public class ReclaimConverter : IReclaimConverter
 {
-    public ReclaimItemSet Convert(IEnumerable<ReclaimPaymentRequest> paymentRequests)
+    public ReclaimItem Convert(ReclaimPaymentRequest reclaimPaymentRequest)
     {
-        var batch = CLI_IW_BAT.Create(paymentRequests);
-        var iltes = paymentRequests.Select(x => CLI_IW_ILT.Create(batch, x));
-        var inaes = paymentRequests.Select(x => CLI_IW_INA.Create(batch, x));
-        var inles = paymentRequests.Select(x => CLI_IW_INL.Create(batch, x));
-        var inves = paymentRequests.Select(x => CLI_IW_INV.Create(batch, x));
-        var itles = paymentRequests.Select(x => CLI_IW_ITL.Create(batch, x));
-
-        return new ReclaimItemSet()
+        return new ReclaimItem
         {
-            CLI_IW_BAT = batch,
-            CLI_IW_ILTes = iltes,
-            CLI_IW_INAes = inaes,
-            CLI_IW_INLes = inles,
-            CLI_IW_INVes = inves,
-            CLI_IW_ITLes = itles,
+            CliIwIlt = CLI_IW_ILT.Create(reclaimPaymentRequest),
+            CliIwIna = CLI_IW_INA.Create(reclaimPaymentRequest),
+            CliIwInl = CLI_IW_INL.Create(reclaimPaymentRequest),
+            CliIwInv = CLI_IW_INV.Create(reclaimPaymentRequest),
+            CliIwItl = CLI_IW_ITL.Create(reclaimPaymentRequest),
         };
     }
 }

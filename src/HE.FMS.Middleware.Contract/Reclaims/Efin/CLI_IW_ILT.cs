@@ -26,14 +26,13 @@ public class CLI_IW_ILT
     [EfinFileRowIndex(28, 102)]
     public string cliwt_text { get; set; }
 
-    public static CLI_IW_ILT Create(CLI_IW_BAT batch, ReclaimPaymentRequest reclaimPayment)
+    public static CLI_IW_ILT Create(ReclaimPaymentRequest reclaimPayment)
     {
         return new CLI_IW_ILT()
         {
             cliwt_sub_ledger_id = EfinConstants.Default.Reclaim.SubLedger,
-
-            // cliwt_inv_ref = <unique_value>
-            cliwt_batch_ref = batch.cliwb_batch_ref,
+            cliwt_inv_ref = reclaimPayment.Application.AllocationId,
+            cliwt_batch_ref = string.Empty,
             cliwt_item_sequence = EfinConstants.Default.Reclaim.ItemSequence,
             cliwt_print_sequence = EfinConstants.Default.Reclaim.PrintSequence,
             cliwt_text = EfinConstants.Default.Reclaim.Text,

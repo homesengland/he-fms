@@ -54,14 +54,13 @@ public class CLA_InvoiceAnalysis
     [EfinFileRowIndex(240, 256)]
     public string cla_volume { get; set; }
 
-    public static CLA_InvoiceAnalysis Create(CLCLB_Batch batch, ClaimPaymentRequest claimPayment)
+    public static CLA_InvoiceAnalysis Create(ClaimPaymentRequest claimPayment)
     {
         return new CLA_InvoiceAnalysis()
         {
             cla_sub_ledger = EfinConstants.Default.Claim.SubLedger,
-
-            // cla_inv_ref = <unique_value>
-            cla_batch_ref = batch.clb_batch_ref,
+            cla_inv_ref = claimPayment.Application.AllocationId,
+            cla_batch_ref = string.Empty,
             cla_cfacs_cc = claimPayment.Application.EfinRegion,
             cla_cfacs_ac = claimPayment.Organisation.PartnerType,
             cla_cfacs_actv = claimPayment.Application.EfinTenure,

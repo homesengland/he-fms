@@ -3,7 +3,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using HE.FMS.Middleware.Common.Serialization;
 using HE.FMS.Middleware.Contract.Reclaims;
-using HE.FMS.Middleware.Providers.CosmosDb;
+using HE.FMS.Middleware.Providers.CosmosDb.Base;
+using HE.FMS.Middleware.Providers.CosmosDb.Trace;
 using HE.FMS.Middleware.Providers.ServiceBus;
 using HE.FMS.Middleware.Shared.Base;
 using HE.FMS.Middleware.Shared.Middlewares;
@@ -11,18 +12,22 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 
 namespace HE.FMS.Middleware.Reclaims.Functions;
-public class ValidateAndStoreReclaim : ClaimBase<ReclaimPaymentRequest>
+public class ValidateReclaimHttpTrigger : ClaimBase<ReclaimPaymentRequest>
 {
-    public ValidateAndStoreReclaim(
+    public ValidateReclaimHttpTrigger(
         IStreamSerializer streamSerializer,
-        ICosmosDbClient cosmosDbClient,
+        ITraceCosmosClient traceCosmosDbClient,
         IObjectSerializer objectSerializer,
         ITopicClientFactory topicClientFactory)
-        : base(streamSerializer, cosmosDbClient, objectSerializer, topicClientFactory.GetTopicClient("Claims:Create:TopicName"))
+        : base(
+            streamSerializer,
+            traceCosmosDbClient,
+            objectSerializer,
+            topicClientFactory.GetTopicClient("Reclaims:Create:TopicName"))
     {
     }
 
-    [Function(nameof(ValidateAndStoreReclaim))]
+    [Function(nameof(ValidateReclaimHttpTrigger))]
     public async Task<HttpResponseData> Run(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "reclaims")]
         HttpRequestData request,

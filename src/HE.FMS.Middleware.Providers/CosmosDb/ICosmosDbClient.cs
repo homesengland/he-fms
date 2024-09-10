@@ -1,15 +1,14 @@
 using System.Linq.Expressions;
+using HE.FMS.Middleware.Providers.CosmosDb.Base;
 
 namespace HE.FMS.Middleware.Providers.CosmosDb;
 
-public interface ICosmosDbClient
+public interface ICosmosDbClient<TMessage>
+    where TMessage : ICosmosItem
 {
-    Task UpsertItem<TMessage>(TMessage message, CancellationToken cancellationToken)
-        where TMessage : ICosmosDbItem;
+    Task UpsertItem(TMessage message, CancellationToken cancellationToken);
 
-    Task<IList<TMessage>> FindAllItems<TMessage>(Expression<Func<TMessage, bool>> predicate, string partitionKey)
-        where TMessage : ICosmosDbItem;
+    Task<IList<TMessage>> FindAllItems(Expression<Func<TMessage, bool>> predicate, string partitionKey);
 
-    Task UpdateFieldAsync<TMessage>(TMessage item, string fieldName, object fieldValue, string partitionKey)
-        where TMessage : ICosmosDbItem;
+    Task UpdateFieldAsync(TMessage item, string fieldName, object fieldValue, string partitionKey);
 }

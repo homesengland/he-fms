@@ -6,7 +6,7 @@ using HE.FMS.Middleware.Contract.Constants;
 #pragma warning disable SA1300 // Element should begin with upper-case letter
 #pragma warning disable IDE1006 // Naming Styles
 namespace HE.FMS.Middleware.Contract.Claims.Efin;
-[EfinFileRowSize(200)]
+[EfinFileRowSize(201)]
 public class CLCLB_Batch
 {
     [EfinFileRowIndex(1, 3)]
@@ -42,21 +42,22 @@ public class CLCLB_Batch
     [EfinFileRowIndex(192, 200)]
     public string clb_entry_date { get; set; }
 
-    public static CLCLB_Batch Create(IEnumerable<ClaimPaymentRequest> claimPayments)
+    public static CLCLB_Batch Create(IEnumerable<ClaimItem> claims, string batchIndex)
     {
-        ArgumentNullException.ThrowIfNull(claimPayments);
+        ArgumentNullException.ThrowIfNull(claims);
 
+        var culture = new CultureInfo("en-GB");
         return new CLCLB_Batch()
         {
             clb_sub_ledger = EfinConstants.Default.Claim.SubLedger,
 
-            // clb_batch_ref = <unique_value>,
+            clb_batch_ref = batchIndex,
             clb_year = (DateTime.UtcNow.Month is >= 1 and <= 3 ? DateTime.UtcNow.Year - 1 : DateTime.UtcNow.Year).ToString(CultureInfo.InvariantCulture),
             clb_period = DateTime.UtcNow.Month.ToString(CultureInfo.InvariantCulture),
-            clb_net_amount = claimPayments.Sum(x => x.Claim.Amount).ToString("F", CultureInfo.InvariantCulture),
+            clb_net_amount = claims.Sum(x => decimal.Parse(x.CliInvoice.cli_net_amount, NumberStyles.Any, culture)).ToString("F", CultureInfo.InvariantCulture),
             clb_vat_amount = EfinConstants.Default.Claim.Amount,
-            clb_no_invoices = claimPayments.Count().ToString(CultureInfo.InvariantCulture),
-            clb_quantity = claimPayments.Count().ToString(CultureInfo.InvariantCulture),
+            clb_no_invoices = claims.Count().ToString(CultureInfo.InvariantCulture),
+            clb_quantity = claims.Count().ToString(CultureInfo.InvariantCulture),
             clb_user = EfinConstants.Default.Claim.User,
             clb_grouping = EfinConstants.Default.Claim.Grouping,
             clb_entry_date = DateTime.UtcNow.ToString("d-MMM-yy", CultureInfo.InvariantCulture),
