@@ -1,3 +1,4 @@
+using System.Text;
 using HE.FMS.Middleware.Common.Extensions;
 using HE.FMS.Middleware.Contract.Attributes.Efin;
 using HE.FMS.Middleware.Contract.Common;
@@ -13,10 +14,7 @@ public class EfinCsvFileGenerator : ICsvFileGenerator
 
         var type = items.GetType().GetGenericArguments()[0];
 
-        var rows = new List<string>
-        {
-            GenerateHeader(type),
-        };
+        var rows = new List<string>();
 
         foreach (var item in items)
         {
@@ -36,32 +34,19 @@ public class EfinCsvFileGenerator : ICsvFileGenerator
 
         var type = item.GetType();
 
-        var rowSize = type.GetClassAttributeValue((EfinFileRowSizeAttribute rowSizeAttribute) => rowSizeAttribute.RowSize);
-
-        var row = new string(Separator, rowSize);
+        var columns = new SortedDictionary<int, string>();
 
         var properties = type.GetProperties();
 
         foreach (var property in properties)
         {
-            var (startIndex, endIndex) = property.GetPropertyAttributeValue((EfinFileRowIndexAttribute rowIndexAttribute) => (rowIndexAttribute.StartIndex, rowIndexAttribute.EndIndex));
-            var length = endIndex - startIndex;
+            var index = property.GetPropertyAttributeValue((EfinFileRowIndexAttribute rowIndexAttribute) => rowIndexAttribute.StartIndex);
+
             var value = property.GetValue(item, null)?.ToString() ?? string.Empty;
 
-            row = row.ReplaceAt(startIndex, length, value, ' ');
+            columns.Add(index, value);
         }
 
-        return row;
-    }
-
-    private string GenerateHeader(Type type)
-    {
-        ArgumentNullException.ThrowIfNull(type);
-
-        var properties = type.GetProperties();
-
-        var names = properties.OrderBy(property => property.GetPropertyAttributeValue((EfinFileRowIndexAttribute rowIndexAttribute) => rowIndexAttribute.StartIndex)).Select(property => property.Name).ToArray();
-
-        return string.Join(Separator, names);
+        return string.Join(Separator, columns.Values.ToList());
     }
 }

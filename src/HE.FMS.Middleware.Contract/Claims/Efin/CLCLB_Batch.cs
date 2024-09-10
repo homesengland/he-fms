@@ -6,7 +6,6 @@ using HE.FMS.Middleware.Contract.Constants;
 #pragma warning disable SA1300 // Element should begin with upper-case letter
 #pragma warning disable IDE1006 // Naming Styles
 namespace HE.FMS.Middleware.Contract.Claims.Efin;
-[EfinFileRowSize(201)]
 public class CLCLB_Batch
 {
     [EfinFileRowIndex(1, 3)]
