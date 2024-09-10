@@ -28,7 +28,7 @@
     "Mambu:ApiKey:ExpirationInSeconds": "100000000",
     "KeyVault:Url": "https://{keyVault}.vault.azure.net/",
     "Grants:BranchId": "{mambuEnvironment}",
-    "Claims:Create:TopicName": "he-ahp-CreateClaim-local",
-    "Claims:Create:SubscriptionName": "subscription-CreateClaim-local"
+    "Claims:Create:TopicName": "",
+    "Claims:Create:SubscriptionName": ""
   }
 }
