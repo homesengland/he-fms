@@ -42,7 +42,7 @@ public class CLCLB_Batch
     [EfinFileRowIndex(192, 200)]
     public string clb_entry_date { get; set; }
 
-    public static CLCLB_Batch Create(IEnumerable<ClaimItem> claimInvoices, string batchIndex)
+    public static CLCLB_Batch Create(IEnumerable<ClaimItem> claims, string batchIndex)
     {
         ArgumentNullException.ThrowIfNull(claims);
 
