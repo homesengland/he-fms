@@ -40,7 +40,7 @@ public class ProcessAndStoreReclaimTimeTrigger : DataExportFunctionBase<ReclaimI
 
     [Function("ProcessCreateReclaim")]
     public async Task Run(
-        [TimerTrigger("0 */5 * * * *")] TimerInfo myTimer,
+        [TimerTrigger("%Reclaims:Create:CronExpression%")] TimerInfo myTimer,
         CancellationToken cancellationToken)
     {
         await Process(CosmosDbItemType.Reclaim, cancellationToken);
