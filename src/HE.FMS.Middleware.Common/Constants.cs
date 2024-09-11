@@ -13,7 +13,7 @@ public static class Constants
         public const string OrchestrationTrigger = "orchestrationTrigger";
         public const string ActivityTrigger = "activityTrigger";
         public const string HttpTrigger = "httpTrigger";
-        public const string TimeTrigger = "timeTrigger";
+        public const string TimeTrigger = "timerTrigger";
     }
 
     public static class FunctionsConfiguration
