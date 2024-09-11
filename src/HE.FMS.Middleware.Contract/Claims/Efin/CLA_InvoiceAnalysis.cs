@@ -6,7 +6,6 @@ using HE.FMS.Middleware.Contract.Constants;
 #pragma warning disable SA1300 // Element should begin with upper-case letter
 #pragma warning disable IDE1006 // Naming Styles
 namespace HE.FMS.Middleware.Contract.Claims.Efin;
-[EfinFileRowSize(256)]
 public class CLA_InvoiceAnalysis
 {
     [EfinFileRowIndex(1, 3)]
