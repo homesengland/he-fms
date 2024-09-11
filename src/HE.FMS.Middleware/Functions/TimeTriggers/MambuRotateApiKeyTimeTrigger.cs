@@ -16,7 +16,7 @@ public class MambuRotateApiKeyTimeTrigger
 
     [Function(nameof(MambuRotateApiKeyTimeTrigger))]
     public async Task Run(
-        [TimerTrigger("%Mambu:RotateApiKeyTimeTrigger%")] TimerInfo timeTrigger,
+        [TimerTrigger("%Mambu:RotateApiKey:CronExpression%")] TimerInfo timeTrigger,
         CancellationToken cancellationToken)
     {
         await _mambuService.RotateApiKey(cancellationToken);
