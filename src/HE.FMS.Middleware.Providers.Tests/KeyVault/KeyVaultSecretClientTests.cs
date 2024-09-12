@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 using NSubstitute;
 using Xunit;
 
-namespace HE.FMS.Middleware.Providers.Tests;
+namespace HE.FMS.Middleware.Providers.Tests.KeyVault;
 
 public class KeyVaultSecretClientTests
 {
