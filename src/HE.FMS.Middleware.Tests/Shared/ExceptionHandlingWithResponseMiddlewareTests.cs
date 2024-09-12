@@ -25,11 +25,11 @@ public class ExceptionHandlingWithResponseMiddlewareTests
         _middleware = new ExceptionHandlingWithResponseMiddleware(_logger);
         _context = Substitute.For<FunctionContext>();
         _next = Substitute.For<FunctionExecutionDelegate>();
-        var test = Substitute.For<BindingMetadata>();
-        test.Type.Returns(Constants.FunctionsTriggers.HttpTrigger);
+        var bindingMetadata = Substitute.For<BindingMetadata>();
+        bindingMetadata.Type.Returns(Constants.FunctionsTriggers.HttpTrigger);
         _context.FunctionDefinition.InputBindings.Values.Returns(new List<BindingMetadata>()
         {
-            test
+            bindingMetadata
         });
     }
 
