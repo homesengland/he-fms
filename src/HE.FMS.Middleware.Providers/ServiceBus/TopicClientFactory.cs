@@ -28,13 +28,13 @@ public class TopicClientFactory : ITopicClientFactory
             throw new MissingConfigurationException(nameof(topicName));
         }
 
-        if (string.IsNullOrEmpty(_configuration[FullyQualifiedNamespaceSetting])
-            && !string.IsNullOrEmpty(_configuration[ConnectionStringSetting]))
+        if (string.IsNullOrWhiteSpace(_configuration[FullyQualifiedNamespaceSetting])
+            && !string.IsNullOrWhiteSpace(_configuration[ConnectionStringSetting]))
         {
             return new TopicClient(_configuration[ConnectionStringSetting], _configuration[topicName]);
         }
-        else if (!string.IsNullOrEmpty(_configuration[FullyQualifiedNamespaceSetting])
-            && string.IsNullOrEmpty(_configuration[ConnectionStringSetting]))
+        else if (!string.IsNullOrWhiteSpace(_configuration[FullyQualifiedNamespaceSetting])
+            && string.IsNullOrWhiteSpace(_configuration[ConnectionStringSetting]))
         {
             return new TopicClient(_configuration[FullyQualifiedNamespaceSetting], _configuration[topicName], new ManagedIdentityTokenProvider());
         }
