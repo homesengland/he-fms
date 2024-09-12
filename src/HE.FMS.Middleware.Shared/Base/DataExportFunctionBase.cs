@@ -41,7 +41,7 @@ public abstract class DataExportFunctionBase<T>
         {
             foreach (var blob in blobs)
             {
-                await _csvFileWriter.WriteToBlobAsync(
+                await _csvFileWriter.WriteAsync(
                     $"{type.ToString().ToLower(CultureInfo.InvariantCulture)}-container",
                     blob);
             }

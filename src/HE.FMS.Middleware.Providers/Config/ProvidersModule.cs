@@ -1,6 +1,7 @@
 using Azure.Storage.Blobs;
 using Azure.Storage.Files.Shares;
 using HE.FMS.Middleware.Common.Extensions;
+using HE.FMS.Middleware.Providers.Common;
 using HE.FMS.Middleware.Providers.CosmosDb.Efin;
 using HE.FMS.Middleware.Providers.CosmosDb.Settings;
 using HE.FMS.Middleware.Providers.CosmosDb.Trace;
@@ -26,7 +27,9 @@ public static class ProvidersModule
 {
     public static IServiceCollection AddProvidersModule(this IServiceCollection services)
     {
-        return services.AddMambu()
+        return services
+            .AddCommon()
+            .AddMambu()
             .AddCosmosDb()
             .AddKeyVault()
             .AddServiceBus()
@@ -34,6 +37,11 @@ public static class ProvidersModule
             .AddFileShareStorage()
             .AddBlobStorage()
             .AddClaimReclaimServices();
+    }
+
+    private static IServiceCollection AddCommon(this IServiceCollection services)
+    {
+        return services.AddSingleton<IDateTimeProvider, SystemDateTimeProvider>();
     }
 
     private static IServiceCollection AddClaimReclaimServices(this IServiceCollection services)

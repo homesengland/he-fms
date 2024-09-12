@@ -6,16 +6,16 @@ using HE.FMS.Middleware.Contract.Common;
 
 namespace HE.FMS.Middleware.Providers.CsvFile;
 
-public class CsvFileBlobWriter : ICsvFileWriter
+public class FileBlobWriter : ICsvFileWriter
 {
     private readonly BlobServiceClient _blobServiceClient;
 
-    public CsvFileBlobWriter(BlobServiceClient blobServiceClient)
+    public FileBlobWriter(BlobServiceClient blobServiceClient)
     {
         _blobServiceClient = blobServiceClient;
     }
 
-    public async Task WriteToBlobAsync(string blobContainerName, BlobData blobData)
+    public async Task WriteAsync(string blobContainerName, BlobData blobData)
     {
         ArgumentNullException.ThrowIfNull(blobContainerName);
         ArgumentNullException.ThrowIfNull(blobData);

@@ -13,7 +13,7 @@ public class FileShareWriter : ICsvFileWriter
         _shareClient = shareClient;
     }
 
-    public async Task WriteToBlobAsync(string blobContainerName, BlobData blobData)
+    public async Task WriteAsync(string blobContainerName, BlobData blobData)
     {
         ArgumentNullException.ThrowIfNull(blobContainerName);
         ArgumentNullException.ThrowIfNull(blobData);
