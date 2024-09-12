@@ -1,12 +1,23 @@
+using System.Globalization;
 using System.Text;
 using HE.FMS.Middleware.Common.Extensions;
 using HE.FMS.Middleware.Contract.Attributes.Efin;
 using HE.FMS.Middleware.Contract.Common;
+using HE.FMS.Middleware.Providers.Common;
 
 namespace HE.FMS.Middleware.Providers.Efin;
 public class EfinCsvFileGenerator : ICsvFileGenerator
 {
     private const char Separator = ',';
+    private const string FileExtension = ".csv";
+    private const string DateTimeFormat = "yyyyMMdd_HHmmss";
+
+    private readonly IDateTimeProvider _dateTimeProvider;
+
+    public EfinCsvFileGenerator(IDateTimeProvider dateTimeProvider)
+    {
+        _dateTimeProvider = dateTimeProvider;
+    }
 
     public BlobData GenerateFile(IEnumerable<object> items)
     {
@@ -23,7 +34,7 @@ public class EfinCsvFileGenerator : ICsvFileGenerator
 
         return new BlobData()
         {
-            Name = $"{type.Name}_{DateTime.Now:yyyyMMdd_HHmmss}.csv",
+            Name = $"{type.Name}_{_dateTimeProvider.UtcNow.ToString(DateTimeFormat, CultureInfo.InvariantCulture)}{FileExtension}",
             Content = string.Join(Environment.NewLine, rows),
         };
     }
