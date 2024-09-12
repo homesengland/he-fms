@@ -27,6 +27,6 @@ public class EfinItemTests
         item.CreationTime.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(1));
         item.Value.Should().Be(value);
         item.Type.Should().Be(type);
-        item.Status.Should().Be(CosmosDbItemStatus.New);
+        item.Status.Should().Be(CosmosDbItemStatus.NotProcessed);
     }
 }
