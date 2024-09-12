@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using HE.FMS.Middleware.Contract.Attributes.Efin;
+using HE.FMS.Middleware.Providers.Common;
 using HE.FMS.Middleware.Providers.Efin;
 using HE.FMS.Middleware.Providers.Tests.Fakes;
 using Xunit;
@@ -12,11 +13,13 @@ using Xunit;
 namespace HE.FMS.Middleware.Providers.Tests.Efin;
 public class EfinCsvFileGeneratorTests
 {
+    private readonly IDateTimeProvider _dateTimeProvider;
     private readonly EfinCsvFileGenerator _csvFileGenerator;
 
     public EfinCsvFileGeneratorTests()
     {
-        _csvFileGenerator = new EfinCsvFileGenerator(new FakeDateTimeProvider());
+        _dateTimeProvider = new FakeDateTimeProvider();
+        _csvFileGenerator = new EfinCsvFileGenerator(_dateTimeProvider);
     }
 
     [Fact]
@@ -35,7 +38,7 @@ public class EfinCsvFileGeneratorTests
         var result = _csvFileGenerator.GenerateFile(items);
 
         // Assert
-        Assert.Equal("TestItem_" + DateTime.Now.ToString("yyyyMMdd_HHmmss", CultureInfo.InvariantCulture) + ".csv", result.Name);
+        Assert.Equal("TestItem_" + _dateTimeProvider.UtcNow.ToString("yyyyMMdd_HHmmss", CultureInfo.InvariantCulture) + ".csv", result.Name);
         Assert.Equal(expectedContent, result.Content);
     }
 
