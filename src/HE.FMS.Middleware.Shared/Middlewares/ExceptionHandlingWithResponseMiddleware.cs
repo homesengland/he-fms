@@ -15,7 +15,7 @@ using Polly.Timeout;
 
 namespace HE.FMS.Middleware.Shared.Middlewares;
 
-internal sealed class ExceptionHandlingWithResponseMiddleware : IFunctionsWorkerMiddleware
+public sealed class ExceptionHandlingWithResponseMiddleware : IFunctionsWorkerMiddleware
 {
     private readonly ILogger<ExceptionHandlingWithResponseMiddleware> _logger;
 
