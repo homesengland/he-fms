@@ -5,13 +5,13 @@ using Microsoft.Extensions.Configuration;
 using NSubstitute;
 using Xunit;
 
-namespace HE.FMS.Middleware.Providers.Tests;
+namespace HE.FMS.Middleware.Providers.Tests.CosmosDb;
 
-public class CosmosDbHelperTests
+public class CosmosDbItemTests
 {
     private readonly IConfiguration _configuration;
 
-    public CosmosDbHelperTests()
+    public CosmosDbItemTests()
     {
         _configuration = Substitute.For<IConfiguration>();
     }

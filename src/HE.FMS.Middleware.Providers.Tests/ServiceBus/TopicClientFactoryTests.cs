@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using NSubstitute;
 using Xunit;
 
-namespace HE.FMS.Middleware.Providers.Tests;
+namespace HE.FMS.Middleware.Providers.Tests.ServiceBus;
 
 public class TopicClientFactoryTests
 {
