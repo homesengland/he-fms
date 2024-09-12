@@ -1,11 +1,13 @@
 using HE.FMS.Middleware.Common.Exceptions.Internal;
 using Microsoft.Azure.ServiceBus;
+using Microsoft.Azure.ServiceBus.Primitives;
 using Microsoft.Extensions.Configuration;
 
 namespace HE.FMS.Middleware.Providers.ServiceBus;
 public class TopicClientFactory : ITopicClientFactory
 {
     private const string ConnectionStringSetting = "ServiceBus:Connection";
+    private const string FullyQualifiedNamespaceSetting = "ServiceBus:Connection:fullyQualifiedNamespace";
 
     private readonly IConfiguration _configuration;
 
@@ -26,6 +28,19 @@ public class TopicClientFactory : ITopicClientFactory
             throw new MissingConfigurationException(nameof(topicName));
         }
 
-        return new TopicClient(_configuration[ConnectionStringSetting], _configuration[topicName]);
+        if (string.IsNullOrEmpty(_configuration[FullyQualifiedNamespaceSetting])
+            && !string.IsNullOrEmpty(_configuration[ConnectionStringSetting]))
+        {
+            return new TopicClient(_configuration[ConnectionStringSetting], _configuration[topicName]);
+        }
+        else if (!string.IsNullOrEmpty(_configuration[FullyQualifiedNamespaceSetting])
+            && string.IsNullOrEmpty(_configuration[ConnectionStringSetting]))
+        {
+            return new TopicClient(_configuration[FullyQualifiedNamespaceSetting], _configuration[topicName], new ManagedIdentityTokenProvider());
+        }
+        else
+        {
+            throw new MissingConfigurationException(ConnectionStringSetting);
+        }
     }
 }
