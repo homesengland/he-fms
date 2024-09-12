@@ -4,7 +4,7 @@ using HE.FMS.Middleware.Providers.CosmosDb.Base;
 namespace HE.FMS.Middleware.Providers.CosmosDb.Efin;
 public class EfinItem : CosmosItem
 {
-    public CosmosDbItemStatus Status { get; set; } = CosmosDbItemStatus.New;
+    public CosmosDbItemStatus Status { get; set; } = CosmosDbItemStatus.NotProcessed;
 
     public static EfinItem CreateEfinItem(object value, string idempotencyKey, CosmosDbItemType type)
     {
@@ -16,7 +16,7 @@ public class EfinItem : CosmosItem
             CreationTime = DateTime.UtcNow,
             Value = value,
             Type = type,
-            Status = CosmosDbItemStatus.New,
+            Status = CosmosDbItemStatus.NotProcessed,
         };
     }
 }

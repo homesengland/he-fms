@@ -46,7 +46,7 @@ public abstract class DataExportFunctionBase<T>
                     blob);
             }
 
-            await _efinCosmosDbClient.ChangeItemsStatusAsync(items, CosmosDbItemStatus.Completed, cancellationToken);
+            await _efinCosmosDbClient.ChangeItemsStatusAsync(items, CosmosDbItemStatus.Processed, cancellationToken);
         }
     }
 
