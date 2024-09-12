@@ -47,7 +47,8 @@ public class TopicClientFactoryTests
         var endpoint = "sb://test.servicebus.windows.net/";
         var connectionString = $"Endpoint={endpoint};SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=testkey";
         var topicPath = "test-topic-path";
-        _configuration[Arg.Any<string>()].Returns(connectionString);
+        var serviceBusConfigurationKey = "ServiceBus:Connection";
+        _configuration[serviceBusConfigurationKey].Returns(connectionString);
         _configuration[topicName].Returns(topicPath);
 
         // Act
