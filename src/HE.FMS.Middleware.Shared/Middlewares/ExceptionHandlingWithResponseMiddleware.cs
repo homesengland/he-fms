@@ -15,14 +15,9 @@ using Polly.Timeout;
 
 namespace HE.FMS.Middleware.Shared.Middlewares;
 
-internal sealed class ExceptionHandlingWithResponseMiddleware : IFunctionsWorkerMiddleware
+internal sealed class ExceptionHandlingWithResponseMiddleware(ILogger<ExceptionHandlingWithResponseMiddleware> logger) : IFunctionsWorkerMiddleware
 {
-    private readonly ILogger<ExceptionHandlingWithResponseMiddleware> _logger;
-
-    public ExceptionHandlingWithResponseMiddleware(ILogger<ExceptionHandlingWithResponseMiddleware> logger)
-    {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-    }
+    private readonly ILogger<ExceptionHandlingWithResponseMiddleware> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Catch all exceptions to log them")]
     public async Task Invoke(FunctionContext context, FunctionExecutionDelegate next)

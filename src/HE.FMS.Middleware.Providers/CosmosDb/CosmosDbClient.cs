@@ -17,7 +17,7 @@ public abstract class CosmosDbClient<TMessage> : ICosmosDbClient<TMessage>, IDis
 
     protected CosmosDbClient(ICosmosDbSettings settings)
     {
-        _client = !string.IsNullOrEmpty(settings.AccountEndpoint)
+        _client = !string.IsNullOrWhiteSpace(settings.AccountEndpoint)
             ? new CosmosClient(accountEndpoint: settings.AccountEndpoint, new DefaultAzureCredential())
             : new CosmosClient(connectionString: settings.ConnectionString);
 
