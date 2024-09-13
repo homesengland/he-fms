@@ -1,8 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">  
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-  </PropertyGroup>
+  </PropertyGroup>  
   <ItemGroup>
     <ProjectReference Include="..\HE.FMS.Middleware.Common\HE.FMS.Middleware.Common.csproj" />
-  </ItemGroup>
+  </ItemGroup>  
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute" />
+  </ItemGroup>  
 </Project>
