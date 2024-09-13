@@ -16,7 +16,7 @@ resources:
   - repository: he-fms-deployment
     type: git
     name: 'FMS/he-fms-deployment'
-    ref: 'features/build-pipeline'
+    ref: 'hotfix/build-pipeline'
   - repository: templates
     type: git
     name: 'Cloud Hosting Service/Templates'
@@ -25,6 +25,5 @@ resources:
 stages:
 - template: pipelines/azure-pipelines-build.yml@he-fms-deployment
   parameters:
-    dotnetVersion: '8.0.x'
     dockerPush: false
     dockerPushProd: false
