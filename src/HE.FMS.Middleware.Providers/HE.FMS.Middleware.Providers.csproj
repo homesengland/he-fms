@@ -23,7 +23,4 @@
   <ItemGroup>
     <ProjectReference Include="..\HE.FMS.Middleware.Contract\HE.FMS.Middleware.Contract.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="CsvFile\Settings\" />
-  </ItemGroup>
 </Project>
