@@ -27,4 +27,12 @@
     <ProjectReference Include="..\HE.FMS.Middleware.Contract\HE.FMS.Middleware.Contract.csproj" />
     <ProjectReference Include="..\HE.FMS.Middleware.Providers\HE.FMS.Middleware.Providers.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>HE.FMS.Middleware.Tests</_Parameter1>
+    </AssemblyAttribute>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>DynamicProxyGenAssembly2</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
 </Project>
