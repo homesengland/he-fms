@@ -9,14 +9,9 @@ using Microsoft.Extensions.Logging;
 
 namespace HE.FMS.Middleware.Shared.Middlewares;
 
-internal sealed class ExceptionHandlingWithoutResponseMiddleware : IFunctionsWorkerMiddleware
+internal sealed class ExceptionHandlingWithoutResponseMiddleware(ILogger<ExceptionHandlingWithoutResponseMiddleware> logger) : IFunctionsWorkerMiddleware
 {
-    private readonly ILogger<ExceptionHandlingWithoutResponseMiddleware> _logger;
-
-    public ExceptionHandlingWithoutResponseMiddleware(ILogger<ExceptionHandlingWithoutResponseMiddleware> logger)
-    {
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-    }
+    private readonly ILogger<ExceptionHandlingWithoutResponseMiddleware> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
     [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Catch all exceptions to log them")]
     public async Task Invoke(FunctionContext context, FunctionExecutionDelegate next)

@@ -14,7 +14,7 @@ public sealed class EfinCosmosClient : CosmosDbClient<EfinItem>, IEfinCosmosClie
     public async Task<IEnumerable<EfinItem>> GetAllNewItemsAsync(CosmosDbItemType type)
     {
         return await FindAllItems(
-            x => x.Type == type && x.Status == CosmosDbItemStatus.New,
+            x => x.Type == type && x.Status == CosmosDbItemStatus.NotProcessed,
             Constants.CosmosDbConfiguration.PartitonKey);
     }
 

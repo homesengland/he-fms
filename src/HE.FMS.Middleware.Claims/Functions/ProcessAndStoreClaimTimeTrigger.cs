@@ -38,7 +38,7 @@ public class ProcessAndStoreClaimTimeTrigger : DataExportFunctionBase<ClaimItemS
 
     [Function(nameof(ProcessAndStoreClaimTimeTrigger))]
     public async Task Run(
-        [TimerTrigger("0 */5 * * * *")] TimerInfo myTimer,
+        [TimerTrigger("%Claims:Create:CronExpression%")] TimerInfo myTimer,
         CancellationToken cancellationToken)
     {
         await Process(CosmosDbItemType.Claim, cancellationToken);

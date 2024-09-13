@@ -9,10 +9,11 @@ namespace HE.FMS.Middleware.Shared.Extensions;
 
 public static class HostBuilderExtension
 {
-    public static IHost SetupHostBuilder(this IHostBuilder b)
+    public static IHost SetupHostBuilder<T>(this IHostBuilder hostBuilder)
+        where T : class
     {
-        return b.ConfigureFunctionsWorkerDefaults(builder => builder.UseFmsMiddlewares())
-            .ConfigureAppConfiguration((context, builder) => builder.AddFmsConfiguration(context))
+        return hostBuilder.ConfigureFunctionsWorkerDefaults(builder => builder.UseFmsMiddlewares())
+            .ConfigureAppConfiguration((context, builder) => builder.AddFmsConfiguration<T>(context))
             .ConfigureServices(services =>
             {
                 services.AddApplicationInsightsTelemetryWorkerService();

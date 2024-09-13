@@ -41,12 +41,12 @@ public abstract class DataExportFunctionBase<T>
         {
             foreach (var blob in blobs)
             {
-                await _csvFileWriter.WriteToBlobAsync(
+                await _csvFileWriter.WriteAsync(
                     $"{type.ToString().ToLower(CultureInfo.InvariantCulture)}-container",
                     blob);
             }
 
-            await _efinCosmosDbClient.ChangeItemsStatusAsync(items, CosmosDbItemStatus.Completed, cancellationToken);
+            await _efinCosmosDbClient.ChangeItemsStatusAsync(items, CosmosDbItemStatus.Processed, cancellationToken);
         }
     }
 

@@ -5,7 +5,6 @@ namespace HE.FMS.Middleware.Contract.Reclaims.Efin;
 #pragma warning disable S101 // Types should be named in PascalCase
 #pragma warning disable SA1300 // Element should begin with upper-case letter
 #pragma warning disable IDE1006 // Naming Styles
-[EfinFileRowSize(102)]
 public class CLI_IW_ILT
 {
     [EfinFileRowIndex(1, 3)]

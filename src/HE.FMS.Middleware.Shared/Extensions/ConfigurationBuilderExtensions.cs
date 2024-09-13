@@ -5,11 +5,14 @@ namespace HE.FMS.Middleware.Shared.Extensions;
 
 public static class ConfigurationBuilderExtensions
 {
-    public static IConfigurationBuilder AddFmsConfiguration(this IConfigurationBuilder builder, HostBuilderContext context)
+    public static IConfigurationBuilder AddFmsConfiguration<T>(this IConfigurationBuilder builder, HostBuilderContext context)
+        where T : class
     {
-        return builder.SetBasePath(context.HostingEnvironment.ContentRootPath)
+        builder.SetBasePath(context.HostingEnvironment.ContentRootPath)
             .AddEnvironmentVariables()
             .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
-            .AddUserSecrets(typeof(ConfigurationBuilderExtensions).Assembly, optional: true, reloadOnChange: true);
+            .AddUserSecrets(typeof(T).Assembly, optional: true, reloadOnChange: true);
+
+        return builder;
     }
 }

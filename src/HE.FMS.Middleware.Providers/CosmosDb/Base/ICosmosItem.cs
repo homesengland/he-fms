@@ -7,6 +7,6 @@ public interface ICosmosItem
     [JsonProperty("id")]
     string Id { get; }
 
-    [JsonProperty("partitionKey")]
+    [JsonProperty(nameof(PartitionKey))]
     string PartitionKey { get; }
 }

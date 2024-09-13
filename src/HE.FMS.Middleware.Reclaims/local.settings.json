@@ -31,6 +31,7 @@
     "KeyVault:Url": "https://{keyVault}.vault.azure.net/",
     "Grants:BranchId": "{mambuEnvironment}",
     "Reclaims:Create:TopicName": "",
-    "Reclaims:Create:SubscriptionName": ""
+    "Reclaims:Create:SubscriptionName": "",
+    "Reclaims:Create:CronExpression": "0 */5 * * * *"
   }
 }
