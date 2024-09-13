@@ -4,4 +4,14 @@
     <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="NSubstitute" Version="5.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HE.FMS.Middleware.Common\HE.FMS.Middleware.Common.csproj" />
+    <ProjectReference Include="..\HE.FMS.Middleware.Shared\HE.FMS.Middleware.Shared.csproj" />
+    <ProjectReference Include="..\HE.FMS.Middleware\HE.FMS.Middleware.csproj" />
+  </ItemGroup>
+
 </Project>
