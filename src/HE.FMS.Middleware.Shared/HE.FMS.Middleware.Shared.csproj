@@ -14,7 +14,7 @@
     <PackageReference Include="Microsoft.Azure.Functions.Worker.ApplicationInsights" Version="1.2.0" />
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.1" />
-  </ItemGroup>  
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HE.FMS.Middleware.BusinessLogic\HE.FMS.Middleware.BusinessLogic.csproj" />
     <ProjectReference Include="..\HE.FMS.Middleware.Common\HE.FMS.Middleware.Common.csproj" />
