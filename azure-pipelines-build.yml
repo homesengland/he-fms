@@ -28,7 +28,7 @@ resources:
   - repository: templates
     type: git
     name: 'Cloud Hosting Service/Templates'
-    ref: 'dicker-build-fix'
+    ref: 'master'
 
 stages:
 - template: pipelines/azure-pipelines-build.yml@he-fms-deployment
