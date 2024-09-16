@@ -35,7 +35,7 @@ public static class PaymentRequestFactory
             Organisation = new ClaimOrganisationDetails
             {
                 Name = randomizer.String2(10),
-                PartnerType = nameof(EfinConstants.CapitalClaimPartnerType.Bank),
+                PartnerType = nameof(EfinConstants.Default.Claim.CapitalPartnerType.Bank),
             },
         };
     }
@@ -70,7 +70,7 @@ public static class PaymentRequestFactory
             Organisation = new ClaimOrganisationDetails
             {
                 Name = randomizer.String2(10),
-                PartnerType = nameof(EfinConstants.CapitalClaimPartnerType.Bank),
+                PartnerType = nameof(EfinConstants.Default.Claim.CapitalPartnerType.Bank),
             },
         };
     }
