@@ -22,6 +22,7 @@ public static class HostBuilderExtension
                 services.AddCommonModule()
                     .AddDomainModule()
                     .AddProvidersModule();
+                services.AddHealthChecks();
             })
             .Build();
     }
