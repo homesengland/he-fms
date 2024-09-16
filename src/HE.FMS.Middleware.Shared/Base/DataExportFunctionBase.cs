@@ -2,7 +2,7 @@ using System.Globalization;
 using HE.FMS.Middleware.Contract.Common;
 using HE.FMS.Middleware.Providers.CosmosDb.Base;
 using HE.FMS.Middleware.Providers.CosmosDb.Efin;
-using HE.FMS.Middleware.Providers.CsvFile;
+using HE.FMS.Middleware.Providers.File;
 
 namespace HE.FMS.Middleware.Shared.Base;
 
@@ -10,11 +10,11 @@ public abstract class DataExportFunctionBase<T>
     where T : IItemSet
 {
     private readonly IEfinCosmosClient _efinCosmosDbClient;
-    private readonly ICsvFileWriter _csvFileWriter;
+    private readonly IFileWriter _csvFileWriter;
 
     protected DataExportFunctionBase(
         IEfinCosmosClient efinCosmosDbClient,
-        ICsvFileWriter csvFileWriter)
+        IFileWriter csvFileWriter)
     {
         _csvFileWriter = csvFileWriter;
         _efinCosmosDbClient = efinCosmosDbClient;

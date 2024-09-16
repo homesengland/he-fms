@@ -4,6 +4,8 @@ using HE.FMS.Middleware.Contract.Attributes.Efin;
 using HE.FMS.Middleware.Contract.Common;
 using HE.FMS.Middleware.Providers.Common;
 
+namespace HE.FMS.Middleware.BusinessLogic.Efin;
+public class CsvFileGenerator : ICsvFileGenerator
 namespace HE.FMS.Middleware.Providers.Efin;
 public class EfinCsvFileGenerator(IDateTimeProvider dateTimeProvider) : ICsvFileGenerator
 {

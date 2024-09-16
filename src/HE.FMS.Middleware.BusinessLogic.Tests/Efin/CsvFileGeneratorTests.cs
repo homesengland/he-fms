@@ -1,25 +1,19 @@
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using HE.FMS.Middleware.BusinessLogic.Efin;
 using HE.FMS.Middleware.Contract.Attributes.Efin;
 using HE.FMS.Middleware.Providers.Common;
-using HE.FMS.Middleware.Providers.Efin;
-using HE.FMS.Middleware.Providers.Tests.Fakes;
 using Xunit;
 
-namespace HE.FMS.Middleware.Providers.Tests.Efin;
-public class EfinCsvFileGeneratorTests
+namespace HE.FMS.Middleware.BusinessLogic.Tests.Efin;
+public class CsvFileGeneratorTests
 {
     private readonly IDateTimeProvider _dateTimeProvider;
-    private readonly EfinCsvFileGenerator _csvFileGenerator;
+    private readonly CsvFileGenerator _csvFileGenerator;
 
-    public EfinCsvFileGeneratorTests()
+    public CsvFileGeneratorTests()
     {
         _dateTimeProvider = new FakeDateTimeProvider();
-        _csvFileGenerator = new EfinCsvFileGenerator(_dateTimeProvider);
+        _csvFileGenerator = new CsvFileGenerator(_dateTimeProvider);
     }
 
     [Fact]

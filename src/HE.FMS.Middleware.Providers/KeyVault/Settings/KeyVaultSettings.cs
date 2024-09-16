@@ -1,6 +1,6 @@
-﻿namespace HE.FMS.Middleware.Providers.KeyVault.Settings;
+namespace HE.FMS.Middleware.Providers.KeyVault.Settings;
 
-internal sealed class KeyVaultSettings : IKeyVaultSettings
+public sealed class KeyVaultSettings
 {
     public string Url { get; set; }
 }

@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using HE.FMS.Middleware.Providers.Common;
 using Microsoft.VisualBasic;
 
-namespace HE.FMS.Middleware.Providers.Tests.Fakes;
+namespace HE.FMS.Middleware.Providers.Common;
 public class FakeDateTimeProvider : IDateTimeProvider
 {
     public DateTime Now => DateTime.MinValue;
