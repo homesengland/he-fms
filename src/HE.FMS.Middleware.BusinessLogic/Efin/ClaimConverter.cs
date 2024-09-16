@@ -8,7 +8,7 @@ using HE.FMS.Middleware.Providers.CosmosDb.Base;
 using HE.FMS.Middleware.Providers.CosmosDb.Efin;
 using static HE.FMS.Middleware.Common.Constants;
 
-namespace HE.FMS.Middleware.Providers.Efin;
+namespace HE.FMS.Middleware.BusinessLogic.Efin;
 public class ClaimConverter : IClaimConverter
 {
     public ClaimItem Convert(ClaimPaymentRequest claimPaymentRequest)

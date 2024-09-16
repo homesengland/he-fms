@@ -4,7 +4,7 @@ using HE.FMS.Middleware.Contract.Claims;
 using HE.FMS.Middleware.Contract.Constants;
 using HE.FMS.Middleware.Contract.Reclaims;
 
-namespace HE.FMS.Middleware.Providers.Tests.Factories;
+namespace HE.FMS.Middleware.BusinessLogic.Tests.Factories;
 public static class PaymentRequestFactory
 {
     public static ClaimPaymentRequest CreateRandomClaimPaymentRequest()

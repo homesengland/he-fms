@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using HE.FMS.Middleware.BusinessLogic.Efin;
 using HE.FMS.Middleware.Common.Exceptions.Internal;
 using HE.FMS.Middleware.Common.Extensions;
 using HE.FMS.Middleware.Common.Serialization;
@@ -10,8 +11,7 @@ using HE.FMS.Middleware.Contract.Common;
 using HE.FMS.Middleware.Contract.Reclaims.Efin;
 using HE.FMS.Middleware.Providers.CosmosDb.Base;
 using HE.FMS.Middleware.Providers.CosmosDb.Efin;
-using HE.FMS.Middleware.Providers.CsvFile;
-using HE.FMS.Middleware.Providers.Efin;
+using HE.FMS.Middleware.Providers.File;
 using HE.FMS.Middleware.Providers.ServiceBus;
 using HE.FMS.Middleware.Shared.Base;
 using Microsoft.Azure.Functions.Worker;
@@ -27,7 +27,7 @@ public class ProcessAndStoreReclaimTimeTrigger : DataExportFunctionBase<ReclaimI
 
     public ProcessAndStoreReclaimTimeTrigger(
         IEfinCosmosClient efinCosmosDbClient,
-        ICsvFileWriter csvFileWriter,
+        IFileWriter csvFileWriter,
         ICsvFileGenerator csvFileGenerator,
         IEfinCosmosConfigClient configurationClient)
         : base(
