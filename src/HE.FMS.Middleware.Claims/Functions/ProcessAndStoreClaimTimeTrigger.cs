@@ -56,7 +56,7 @@ public class ProcessAndStoreClaimTimeTrigger : DataExportFunctionBase<ClaimItemS
         EfinConfigItem efinConfigItem;
         try
         {
-            efinConfigItem = await _configurationClient.GetNextIndex(IndexConfiguration.Reclaim.BatchIndex, CosmosDbItemType.Reclaim);
+            efinConfigItem = await _configurationClient.GetNextIndex(IndexConfiguration.Claim.BatchIndex, CosmosDbItemType.Claim);
         }
         catch (MissingConfigurationException)
         {
@@ -66,7 +66,7 @@ public class ProcessAndStoreClaimTimeTrigger : DataExportFunctionBase<ClaimItemS
                 IndexConfiguration.Reclaim.BatchIndexPrefix,
                 IndexConfiguration.Reclaim.BatchIndexLength);
 
-            efinConfigItem = await _configurationClient.GetNextIndex(IndexConfiguration.Reclaim.BatchIndex, CosmosDbItemType.Reclaim);
+            efinConfigItem = await _configurationClient.GetNextIndex(IndexConfiguration.Claim.BatchIndex, CosmosDbItemType.Claim);
         }
 
         var batchRef = efinConfigItem.ToString();
@@ -92,7 +92,7 @@ public class ProcessAndStoreClaimTimeTrigger : DataExportFunctionBase<ClaimItemS
     protected override IEnumerable<BlobData> PrepareFiles(ClaimItemSet convertedData) =>
         [
             _csvFileGenerator.GenerateFile(convertedData.CLCLB_Batch.AsEnumerable(), CLCLB_Batch.FileName, convertedData.BatchNumber),
-            _csvFileGenerator.GenerateFile(convertedData.CLI_Invoices, CLI_Invoice.FileName, CLI_Invoice.FileName),
+            _csvFileGenerator.GenerateFile(convertedData.CLI_Invoices, CLI_Invoice.FileName, convertedData.BatchNumber),
             _csvFileGenerator.GenerateFile(convertedData.CLA_InvoiceAnalyses, CLA_InvoiceAnalysis.FileName, convertedData.BatchNumber),
         ];
 }
