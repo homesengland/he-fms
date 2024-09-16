@@ -11,13 +11,13 @@ public sealed class EfinConfigCosmosClient : CosmosDbClient<EfinConfigItem>, IEf
     {
     }
 
-    public async Task<string> GetNextIndex(string indexName, CosmosDbItemType type)
+    public async Task<EfinConfigItem> GetNextIndex(string indexName, CosmosDbItemType type)
     {
         var item = (await GetItems(indexName, type)).FirstOrDefault() ?? throw new MissingConfigurationException($"{indexName} in {type}");
-        var nextIndex = item.GetNextIndex();
+        item.GetNextIndex();
         await UpsertItem(item, CancellationToken.None);
 
-        return nextIndex;
+        return item;
     }
 
     public async Task<EfinConfigItem> CreateItem(string indexName, CosmosDbItemType type, string indexPrefix, int indexLength)

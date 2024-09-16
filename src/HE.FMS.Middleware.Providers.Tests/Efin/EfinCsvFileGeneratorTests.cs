@@ -35,10 +35,10 @@ public class EfinCsvFileGeneratorTests
         var expectedContent = "1,Item1" + Environment.NewLine + "2,Item2";
 
         // Act
-        var result = _csvFileGenerator.GenerateFile(items);
+        var result = _csvFileGenerator.GenerateFile(items, "FileName", "000001");
 
         // Assert
-        Assert.Equal("TestItem_" + _dateTimeProvider.UtcNow.ToString("yyyyMMdd_HHmmss", CultureInfo.InvariantCulture) + ".csv", result.Name);
+        Assert.Equal("FileName" + "000001_" + _dateTimeProvider.UtcNow.ToString("yyyyMMdd", CultureInfo.InvariantCulture) + ".csv", result.Name);
         Assert.Equal(expectedContent, result.Content);
     }
 

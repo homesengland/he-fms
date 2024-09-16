@@ -36,4 +36,14 @@ public class EfinConfigItem : ICosmosItem
         Index += 1;
         return Prefix + Index.ToString(CultureInfo.InvariantCulture).PadLeft(IndexLength, '0');
     }
+
+    public override string ToString()
+    {
+        return Prefix + Index.ToString(CultureInfo.InvariantCulture).PadLeft(IndexLength, '0');
+    }
+
+    public string IndexNumberToString()
+    {
+        return Index.ToString(CultureInfo.InvariantCulture).PadLeft(IndexLength, '0');
+    }
 }

@@ -4,5 +4,5 @@ namespace HE.FMS.Middleware.Providers.Efin;
 
 public interface ICsvFileGenerator
 {
-    BlobData GenerateFile(IEnumerable<object> items);
+    BlobData GenerateFile(IEnumerable<object> items, string fileName, string batchNumber);
 }

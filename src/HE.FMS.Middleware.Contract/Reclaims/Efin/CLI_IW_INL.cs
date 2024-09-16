@@ -8,6 +8,8 @@ namespace HE.FMS.Middleware.Contract.Reclaims.Efin;
 #pragma warning disable IDE1006 // Naming Styles
 public class CLI_IW_INL
 {
+    public const string FileName = "cpiw_il";
+
     [EfinFileRowIndex(1, 3)]
     public string cliwl_sub_ledger_id { get; set; }
 

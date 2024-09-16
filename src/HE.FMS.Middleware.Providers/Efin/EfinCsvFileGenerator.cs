@@ -1,40 +1,27 @@
 using System.Globalization;
-using System.Text;
 using HE.FMS.Middleware.Common.Extensions;
 using HE.FMS.Middleware.Contract.Attributes.Efin;
 using HE.FMS.Middleware.Contract.Common;
 using HE.FMS.Middleware.Providers.Common;
 
 namespace HE.FMS.Middleware.Providers.Efin;
-public class EfinCsvFileGenerator : ICsvFileGenerator
+public class EfinCsvFileGenerator(IDateTimeProvider dateTimeProvider) : ICsvFileGenerator
 {
     private const char Separator = ',';
     private const string FileExtension = ".csv";
-    private const string DateTimeFormat = "yyyyMMdd_HHmmss";
+    private const string DateTimeFormat = "yyyyMMdd";
 
-    private readonly IDateTimeProvider _dateTimeProvider;
-
-    public EfinCsvFileGenerator(IDateTimeProvider dateTimeProvider)
-    {
-        _dateTimeProvider = dateTimeProvider;
-    }
-
-    public BlobData GenerateFile(IEnumerable<object> items)
+    public BlobData GenerateFile(IEnumerable<object> items, string fileName, string batchNumber)
     {
         ArgumentNullException.ThrowIfNull(items);
 
-        var type = items.GetType().GetGenericArguments()[0];
+        var rows = items.Select(GenerateRow).ToList();
 
-        var rows = new List<string>();
-
-        foreach (var item in items)
-        {
-            rows.Add(GenerateRow(item));
-        }
+        var dateString = dateTimeProvider.UtcNow.ToString(DateTimeFormat, CultureInfo.InvariantCulture);
 
         return new BlobData()
         {
-            Name = $"{type.Name}_{_dateTimeProvider.UtcNow.ToString(DateTimeFormat, CultureInfo.InvariantCulture)}{FileExtension}",
+            Name = $"{fileName}{batchNumber}_{dateString}{FileExtension}",
             Content = string.Join(Environment.NewLine, rows),
         };
     }
