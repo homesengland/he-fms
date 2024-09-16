@@ -1,9 +1,9 @@
+using HE.FMS.Middleware.BusinessLogic.Efin;
+using HE.FMS.Middleware.BusinessLogic.Tests.Factories;
 using HE.FMS.Middleware.Contract.Reclaims.Efin;
-using HE.FMS.Middleware.Providers.Efin;
-using HE.FMS.Middleware.Providers.Tests.Factories;
 using Xunit;
 
-namespace HE.FMS.Middleware.Providers.Tests.Efin;
+namespace HE.FMS.Middleware.BusinessLogic.Tests.Efin;
 public class ReclaimConverterTests
 {
     private readonly ReclaimConverter _reclaimConverter = new();

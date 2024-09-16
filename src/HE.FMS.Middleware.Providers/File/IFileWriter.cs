@@ -1,8 +1,8 @@
 using HE.FMS.Middleware.Contract.Common;
 
-namespace HE.FMS.Middleware.Providers.CsvFile;
+namespace HE.FMS.Middleware.Providers.File;
 
-public interface ICsvFileWriter
+public interface IFileWriter
 {
     Task WriteAsync(string blobContainerName, BlobData blobData);
 }

@@ -5,9 +5,8 @@ using HE.FMS.Middleware.Providers.Common;
 using HE.FMS.Middleware.Providers.CosmosDb.Efin;
 using HE.FMS.Middleware.Providers.CosmosDb.Settings;
 using HE.FMS.Middleware.Providers.CosmosDb.Trace;
-using HE.FMS.Middleware.Providers.CsvFile;
-using HE.FMS.Middleware.Providers.CsvFile.Settings;
-using HE.FMS.Middleware.Providers.Efin;
+using HE.FMS.Middleware.Providers.File;
+using HE.FMS.Middleware.Providers.File.Settings;
 using HE.FMS.Middleware.Providers.KeyVault;
 using HE.FMS.Middleware.Providers.KeyVault.Settings;
 using HE.FMS.Middleware.Providers.Mambu;
@@ -35,21 +34,13 @@ public static class ProvidersModule
             .AddServiceBus()
             .AddStorageSettings()
             .AddFileShareStorage()
-            .AddBlobStorage()
-            .AddClaimReclaimServices();
+            .AddBlobStorage();
     }
 
     private static IServiceCollection AddCommon(this IServiceCollection services)
     {
-        return services.AddSingleton<IDateTimeProvider, SystemDateTimeProvider>();
-    }
-
-    private static IServiceCollection AddClaimReclaimServices(this IServiceCollection services)
-    {
-        return services.AddSingleton<IClaimConverter, ClaimConverter>()
-            .AddSingleton<IReclaimConverter, ReclaimConverter>()
-            .AddSingleton<ICsvFileGenerator, EfinCsvFileGenerator>()
-            .AddSingleton<ICsvFileWriter, FileShareWriter>();
+        return services.AddSingleton<IDateTimeProvider, SystemDateTimeProvider>()
+            .AddSingleton<IFileWriter, FileShareWriter>();
     }
 
     private static IServiceCollection AddMambu(this IServiceCollection services)
@@ -82,7 +73,7 @@ public static class ProvidersModule
 
     private static IServiceCollection AddKeyVault(this IServiceCollection services)
     {
-        services.AddAppConfiguration<IKeyVaultSettings, KeyVaultSettings>("KeyVault");
+        services.AddAppConfiguration<KeyVaultSettings>("KeyVault");
         services.AddScoped<IKeyVaultSecretClient, KeyVaultSecretClient>();
 
         return services;
@@ -109,13 +100,18 @@ public static class ProvidersModule
 
     private static IServiceCollection AddStorageSettings(this IServiceCollection services)
     {
-        services.AddAppConfiguration<IIntegrationStorageSettings, IntegrationStorageSettings>("IntegrationStorage");
+        services.AddAppConfiguration<FileStorageSettings>("IntegrationStorage");
         return services;
     }
 
     private static IServiceCollection AddBlobStorage(this IServiceCollection services)
     {
-        services.AddSingleton(sp => new BlobServiceClient(sp.GetRequiredService<IntegrationStorageSettings>().ConnectionString));
+        services.AddSingleton(sp =>
+        {
+            var settings = sp.GetRequiredService<FileStorageSettings>();
+            return new BlobServiceClient(settings.ConnectionString);
+        });
+
         return services;
     }
 
@@ -123,9 +119,10 @@ public static class ProvidersModule
     {
         services.AddSingleton(sp =>
         {
-            var settings = sp.GetRequiredService<IIntegrationStorageSettings>();
+            var settings = sp.GetRequiredService<FileStorageSettings>();
             return new ShareClient(settings.ConnectionString, settings.ShareName);
         });
+
         return services;
     }
 }

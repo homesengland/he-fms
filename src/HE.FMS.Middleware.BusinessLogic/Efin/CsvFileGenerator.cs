@@ -5,8 +5,8 @@ using HE.FMS.Middleware.Contract.Attributes.Efin;
 using HE.FMS.Middleware.Contract.Common;
 using HE.FMS.Middleware.Providers.Common;
 
-namespace HE.FMS.Middleware.Providers.Efin;
-public class EfinCsvFileGenerator : ICsvFileGenerator
+namespace HE.FMS.Middleware.BusinessLogic.Efin;
+public class CsvFileGenerator : ICsvFileGenerator
 {
     private const char Separator = ',';
     private const string FileExtension = ".csv";
@@ -14,7 +14,7 @@ public class EfinCsvFileGenerator : ICsvFileGenerator
 
     private readonly IDateTimeProvider _dateTimeProvider;
 
-    public EfinCsvFileGenerator(IDateTimeProvider dateTimeProvider)
+    public CsvFileGenerator(IDateTimeProvider dateTimeProvider)
     {
         _dateTimeProvider = dateTimeProvider;
     }

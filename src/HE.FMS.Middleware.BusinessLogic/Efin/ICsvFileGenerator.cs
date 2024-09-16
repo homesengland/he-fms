@@ -1,6 +1,6 @@
 using HE.FMS.Middleware.Contract.Common;
 
-namespace HE.FMS.Middleware.Providers.Efin;
+namespace HE.FMS.Middleware.BusinessLogic.Efin;
 
 public interface ICsvFileGenerator
 {

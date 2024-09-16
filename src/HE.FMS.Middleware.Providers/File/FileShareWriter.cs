@@ -2,9 +2,9 @@ using System.Text;
 using Azure.Storage.Files.Shares;
 using HE.FMS.Middleware.Contract.Common;
 
-namespace HE.FMS.Middleware.Providers.CsvFile;
+namespace HE.FMS.Middleware.Providers.File;
 
-public class FileShareWriter : ICsvFileWriter
+public class FileShareWriter : IFileWriter
 {
     private readonly ShareClient _shareClient;
 
