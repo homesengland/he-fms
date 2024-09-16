@@ -1,3 +1,4 @@
+using HE.FMS.Middleware.BusinessLogic.Efin;
 using HE.FMS.Middleware.BusinessLogic.Framework;
 using HE.FMS.Middleware.BusinessLogic.Grants;
 using HE.FMS.Middleware.BusinessLogic.Grants.Services;
@@ -15,7 +16,8 @@ public static class DomainModule
     public static IServiceCollection AddDomainModule(this IServiceCollection services)
     {
         return services.AddMambu()
-            .AddGrants();
+            .AddGrants()
+            .AddClaimReclaim();
     }
 
     private static IServiceCollection AddMambu(this IServiceCollection services)
@@ -34,5 +36,12 @@ public static class DomainModule
         services.AddScoped<IUseCase<OpenNewGrantAccountRequest, OpenNewGrantAccountResult>, OpenNewGrantAccountUseCase>();
 
         return services;
+    }
+
+    private static IServiceCollection AddClaimReclaim(this IServiceCollection services)
+    {
+        return services.AddSingleton<IClaimConverter, ClaimConverter>()
+            .AddSingleton<IReclaimConverter, ReclaimConverter>()
+            .AddSingleton<ICsvFileGenerator, CsvFileGenerator>();
     }
 }

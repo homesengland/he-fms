@@ -21,8 +21,11 @@ public class KeyVaultSecretClientTests
 
     public KeyVaultSecretClientTests()
     {
-        var settings = Substitute.For<IKeyVaultSettings>();
-        settings.Url.Returns("https://fake-keyvault-url");
+        var settings = new KeyVaultSettings()
+        {
+            Url = "https://fake-keyvault-url",
+        };
+
         var logger = Substitute.For<ILogger<KeyVaultSecretClient>>();
         _secretClient = Substitute.For<SecretClient>(new Uri(settings.Url), new DefaultAzureCredential());
         _keyVaultSecretClient = new KeyVaultSecretClient(_secretClient, logger);

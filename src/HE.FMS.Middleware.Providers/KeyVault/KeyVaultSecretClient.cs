@@ -23,7 +23,7 @@ public class KeyVaultSecretClient : IKeyVaultSecretClient
         DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
     };
 
-    public KeyVaultSecretClient(IKeyVaultSettings settings, ILogger<KeyVaultSecretClient> logger)
+    public KeyVaultSecretClient(KeyVaultSettings settings, ILogger<KeyVaultSecretClient> logger)
     {
         _client = new SecretClient(new Uri(settings.Url), new DefaultAzureCredential());
         _logger = logger;

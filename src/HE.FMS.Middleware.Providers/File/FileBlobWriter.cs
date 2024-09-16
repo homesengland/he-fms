@@ -1,12 +1,10 @@
-using System.Globalization;
-using System.Reflection;
 using System.Text;
 using Azure.Storage.Blobs;
 using HE.FMS.Middleware.Contract.Common;
 
-namespace HE.FMS.Middleware.Providers.CsvFile;
+namespace HE.FMS.Middleware.Providers.File;
 
-public class FileBlobWriter : ICsvFileWriter
+public class FileBlobWriter : IFileWriter
 {
     private readonly BlobServiceClient _blobServiceClient;
 
