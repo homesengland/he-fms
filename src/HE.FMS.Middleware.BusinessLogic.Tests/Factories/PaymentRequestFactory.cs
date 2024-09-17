@@ -13,7 +13,7 @@ public static class PaymentRequestFactory
 
         return new ClaimPaymentRequest
         {
-            Claim = new ClaimDetailsBase
+            Claim = new ClaimDetails
             {
                 Amount = randomizer.Decimal(),
                 Id = randomizer.String2(10),

@@ -8,7 +8,9 @@ public sealed class ReclaimDetails : ClaimDetailsBase
     [Range(0.01, int.MaxValue)]
     public decimal TotalAmount { get; set; }
 
-    [Required]
-    [Range(0.01, int.MaxValue)]
+    [Range(0, int.MaxValue)]
+    public decimal Amount { get; set; }
+
+    [Range(0, int.MaxValue)]
     public decimal InterestAmount { get; set; }
 }
