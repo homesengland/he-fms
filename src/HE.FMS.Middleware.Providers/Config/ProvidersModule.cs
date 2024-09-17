@@ -112,7 +112,8 @@ public static class ProvidersModule
                 var config = sp.GetRequiredService<IConfiguration>();
                 return config[Constants.Settings.ServiceBus.ClaimsTopic] ?? string.Empty;
             },
-            _ => new ManagedIdentityCredential());
+            _ => new ManagedIdentityCredential(),
+            name: "claims_topic");
 
         services.AddHealthChecks().AddAzureServiceBusTopic(
             sp =>
@@ -125,7 +126,8 @@ public static class ProvidersModule
                 var config = sp.GetRequiredService<IConfiguration>();
                 return config[Constants.Settings.ServiceBus.ReclaimsTopic] ?? string.Empty;
             },
-            _ => new ManagedIdentityCredential());
+            _ => new ManagedIdentityCredential(),
+            name: "reclaims_topic");
 
         return services;
     }
