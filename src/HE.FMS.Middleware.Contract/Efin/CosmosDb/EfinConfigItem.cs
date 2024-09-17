@@ -1,8 +1,8 @@
 using System.Globalization;
 using System.Text.Json.Serialization;
-using HE.FMS.Middleware.Providers.CosmosDb.Base;
+using HE.FMS.Middleware.Contract.Common.CosmosDb;
 
-namespace HE.FMS.Middleware.Providers.CosmosDb.Efin;
+namespace HE.FMS.Middleware.Contract.Efin.CosmosDb;
 public class EfinConfigItem : ICosmosItem
 {
     [JsonPropertyName("id")]

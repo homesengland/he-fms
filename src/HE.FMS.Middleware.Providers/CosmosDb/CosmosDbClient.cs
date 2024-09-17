@@ -1,7 +1,8 @@
 using System.Linq.Expressions;
 using System.Reflection;
 using Azure.Identity;
-using HE.FMS.Middleware.Providers.CosmosDb.Base;
+using HE.FMS.Middleware.Common;
+using HE.FMS.Middleware.Contract.Common.CosmosDb;
 using HE.FMS.Middleware.Providers.CosmosDb.Settings;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Cosmos.Linq;
@@ -15,13 +16,12 @@ public abstract class CosmosDbClient<TMessage> : ICosmosDbClient<TMessage>, IDis
 
     private readonly Container _container;
 
-    protected CosmosDbClient(ICosmosDbSettings settings)
+    protected CosmosDbClient(CosmosClient client, CosmosDbSettings settings)
     {
-        _client = !string.IsNullOrWhiteSpace(settings.AccountEndpoint)
-            ? new CosmosClient(accountEndpoint: settings.AccountEndpoint, new DefaultAzureCredential())
-            : new CosmosClient(connectionString: settings.ConnectionString);
+        _client = client;
 
         var database = _client.GetDatabase(settings.DatabaseId);
+
         _container = database.GetContainer(settings.ContainerId);
     }
 

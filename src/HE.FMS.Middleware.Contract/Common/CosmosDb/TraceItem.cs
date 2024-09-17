@@ -1,15 +1,14 @@
 using HE.FMS.Middleware.Common;
-using HE.FMS.Middleware.Providers.CosmosDb.Base;
 
-namespace HE.FMS.Middleware.Providers.CosmosDb.Trace;
+namespace HE.FMS.Middleware.Contract.Common.CosmosDb;
 public class TraceItem : CosmosItem
 {
-    public static TraceItem CreateTraceItem(object value, string idempotencyKey, CosmosDbItemType type)
+    public static TraceItem CreateTraceItem(string partitionKey, object value, string idempotencyKey, CosmosDbItemType type)
     {
         return new TraceItem
         {
             Id = Guid.NewGuid().ToString(),
-            PartitionKey = Constants.CosmosDbConfiguration.PartitonKey,
+            PartitionKey = partitionKey,
             IdempotencyKey = idempotencyKey,
             CreationTime = DateTime.UtcNow,
             Value = value,

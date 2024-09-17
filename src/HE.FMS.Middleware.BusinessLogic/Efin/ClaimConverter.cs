@@ -1,12 +1,5 @@
-using System.Globalization;
-using HE.FMS.Middleware.Common.Exceptions.Internal;
 using HE.FMS.Middleware.Contract.Claims;
 using HE.FMS.Middleware.Contract.Claims.Efin;
-using HE.FMS.Middleware.Contract.Constants;
-using HE.FMS.Middleware.Providers.Common;
-using HE.FMS.Middleware.Providers.CosmosDb.Base;
-using HE.FMS.Middleware.Providers.CosmosDb.Efin;
-using static HE.FMS.Middleware.Common.Constants;
 
 namespace HE.FMS.Middleware.BusinessLogic.Efin;
 public class ClaimConverter : IClaimConverter

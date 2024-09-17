@@ -1,10 +1,10 @@
+using Azure.Identity;
 using Azure.Storage.Blobs;
 using Azure.Storage.Files.Shares;
+using HE.FMS.Middleware.Common;
 using HE.FMS.Middleware.Common.Extensions;
 using HE.FMS.Middleware.Providers.Common;
-using HE.FMS.Middleware.Providers.CosmosDb.Efin;
 using HE.FMS.Middleware.Providers.CosmosDb.Settings;
-using HE.FMS.Middleware.Providers.CosmosDb.Trace;
 using HE.FMS.Middleware.Providers.File;
 using HE.FMS.Middleware.Providers.File.Settings;
 using HE.FMS.Middleware.Providers.KeyVault;
@@ -18,6 +18,8 @@ using HE.FMS.Middleware.Providers.Mambu.Auth;
 using HE.FMS.Middleware.Providers.Mambu.Extensions;
 using HE.FMS.Middleware.Providers.Mambu.Settings;
 using HE.FMS.Middleware.Providers.ServiceBus;
+using Microsoft.Azure.Cosmos;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace HE.FMS.Middleware.Providers.Config;
@@ -32,9 +34,7 @@ public static class ProvidersModule
             .AddCosmosDb()
             .AddKeyVault()
             .AddServiceBus()
-            .AddStorageSettings()
-            .AddFileShareStorage()
-            .AddBlobStorage();
+            .AddStorage();
     }
 
     private static IServiceCollection AddCommon(this IServiceCollection services)
@@ -61,12 +61,18 @@ public static class ProvidersModule
 
     private static IServiceCollection AddCosmosDb(this IServiceCollection services)
     {
-        services.AddAppConfiguration<EfinConfigDbSettings>("EfinConfigDb");
-        services.AddAppConfiguration<EfinDataDbSettings>("EfinDb");
-        services.AddAppConfiguration<TraceDbSettings>("TraceDb");
-        services.AddSingleton<IEfinCosmosClient, EfinCosmosClient>(x => new EfinCosmosClient(x.GetService<EfinDataDbSettings>()!));
-        services.AddSingleton<IEfinCosmosConfigClient, EfinConfigCosmosClient>(x => new EfinConfigCosmosClient(x.GetService<EfinConfigDbSettings>()!));
-        services.AddSingleton<ITraceCosmosClient, TraceCosmosClient>(x => new TraceCosmosClient(x.GetService<TraceDbSettings>()!));
+        services.AddAppConfiguration<CosmosDbSettings>("CosmosDb");
+
+        services.AddSingleton(sp =>
+        {
+            var settings = sp.GetRequiredService<CosmosDbSettings>();
+
+            return !string.IsNullOrWhiteSpace(settings.AccountEndpoint)
+                ? new CosmosClient(accountEndpoint: settings.AccountEndpoint, new DefaultAzureCredential())
+                : new CosmosClient(connectionString: settings.ConnectionString);
+        });
+
+        services.AddHealthChecks().AddAzureCosmosDB();
 
         return services;
     }
@@ -95,33 +101,58 @@ public static class ProvidersModule
     {
         services.AddSingleton<ITopicClientFactory, TopicClientFactory>();
 
+        services.AddHealthChecks().AddAzureServiceBusTopic(
+            sp =>
+            {
+                var config = sp.GetRequiredService<IConfiguration>();
+                return config[Constants.Settings.ServiceBus.ConnectionString] ?? string.Empty;
+            },
+            sp =>
+            {
+                var config = sp.GetRequiredService<IConfiguration>();
+                return config[Constants.Settings.ServiceBus.ClaimsTopic] ?? string.Empty;
+            },
+            _ => new ManagedIdentityCredential());
+
+        services.AddHealthChecks().AddAzureServiceBusTopic(
+            sp =>
+            {
+                var config = sp.GetRequiredService<IConfiguration>();
+                return config[Constants.Settings.ServiceBus.ConnectionString] ?? string.Empty;
+            },
+            sp =>
+            {
+                var config = sp.GetRequiredService<IConfiguration>();
+                return config[Constants.Settings.ServiceBus.ReclaimsTopic] ?? string.Empty;
+            },
+            _ => new ManagedIdentityCredential());
+
         return services;
     }
 
-    private static IServiceCollection AddStorageSettings(this IServiceCollection services)
+    private static IServiceCollection AddStorage(this IServiceCollection services)
     {
         services.AddAppConfiguration<FileStorageSettings>("IntegrationStorage");
-        return services;
-    }
 
-    private static IServiceCollection AddBlobStorage(this IServiceCollection services)
-    {
         services.AddSingleton(sp =>
         {
             var settings = sp.GetRequiredService<FileStorageSettings>();
             return new BlobServiceClient(settings.ConnectionString);
         });
 
-        return services;
-    }
-
-    private static IServiceCollection AddFileShareStorage(this IServiceCollection services)
-    {
         services.AddSingleton(sp =>
         {
             var settings = sp.GetRequiredService<FileStorageSettings>();
             return new ShareClient(settings.ConnectionString, settings.ShareName);
         });
+
+        services.AddSingleton(sp =>
+        {
+            var settings = sp.GetRequiredService<FileStorageSettings>();
+            return new ShareServiceClient(settings.ConnectionString);
+        });
+
+        services.AddHealthChecks().AddAzureFileShare();
 
         return services;
     }

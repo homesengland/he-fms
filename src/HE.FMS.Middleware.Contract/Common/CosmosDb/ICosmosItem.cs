@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace HE.FMS.Middleware.Providers.CosmosDb.Base;
+namespace HE.FMS.Middleware.Contract.Common.CosmosDb;
 
 public interface ICosmosItem
 {

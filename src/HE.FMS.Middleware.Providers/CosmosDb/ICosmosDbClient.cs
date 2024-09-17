@@ -1,5 +1,5 @@
 using System.Linq.Expressions;
-using HE.FMS.Middleware.Providers.CosmosDb.Base;
+using HE.FMS.Middleware.Contract.Common.CosmosDb;
 
 namespace HE.FMS.Middleware.Providers.CosmosDb;
 

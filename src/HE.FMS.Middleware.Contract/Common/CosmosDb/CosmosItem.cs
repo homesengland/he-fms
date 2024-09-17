@@ -1,6 +1,4 @@
-using System.Text.Json.Serialization;
-
-namespace HE.FMS.Middleware.Providers.CosmosDb.Base;
+namespace HE.FMS.Middleware.Contract.Common.CosmosDb;
 public class CosmosItem : ICosmosItem
 {
     public string Id { get; set; }

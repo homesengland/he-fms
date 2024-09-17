@@ -52,4 +52,15 @@ public static class Constants
             public const int BatchIndexLength = 6;
         }
     }
+
+    public static class Settings
+    {
+        public static class ServiceBus
+        {
+            public const string ClaimsTopic = "Claims:Create:TopicName";
+            public const string ReclaimsTopic = "Reclaims:Create:TopicName";
+            public const string ConnectionString = "ServiceBus:Connection";
+            public const string FullyQualifiedNamespace = "ServiceBus:Connection:fullyQualifiedNamespace";
+        }
+    }
 }

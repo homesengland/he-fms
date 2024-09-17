@@ -1,6 +1,6 @@
 using FluentAssertions;
-using HE.FMS.Middleware.Providers.CosmosDb.Base;
-using HE.FMS.Middleware.Providers.CosmosDb.Efin;
+using HE.FMS.Middleware.Contract.Common.CosmosDb;
+using HE.FMS.Middleware.Contract.Efin.CosmosDb;
 using Xunit;
 
 namespace HE.FMS.Middleware.Providers.Tests.CosmosDb.Efin;
