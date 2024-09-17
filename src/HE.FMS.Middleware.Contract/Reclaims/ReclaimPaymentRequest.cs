@@ -21,11 +21,6 @@ public sealed class ReclaimPaymentRequest
     {
         get
         {
-            if (Reclaim.Amount != 0 && Reclaim.InterestAmount != 0)
-            {
-                return default;
-            }
-
             if (Reclaim.Amount != 0)
             {
                 return EfinConstants.Default.Reclaim.AmountReclaim.Lookup.GetValueOrDefault(Organisation.PartnerType.RemoveSpecialCharacters());
