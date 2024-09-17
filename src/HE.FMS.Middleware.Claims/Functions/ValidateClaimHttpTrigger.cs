@@ -1,10 +1,11 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using HE.FMS.Middleware.BusinessLogic.Trace.CosmosDb;
+using HE.FMS.Middleware.Common;
 using HE.FMS.Middleware.Common.Serialization;
 using HE.FMS.Middleware.Contract.Claims;
-using HE.FMS.Middleware.Providers.CosmosDb.Base;
-using HE.FMS.Middleware.Providers.CosmosDb.Trace;
+using HE.FMS.Middleware.Contract.Common.CosmosDb;
 using HE.FMS.Middleware.Providers.ServiceBus;
 using HE.FMS.Middleware.Shared.Base;
 using HE.FMS.Middleware.Shared.Middlewares;
@@ -23,7 +24,7 @@ public class ValidateClaimHttpTrigger : ClaimBase<ClaimPaymentRequest>
             streamSerializer,
             traceCosmosDbClient,
             objectSerializer,
-            topicClientFactory.GetTopicClient("Claims:Create:TopicName"))
+            topicClientFactory.GetTopicClient(Constants.Settings.ServiceBus.ClaimsTopic))
     {
     }
 

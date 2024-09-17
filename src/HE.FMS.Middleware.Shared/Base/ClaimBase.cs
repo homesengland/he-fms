@@ -1,10 +1,11 @@
 using System.Net;
 using System.Text;
+using HE.FMS.Middleware.BusinessLogic.Trace.CosmosDb;
+using HE.FMS.Middleware.Common;
 using HE.FMS.Middleware.Common.Exceptions.Validation;
 using HE.FMS.Middleware.Common.Extensions;
 using HE.FMS.Middleware.Common.Serialization;
-using HE.FMS.Middleware.Providers.CosmosDb.Base;
-using HE.FMS.Middleware.Providers.CosmosDb.Trace;
+using HE.FMS.Middleware.Contract.Common.CosmosDb;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.ServiceBus;
 
@@ -34,7 +35,7 @@ public abstract class ClaimBase<T>
 
         var idempotencyKey = request.GetIdempotencyHeader();
 
-        var cosmosDbOutput = TraceItem.CreateTraceItem(inputData, idempotencyKey, type);
+        var cosmosDbOutput = TraceItem.CreateTraceItem(Constants.CosmosDbConfiguration.PartitonKey, inputData, idempotencyKey, type);
 
         await _traceCosmosDbClient.UpsertItem(cosmosDbOutput, cancellationToken);
 

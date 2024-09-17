@@ -2,10 +2,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using Azure.Messaging.ServiceBus;
 using HE.FMS.Middleware.BusinessLogic.Efin;
+using HE.FMS.Middleware.BusinessLogic.Efin.CosmosDb;
+using HE.FMS.Middleware.Common;
 using HE.FMS.Middleware.Common.Serialization;
+using HE.FMS.Middleware.Contract.Common.CosmosDb;
+using HE.FMS.Middleware.Contract.Efin.CosmosDb;
 using HE.FMS.Middleware.Contract.Reclaims;
-using HE.FMS.Middleware.Providers.CosmosDb.Base;
-using HE.FMS.Middleware.Providers.CosmosDb.Efin;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 
@@ -39,7 +41,7 @@ public class TransformReclaimServiceBusTrigger
 
         var inputData = await _streamSerializer.Deserialize<ReclaimPaymentRequest>(message.Body.ToStream(), cancellationToken);
         var convertedData = _reclaimConverter.Convert(inputData);
-        var cosmosDbOutput = EfinItem.CreateEfinItem(convertedData, message.CorrelationId, CosmosDbItemType.Reclaim);
+        var cosmosDbOutput = EfinItem.CreateEfinItem(Constants.CosmosDbConfiguration.PartitonKey, convertedData, message.CorrelationId, CosmosDbItemType.Reclaim);
         await _efinCosmosDbClient.UpsertItem(cosmosDbOutput, cancellationToken);
 
         _logger.LogInformation($"{nameof(TransformReclaimServiceBusTrigger)} function ended");

@@ -1,7 +1,8 @@
 using System.Globalization;
+using HE.FMS.Middleware.BusinessLogic.Efin.CosmosDb;
 using HE.FMS.Middleware.Contract.Common;
-using HE.FMS.Middleware.Providers.CosmosDb.Base;
-using HE.FMS.Middleware.Providers.CosmosDb.Efin;
+using HE.FMS.Middleware.Contract.Common.CosmosDb;
+using HE.FMS.Middleware.Contract.Efin.CosmosDb;
 using HE.FMS.Middleware.Providers.File;
 
 namespace HE.FMS.Middleware.Shared.Base;

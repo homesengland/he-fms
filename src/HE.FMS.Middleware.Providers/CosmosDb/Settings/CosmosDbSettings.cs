@@ -1,6 +1,6 @@
 namespace HE.FMS.Middleware.Providers.CosmosDb.Settings;
 
-public abstract class CosmosBaseSettings : ICosmosDbSettings
+public sealed class CosmosDbSettings
 {
     public string AccountEndpoint { get; set; }
 

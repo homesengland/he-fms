@@ -2,10 +2,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using Azure.Messaging.ServiceBus;
 using HE.FMS.Middleware.BusinessLogic.Efin;
+using HE.FMS.Middleware.BusinessLogic.Efin.CosmosDb;
+using HE.FMS.Middleware.Common;
 using HE.FMS.Middleware.Common.Serialization;
 using HE.FMS.Middleware.Contract.Claims;
-using HE.FMS.Middleware.Providers.CosmosDb.Base;
-using HE.FMS.Middleware.Providers.CosmosDb.Efin;
+using HE.FMS.Middleware.Contract.Common.CosmosDb;
+using HE.FMS.Middleware.Contract.Efin.CosmosDb;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 
@@ -39,7 +41,7 @@ public class TransformClaimServiceBusTrigger
 
         var inputData = await _streamSerializer.Deserialize<ClaimPaymentRequest>(message.Body.ToStream(), cancellationToken);
         var convertedData = _claimConverter.Convert(inputData);
-        var cosmosDbOutput = EfinItem.CreateEfinItem(convertedData, message.CorrelationId, CosmosDbItemType.Claim);
+        var cosmosDbOutput = EfinItem.CreateEfinItem(Constants.CosmosDbConfiguration.PartitonKey, convertedData, message.CorrelationId, CosmosDbItemType.Claim);
         await _efinCosmosDbClient.UpsertItem(cosmosDbOutput, cancellationToken);
 
         _logger.LogInformation($"{nameof(TransformClaimServiceBusTrigger)} function ended");

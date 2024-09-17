@@ -1,13 +1,16 @@
 using HE.FMS.Middleware.Common;
 using HE.FMS.Middleware.Common.Exceptions.Internal;
-using HE.FMS.Middleware.Providers.CosmosDb.Base;
+using HE.FMS.Middleware.Contract.Common.CosmosDb;
+using HE.FMS.Middleware.Contract.Efin.CosmosDb;
+using HE.FMS.Middleware.Providers.CosmosDb;
 using HE.FMS.Middleware.Providers.CosmosDb.Settings;
+using Microsoft.Azure.Cosmos;
 
-namespace HE.FMS.Middleware.Providers.CosmosDb.Efin;
+namespace HE.FMS.Middleware.BusinessLogic.Efin.CosmosDb;
 public sealed class EfinConfigCosmosClient : CosmosDbClient<EfinConfigItem>, IEfinCosmosConfigClient
 {
-    public EfinConfigCosmosClient(ICosmosDbSettings settings)
-        : base(settings)
+    public EfinConfigCosmosClient(CosmosClient client, CosmosDbSettings settings)
+        : base(client, settings)
     {
     }
 

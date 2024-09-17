@@ -1,7 +1,6 @@
 using FluentAssertions;
 using HE.FMS.Middleware.Common;
-using HE.FMS.Middleware.Providers.CosmosDb.Base;
-using HE.FMS.Middleware.Providers.CosmosDb.Trace;
+using HE.FMS.Middleware.Contract.Common.CosmosDb;
 using Xunit;
 
 namespace HE.FMS.Middleware.Providers.Tests.CosmosDb.Trace;
@@ -14,10 +13,11 @@ public class TraceItemTests
         // Arrange  
         var value = new { Property1 = "Value1", Property2 = "Value2" };
         var idempotencyKey = "TestIdempotencyKey";
+        var partitionKey = "fms";
         var type = CosmosDbItemType.Claim;
 
         // Act  
-        var item = TraceItem.CreateTraceItem(value, idempotencyKey, type);
+        var item = TraceItem.CreateTraceItem(partitionKey, value, idempotencyKey, type);
 
         // Assert  
         item.Should().NotBeNull();

@@ -1,6 +1,5 @@
 using HE.FMS.Middleware.Common;
-using HE.FMS.Middleware.Providers.CosmosDb.Base;
-using HE.FMS.Middleware.Providers.CosmosDb.Trace;
+using HE.FMS.Middleware.Contract.Common.CosmosDb;
 using Microsoft.Extensions.Configuration;
 using NSubstitute;
 using Xunit;
@@ -26,7 +25,7 @@ public class CosmosDbItemTests
         _configuration["CosmosDb:PartitionKey"].Returns(partitionKey);
 
         // Act
-        var result = TraceItem.CreateTraceItem(value, idempotencyKey, CosmosDbItemType.Log);
+        var result = TraceItem.CreateTraceItem(partitionKey, value, idempotencyKey, CosmosDbItemType.Log);
 
         // Assert
         Assert.NotNull(result);
@@ -43,10 +42,11 @@ public class CosmosDbItemTests
         // Arrange
         var value = new { Name = "Test" };
         var idempotencyKey = "test-key";
+        var partitionKey = "fms";
         _configuration["CosmosDb:PartitionKey"].Returns((string)null!);
 
         // Act
-        var result = TraceItem.CreateTraceItem(value, idempotencyKey, CosmosDbItemType.Log);
+        var result = TraceItem.CreateTraceItem(partitionKey, value, idempotencyKey, CosmosDbItemType.Log);
 
         // Assert
         Assert.NotNull(result);
