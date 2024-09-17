@@ -1,5 +1,6 @@
 using System.Globalization;
 using HE.FMS.Middleware.BusinessLogic.Efin.CosmosDb;
+using HE.FMS.Middleware.Common.Extensions;
 using HE.FMS.Middleware.Contract.Common;
 using HE.FMS.Middleware.Contract.Common.CosmosDb;
 using HE.FMS.Middleware.Contract.Efin.CosmosDb;
@@ -25,10 +26,12 @@ public abstract class DataExportFunctionBase<T>
     {
         var items = await _efinCosmosDbClient.GetAllNewItemsAsync(type);
 
-        if (!items.Any())
+        if (items.IsNullOrEmpty())
         {
             return;
         }
+
+        await _efinCosmosDbClient.ChangeItemsStatusAsync(items, CosmosDbItemStatus.InProgress, cancellationToken);
 
         var convertedData = await Convert(items);
 
@@ -42,9 +45,9 @@ public abstract class DataExportFunctionBase<T>
                     $"{type.ToString().ToLower(CultureInfo.InvariantCulture)}-container",
                     blob);
             }
-
-            await _efinCosmosDbClient.ChangeItemsStatusAsync(items, CosmosDbItemStatus.Processed, cancellationToken);
         }
+
+        await _efinCosmosDbClient.ChangeItemsStatusAsync(items, CosmosDbItemStatus.Processed, cancellationToken);
     }
 
     protected abstract Task<T> Convert(IEnumerable<EfinItem> items);

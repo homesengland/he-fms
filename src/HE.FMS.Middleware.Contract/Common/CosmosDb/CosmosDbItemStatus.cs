@@ -1,6 +1,7 @@
 namespace HE.FMS.Middleware.Contract.Common.CosmosDb;
 public enum CosmosDbItemStatus
 {
-    NotProcessed,
-    Processed,
+    NotProcessed = 0,
+    InProgress = 1,
+    Processed = 2,
 }
