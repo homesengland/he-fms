@@ -9,10 +9,6 @@ public class ClaimDetailsBase
     public string Id { get; set; }
 
     [Required]
-    [Range(0.01, int.MaxValue)]
-    public decimal Amount { get; set; }
-
-    [Required]
     [MaxLength(ValidatorConstants.EnumMaxLength)]
     public string Milestone { get; set; }
 

@@ -6,7 +6,7 @@ namespace HE.FMS.Middleware.Contract.Claims;
 public sealed class ClaimPaymentRequest
 {
     [Required]
-    public ClaimDetailsBase Claim { get; set; }
+    public ClaimDetails Claim { get; set; }
 
     [Required]
     public ClaimApplicationDetails Application { get; set; }
