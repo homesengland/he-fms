@@ -52,28 +52,6 @@ public class CLA_InvoiceAnalysis
 
     [EfinFileRowIndex(240, 256)]
     public string cla_volume { get; set; }
-
-    public static CLA_InvoiceAnalysis Create(ClaimPaymentRequest claimPayment)
-    {
-        return new CLA_InvoiceAnalysis()
-        {
-            cla_sub_ledger = EfinConstants.Default.Claim.SubLedger,
-            cla_inv_ref = claimPayment.Application.AllocationId,
-            cla_batch_ref = string.Empty,
-            cla_cfacs_cc = claimPayment.Application.EfinRegion,
-            cla_cfacs_ac = claimPayment.Organisation.PartnerType,
-            cla_cfacs_actv = claimPayment.Application.EfinTenure,
-            cla_cfacs_job = claimPayment.Application.Id,
-            cla_amount = claimPayment.Claim.Amount.ToString("F", CultureInfo.InvariantCulture),
-            cla_vat_code = claimPayment.Application.VatCode,
-            cla_vat_rate = claimPayment.Application.VatRate.ToString("F", CultureInfo.InvariantCulture),
-            cla_vat = (claimPayment.Claim.Amount * claimPayment.Application.VatRate).ToString("F", CultureInfo.InvariantCulture),
-            cla_description = string.Format(CultureInfo.InvariantCulture, "{0} {1} {2}", claimPayment.Claim.Milestone[..3], claimPayment.Claim.Id, claimPayment.Application.Id),
-            cla_unit_qty = EfinConstants.Default.Claim.UnitQuantity,
-            cla_uom = EfinConstants.Default.Claim.UOM,
-            cla_volume = EfinConstants.Default.Claim.Volume,
-        };
-    }
 }
 #pragma warning restore IDE1006 // Naming Styles
 #pragma warning restore SA1300 // Element should begin with upper-case letter

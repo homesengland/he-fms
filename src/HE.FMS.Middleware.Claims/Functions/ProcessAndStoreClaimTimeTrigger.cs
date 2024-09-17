@@ -24,18 +24,21 @@ public class ProcessAndStoreClaimTimeTrigger : DataExportFunctionBase<ClaimItemS
 {
     private readonly ICsvFileGenerator _csvFileGenerator;
     private readonly IEfinCosmosConfigClient _configurationClient;
+    private readonly IClaimConverter _claimConverter;
 
     public ProcessAndStoreClaimTimeTrigger(
         IEfinCosmosClient efinCosmosDbClient,
         IFileWriter csvFileWriter,
         ICsvFileGenerator csvFileGenerator,
-        IEfinCosmosConfigClient efinCosmosConfigClient)
+        IEfinCosmosConfigClient efinCosmosConfigClient,
+        IClaimConverter claimConverter)
         : base(
             efinCosmosDbClient,
             csvFileWriter)
     {
         _csvFileGenerator = csvFileGenerator;
         _configurationClient = efinCosmosConfigClient;
+        _claimConverter = claimConverter;
     }
 
     [Function(nameof(ProcessAndStoreClaimTimeTrigger))]
@@ -78,7 +81,7 @@ public class ProcessAndStoreClaimTimeTrigger : DataExportFunctionBase<ClaimItemS
         {
             IdempotencyKey = items.First().IdempotencyKey,
             BatchNumber = batchNumber,
-            CLCLB_Batch = CLCLB_Batch.Create(claims, batchRef),
+            CLCLB_Batch = _claimConverter.CreateBatch(claims, batchRef),
         };
 
         foreach (var claimItem in claims)

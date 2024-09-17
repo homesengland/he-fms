@@ -7,6 +7,7 @@ using HE.FMS.Middleware.Common;
 using HE.FMS.Middleware.Common.Serialization;
 using HE.FMS.Middleware.Contract.Claims;
 using HE.FMS.Middleware.Contract.Common.CosmosDb;
+using HE.FMS.Middleware.Contract.Constants;
 using HE.FMS.Middleware.Contract.Efin.CosmosDb;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
@@ -40,7 +41,7 @@ public class TransformClaimServiceBusTrigger
         _logger.LogInformation($"{nameof(TransformClaimServiceBusTrigger)} function started");
 
         var inputData = await _streamSerializer.Deserialize<ClaimPaymentRequest>(message.Body.ToStream(), cancellationToken);
-        var convertedData = _claimConverter.Convert(inputData);
+        var convertedData = _claimConverter.CreateItems(inputData);
         var cosmosDbOutput = EfinItem.CreateEfinItem(Constants.CosmosDbConfiguration.PartitonKey, convertedData, message.CorrelationId, CosmosDbItemType.Claim);
         await _efinCosmosDbClient.UpsertItem(cosmosDbOutput, cancellationToken);
 
