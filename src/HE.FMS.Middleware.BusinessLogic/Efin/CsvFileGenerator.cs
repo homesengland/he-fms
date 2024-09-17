@@ -12,7 +12,7 @@ public class CsvFileGenerator(IDateTimeProvider dateTimeProvider) : ICsvFileGene
     private const string FileExtension = ".csv";
     private const string DateTimeFormat = "yyyyMMdd";
 
-    public BlobData GenerateFile(IEnumerable<object> items, string fileName, string batchNumber)
+    public BlobData GenerateFile(IEnumerable<object> items, string fileNamePrefix, string batchNumber)
     {
         ArgumentNullException.ThrowIfNull(items);
 
@@ -22,7 +22,7 @@ public class CsvFileGenerator(IDateTimeProvider dateTimeProvider) : ICsvFileGene
 
         return new BlobData()
         {
-            Name = $"{fileName}{batchNumber}_{dateString}{FileExtension}",
+            Name = $"{fileNamePrefix}{batchNumber}_{dateString}{FileExtension}",
             Content = string.Join(Environment.NewLine, rows),
         };
     }

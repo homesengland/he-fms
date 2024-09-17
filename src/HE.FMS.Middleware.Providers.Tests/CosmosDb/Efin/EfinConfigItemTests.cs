@@ -43,7 +43,7 @@ public class EfinConfigItemTests
         };
 
         // Act  
-        var result = item.GetNextIndex();
+        var result = item.GetNextId();
 
         // Assert  
         item.Index.Should().Be(1);
@@ -62,9 +62,9 @@ public class EfinConfigItemTests
         };
 
         // Act  
-        var firstResult = item.GetNextIndex();
-        var secondResult = item.GetNextIndex();
-        var thirdResult = item.GetNextIndex();
+        var firstResult = item.GetNextId();
+        var secondResult = item.GetNextId();
+        var thirdResult = item.GetNextId();
 
         // Assert  
         item.Index.Should().Be(3);

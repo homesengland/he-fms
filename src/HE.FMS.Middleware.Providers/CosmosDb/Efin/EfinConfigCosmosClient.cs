@@ -14,7 +14,7 @@ public sealed class EfinConfigCosmosClient : CosmosDbClient<EfinConfigItem>, IEf
     public async Task<EfinConfigItem> GetNextIndex(string indexName, CosmosDbItemType type)
     {
         var item = (await GetItems(indexName, type)).FirstOrDefault() ?? throw new MissingConfigurationException($"{indexName} in {type}");
-        item.GetNextIndex();
+        item.GetNextId();
         await UpsertItem(item, CancellationToken.None);
 
         return item;

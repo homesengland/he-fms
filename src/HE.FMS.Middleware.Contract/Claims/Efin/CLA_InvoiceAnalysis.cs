@@ -8,8 +8,6 @@ using HE.FMS.Middleware.Contract.Constants;
 namespace HE.FMS.Middleware.Contract.Claims.Efin;
 public class CLA_InvoiceAnalysis
 {
-    public const string FileName = "cpap_a";
-
     [EfinFileRowIndex(1, 3)]
     public string cla_sub_ledger { get; set; }
 

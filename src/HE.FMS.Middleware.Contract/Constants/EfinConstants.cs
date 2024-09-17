@@ -137,6 +137,13 @@ public static class EfinConstants
                     { nameof(UnregisteredHousingAssociation), UnregisteredHousingAssociation },
                 };
             }
+
+            public static class FileNamePrefix
+            {
+                public const string ClclbBatch = "cpap_b";
+                public const string ClaInvoiceAnalysis = "cpap_a";
+                public const string CliInvoice = "cpap_i";
+            }
         }
 
         public static class Reclaim
@@ -278,6 +285,16 @@ public static class EfinConstants
                     { nameof(TradeAssociation), TradeAssociation },
                     { nameof(UnregisteredHousingAssociation), UnregisteredHousingAssociation },
                 };
+            }
+
+            public static class FileNamePrefix
+            {
+                public const string CliIwBat = "cpiw_bt";
+                public const string CliIwIlt = "cpiw_lt";
+                public const string CliIwIna = "cpiw_ia";
+                public const string CliIwInl = "cpiw_il";
+                public const string CliIwInv = "cpiw_in";
+                public const string CliIwItl = "cpiw_hf";
             }
         }
     }

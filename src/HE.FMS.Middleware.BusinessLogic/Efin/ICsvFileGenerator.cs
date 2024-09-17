@@ -4,5 +4,5 @@ namespace HE.FMS.Middleware.BusinessLogic.Efin;
 
 public interface ICsvFileGenerator
 {
-    BlobData GenerateFile(IEnumerable<object> items, string fileName, string batchNumber);
+    BlobData GenerateFile(IEnumerable<object> items, string fileNamePrefix, string batchNumber);
 }

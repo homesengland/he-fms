@@ -8,6 +8,7 @@ using HE.FMS.Middleware.Common.Exceptions.Internal;
 using HE.FMS.Middleware.Common.Extensions;
 using HE.FMS.Middleware.Contract.Claims.Efin;
 using HE.FMS.Middleware.Contract.Common;
+using HE.FMS.Middleware.Contract.Constants;
 using HE.FMS.Middleware.Providers.CosmosDb.Base;
 using HE.FMS.Middleware.Providers.CosmosDb.Efin;
 using HE.FMS.Middleware.Providers.File;
@@ -69,8 +70,8 @@ public class ProcessAndStoreClaimTimeTrigger : DataExportFunctionBase<ClaimItemS
             efinConfigItem = await _configurationClient.GetNextIndex(IndexConfiguration.Claim.BatchIndex, CosmosDbItemType.Claim);
         }
 
-        var batchRef = efinConfigItem.ToString();
-        var batchNumber = efinConfigItem.IndexNumberToString();
+        var batchRef = efinConfigItem.GetCurrentId();
+        var batchNumber = efinConfigItem.GetCurrentIndex();
 
         var itemSet = new ClaimItemSet
         {
@@ -91,8 +92,17 @@ public class ProcessAndStoreClaimTimeTrigger : DataExportFunctionBase<ClaimItemS
 
     protected override IEnumerable<BlobData> PrepareFiles(ClaimItemSet convertedData) =>
         [
-            _csvFileGenerator.GenerateFile(convertedData.CLCLB_Batch.AsEnumerable(), CLCLB_Batch.FileName, convertedData.BatchNumber),
-            _csvFileGenerator.GenerateFile(convertedData.CLI_Invoices, CLI_Invoice.FileName, convertedData.BatchNumber),
-            _csvFileGenerator.GenerateFile(convertedData.CLA_InvoiceAnalyses, CLA_InvoiceAnalysis.FileName, convertedData.BatchNumber),
+            _csvFileGenerator.GenerateFile(
+                convertedData.CLCLB_Batch.AsEnumerable(),
+                EfinConstants.Default.Claim.FileNamePrefix.ClclbBatch,
+                convertedData.BatchNumber),
+            _csvFileGenerator.GenerateFile(
+                convertedData.CLI_Invoices,
+                EfinConstants.Default.Claim.FileNamePrefix.CliInvoice,
+                convertedData.BatchNumber),
+            _csvFileGenerator.GenerateFile(
+                convertedData.CLA_InvoiceAnalyses,
+                EfinConstants.Default.Claim.FileNamePrefix.ClaInvoiceAnalysis,
+                convertedData.BatchNumber),
         ];
 }

@@ -7,6 +7,7 @@ using HE.FMS.Middleware.BusinessLogic.Efin;
 using HE.FMS.Middleware.Common.Exceptions.Internal;
 using HE.FMS.Middleware.Common.Extensions;
 using HE.FMS.Middleware.Contract.Common;
+using HE.FMS.Middleware.Contract.Constants;
 using HE.FMS.Middleware.Contract.Reclaims.Efin;
 using HE.FMS.Middleware.Providers.CosmosDb.Base;
 using HE.FMS.Middleware.Providers.CosmosDb.Efin;
@@ -70,8 +71,8 @@ public class ProcessAndStoreReclaimTimeTrigger : DataExportFunctionBase<ReclaimI
             efinConfigItem = await _configurationClient.GetNextIndex(IndexConfiguration.Reclaim.BatchIndex, CosmosDbItemType.Reclaim);
         }
 
-        var batchRef = efinConfigItem.ToString();
-        var batchNumber = efinConfigItem.IndexNumberToString();
+        var batchRef = efinConfigItem.GetCurrentId();
+        var batchNumber = efinConfigItem.GetCurrentIndex();
 
         var itemSet = new ReclaimItemSet
         {
@@ -97,12 +98,30 @@ public class ProcessAndStoreReclaimTimeTrigger : DataExportFunctionBase<ReclaimI
     {
         return
         [
-            _csvFileGenerator.GenerateFile(convertedData.CLI_IW_BAT.AsEnumerable(), CLI_IW_BAT.FileName, convertedData.BatchNumber),
-            _csvFileGenerator.GenerateFile(convertedData.CLI_IW_ILTes, CLI_IW_ILT.FileName, convertedData.BatchNumber),
-            _csvFileGenerator.GenerateFile(convertedData.CLI_IW_INAes, CLI_IW_INA.FileName, convertedData.BatchNumber),
-            _csvFileGenerator.GenerateFile(convertedData.CLI_IW_INLes, CLI_IW_INL.FileName, convertedData.BatchNumber),
-            _csvFileGenerator.GenerateFile(convertedData.CLI_IW_INVes, CLI_IW_INV.FileName, convertedData.BatchNumber),
-            _csvFileGenerator.GenerateFile(convertedData.CLI_IW_ITLes, CLI_IW_ITL.FileName, convertedData.BatchNumber),
+            _csvFileGenerator.GenerateFile(
+                convertedData.CLI_IW_BAT.AsEnumerable(),
+                EfinConstants.Default.Reclaim.FileNamePrefix.CliIwBat,
+                convertedData.BatchNumber),
+            _csvFileGenerator.GenerateFile(
+                convertedData.CLI_IW_ILTes,
+                EfinConstants.Default.Reclaim.FileNamePrefix.CliIwIlt,
+                convertedData.BatchNumber),
+            _csvFileGenerator.GenerateFile(
+                convertedData.CLI_IW_INAes,
+                EfinConstants.Default.Reclaim.FileNamePrefix.CliIwIna,
+                convertedData.BatchNumber),
+            _csvFileGenerator.GenerateFile(
+                convertedData.CLI_IW_INLes,
+                EfinConstants.Default.Reclaim.FileNamePrefix.CliIwInl,
+                convertedData.BatchNumber),
+            _csvFileGenerator.GenerateFile(
+                convertedData.CLI_IW_INVes,
+                EfinConstants.Default.Reclaim.FileNamePrefix.CliIwInv,
+                convertedData.BatchNumber),
+            _csvFileGenerator.GenerateFile(
+                convertedData.CLI_IW_ITLes,
+                EfinConstants.Default.Reclaim.FileNamePrefix.CliIwItl,
+                convertedData.BatchNumber),
         ];
     }
 }

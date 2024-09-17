@@ -8,8 +8,6 @@ using HE.FMS.Middleware.Contract.Constants;
 namespace HE.FMS.Middleware.Contract.Claims.Efin;
 public class CLCLB_Batch
 {
-    public const string FileName = "cpap_b";
-
     [EfinFileRowIndex(1, 3)]
     public string clb_sub_ledger { get; set; }
 
