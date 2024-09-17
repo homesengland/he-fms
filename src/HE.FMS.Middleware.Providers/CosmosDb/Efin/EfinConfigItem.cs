@@ -31,9 +31,19 @@ public class EfinConfigItem : ICosmosItem
         Prefix = prefix,
     };
 
-    public string GetNextIndex()
+    public string GetNextId()
     {
         Index += 1;
         return Prefix + Index.ToString(CultureInfo.InvariantCulture).PadLeft(IndexLength, '0');
+    }
+
+    public string GetCurrentId()
+    {
+        return Prefix + Index.ToString(CultureInfo.InvariantCulture).PadLeft(IndexLength, '0');
+    }
+
+    public string GetCurrentIndex()
+    {
+        return Index.ToString(CultureInfo.InvariantCulture).PadLeft(IndexLength, '0');
     }
 }

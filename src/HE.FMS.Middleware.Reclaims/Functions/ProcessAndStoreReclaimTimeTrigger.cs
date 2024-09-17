@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using HE.FMS.Middleware.BusinessLogic.Efin;
 using HE.FMS.Middleware.Common.Exceptions.Internal;
 using HE.FMS.Middleware.Common.Extensions;
-using HE.FMS.Middleware.Common.Serialization;
 using HE.FMS.Middleware.Contract.Common;
+using HE.FMS.Middleware.Contract.Constants;
 using HE.FMS.Middleware.Contract.Reclaims.Efin;
 using HE.FMS.Middleware.Providers.CosmosDb.Base;
 using HE.FMS.Middleware.Providers.CosmosDb.Efin;
@@ -55,10 +55,10 @@ public class ProcessAndStoreReclaimTimeTrigger : DataExportFunctionBase<ReclaimI
             throw new ArgumentException(nameof(reclaims));
         }
 
-        string batchNumber;
+        EfinConfigItem efinConfigItem;
         try
         {
-            batchNumber = await _configurationClient.GetNextIndex(IndexConfiguration.Reclaim.BatchIndex, CosmosDbItemType.Reclaim);
+            efinConfigItem = await _configurationClient.GetNextIndex(IndexConfiguration.Reclaim.BatchIndex, CosmosDbItemType.Reclaim);
         }
         catch (MissingConfigurationException)
         {
@@ -68,18 +68,22 @@ public class ProcessAndStoreReclaimTimeTrigger : DataExportFunctionBase<ReclaimI
                 IndexConfiguration.Reclaim.BatchIndexPrefix,
                 IndexConfiguration.Reclaim.BatchIndexLength);
 
-            batchNumber = await _configurationClient.GetNextIndex(IndexConfiguration.Reclaim.BatchIndex, CosmosDbItemType.Reclaim);
+            efinConfigItem = await _configurationClient.GetNextIndex(IndexConfiguration.Reclaim.BatchIndex, CosmosDbItemType.Reclaim);
         }
+
+        var batchRef = efinConfigItem.GetCurrentId();
+        var batchNumber = efinConfigItem.GetCurrentIndex();
 
         var itemSet = new ReclaimItemSet
         {
-            CLI_IW_BAT = CLI_IW_BAT.Create(reclaims),
+            CLI_IW_BAT = CLI_IW_BAT.Create(reclaims, batchRef),
+            BatchNumber = batchNumber,
             IdempotencyKey = items.First().IdempotencyKey,
         };
 
         foreach (var reclaimItem in reclaims)
         {
-            reclaimItem.SetBatchIndex(batchNumber);
+            reclaimItem.SetBatchRef(batchRef);
             itemSet.CLI_IW_ILTes.Add(reclaimItem.CliIwIlt);
             itemSet.CLI_IW_INAes.Add(reclaimItem.CliIwIna);
             itemSet.CLI_IW_INLes.Add(reclaimItem.CliIwInl);
@@ -94,13 +98,30 @@ public class ProcessAndStoreReclaimTimeTrigger : DataExportFunctionBase<ReclaimI
     {
         return
         [
-
-            _csvFileGenerator.GenerateFile(convertedData.CLI_IW_BAT.AsEnumerable()),
-            _csvFileGenerator.GenerateFile(convertedData.CLI_IW_ILTes),
-            _csvFileGenerator.GenerateFile(convertedData.CLI_IW_INAes),
-            _csvFileGenerator.GenerateFile(convertedData.CLI_IW_INLes),
-            _csvFileGenerator.GenerateFile(convertedData.CLI_IW_INVes),
-            _csvFileGenerator.GenerateFile(convertedData.CLI_IW_ITLes),
+            _csvFileGenerator.GenerateFile(
+                convertedData.CLI_IW_BAT.AsEnumerable(),
+                EfinConstants.Default.Reclaim.FileNamePrefix.CliIwBat,
+                convertedData.BatchNumber),
+            _csvFileGenerator.GenerateFile(
+                convertedData.CLI_IW_ILTes,
+                EfinConstants.Default.Reclaim.FileNamePrefix.CliIwIlt,
+                convertedData.BatchNumber),
+            _csvFileGenerator.GenerateFile(
+                convertedData.CLI_IW_INAes,
+                EfinConstants.Default.Reclaim.FileNamePrefix.CliIwIna,
+                convertedData.BatchNumber),
+            _csvFileGenerator.GenerateFile(
+                convertedData.CLI_IW_INLes,
+                EfinConstants.Default.Reclaim.FileNamePrefix.CliIwInl,
+                convertedData.BatchNumber),
+            _csvFileGenerator.GenerateFile(
+                convertedData.CLI_IW_INVes,
+                EfinConstants.Default.Reclaim.FileNamePrefix.CliIwInv,
+                convertedData.BatchNumber),
+            _csvFileGenerator.GenerateFile(
+                convertedData.CLI_IW_ITLes,
+                EfinConstants.Default.Reclaim.FileNamePrefix.CliIwItl,
+                convertedData.BatchNumber),
         ];
     }
 }

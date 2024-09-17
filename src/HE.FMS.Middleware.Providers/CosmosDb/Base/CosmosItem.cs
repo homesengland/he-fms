@@ -1,5 +1,3 @@
-using System.Text.Json.Serialization;
-
 namespace HE.FMS.Middleware.Providers.CosmosDb.Base;
 public class CosmosItem : ICosmosItem
 {
