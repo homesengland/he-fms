@@ -25,7 +25,7 @@ public class ReclaimConverterTests
         };
 
         // Act
-        var result = _reclaimConverter.Convert(reclaimPaymentRequest);
+        var result = _reclaimConverter.CreateItems(reclaimPaymentRequest);
 
         // Assert
         Assert.Equivalent(expectedReclaimItem.CliIwIlt, result.CliIwIlt);

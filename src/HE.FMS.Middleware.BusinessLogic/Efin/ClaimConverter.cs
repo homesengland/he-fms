@@ -7,12 +7,34 @@ using HE.FMS.Middleware.Providers.Common;
 namespace HE.FMS.Middleware.BusinessLogic.Efin;
 public class ClaimConverter : IClaimConverter
 {
-    public ClaimItem Convert(ClaimPaymentRequest claimPaymentRequest)
+    public ClaimItem CreateItems(ClaimPaymentRequest claimPaymentRequest)
     {
         return new ClaimItem
         {
             CliInvoice = CreateCliInvoice(claimPaymentRequest),
             ClaInvoiceAnalysis = CreateClaInvoiceAnalysis(claimPaymentRequest),
+        };
+    }
+
+    public CLCLB_Batch CreateBatch(IEnumerable<ClaimItem> claims, string batchRef)
+    {
+        ArgumentNullException.ThrowIfNull(claims);
+
+        var culture = new CultureInfo("en-GB");
+        return new CLCLB_Batch()
+        {
+            clb_sub_ledger = EfinConstants.Default.Claim.SubLedger,
+
+            clb_batch_ref = batchRef,
+            clb_year = (DateTime.UtcNow.Month is >= 1 and <= 3 ? DateTime.UtcNow.Year - 1 : DateTime.UtcNow.Year).ToString(CultureInfo.InvariantCulture),
+            clb_period = DateTime.UtcNow.Month.ToString(CultureInfo.InvariantCulture),
+            clb_net_amount = claims.Sum(x => decimal.Parse(x.CliInvoice.cli_net_amount, NumberStyles.Any, culture)).ToString("F", CultureInfo.InvariantCulture),
+            clb_vat_amount = EfinConstants.Default.Claim.Amount,
+            clb_no_invoices = claims.Count().ToString(CultureInfo.InvariantCulture),
+            clb_quantity = claims.Count().ToString(CultureInfo.InvariantCulture),
+            clb_user = EfinConstants.Default.Claim.User,
+            clb_grouping = EfinConstants.Default.Claim.Grouping,
+            clb_entry_date = DateTime.UtcNow.ToString("d-MMM-yy", CultureInfo.InvariantCulture),
         };
     }
 

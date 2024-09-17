@@ -22,7 +22,7 @@ public class ClaimConverterTests
         };
 
         // Act
-        var result = _claimConverter.Convert(claimPaymentRequest);
+        var result = _claimConverter.CreateItems(claimPaymentRequest);
 
         // Assert
         Assert.Equivalent(expectedClaimItem.CliInvoice, result.CliInvoice);

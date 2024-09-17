@@ -24,18 +24,21 @@ public class ProcessAndStoreReclaimTimeTrigger : DataExportFunctionBase<ReclaimI
 {
     private readonly ICsvFileGenerator _csvFileGenerator;
     private readonly IEfinCosmosConfigClient _configurationClient;
+    private readonly IReclaimConverter _reclaimConverter;
 
     public ProcessAndStoreReclaimTimeTrigger(
         IEfinCosmosClient efinCosmosDbClient,
         IFileWriter csvFileWriter,
         ICsvFileGenerator csvFileGenerator,
-        IEfinCosmosConfigClient configurationClient)
+        IEfinCosmosConfigClient configurationClient,
+        IReclaimConverter reclaimConverter)
         : base(
             efinCosmosDbClient,
             csvFileWriter)
     {
         _csvFileGenerator = csvFileGenerator;
         _configurationClient = configurationClient;
+        _reclaimConverter = reclaimConverter;
     }
 
     [Function("ProcessCreateReclaim")]
@@ -76,7 +79,7 @@ public class ProcessAndStoreReclaimTimeTrigger : DataExportFunctionBase<ReclaimI
 
         var itemSet = new ReclaimItemSet
         {
-            CLI_IW_BAT = CLI_IW_BAT.Create(reclaims, batchRef),
+            CLI_IW_BAT = _reclaimConverter.CreateBatch(reclaims, batchRef),
             BatchNumber = batchNumber,
             IdempotencyKey = items.First().IdempotencyKey,
         };
