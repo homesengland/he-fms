@@ -61,10 +61,10 @@ public class ProcessAndStoreClaimTimeTrigger : DataExportFunctionBase<ClaimItemS
         catch (MissingConfigurationException)
         {
             await _configurationClient.CreateItem(
-                IndexConfiguration.Reclaim.BatchIndex,
-                CosmosDbItemType.Reclaim,
-                IndexConfiguration.Reclaim.BatchIndexPrefix,
-                IndexConfiguration.Reclaim.BatchIndexLength);
+                IndexConfiguration.Claim.BatchIndex,
+                CosmosDbItemType.Claim,
+                IndexConfiguration.Claim.BatchIndexPrefix,
+                IndexConfiguration.Claim.BatchIndexLength);
 
             efinConfigItem = await _configurationClient.GetNextIndex(IndexConfiguration.Claim.BatchIndex, CosmosDbItemType.Claim);
         }
