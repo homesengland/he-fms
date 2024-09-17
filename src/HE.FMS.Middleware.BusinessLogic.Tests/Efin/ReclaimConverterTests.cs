@@ -1,12 +1,13 @@
 using HE.FMS.Middleware.BusinessLogic.Efin;
 using HE.FMS.Middleware.BusinessLogic.Tests.Factories;
 using HE.FMS.Middleware.Contract.Reclaims.Efin;
+using HE.FMS.Middleware.Providers.Common;
 using Xunit;
 
 namespace HE.FMS.Middleware.BusinessLogic.Tests.Efin;
 public class ReclaimConverterTests
 {
-    private readonly ReclaimConverter _reclaimConverter = new();
+    private readonly ReclaimConverter _reclaimConverter = new(new FakeDateTimeProvider());
 
     [Fact]
     public void Convert_ShouldReturnExpectedReclaimItem()
@@ -16,11 +17,11 @@ public class ReclaimConverterTests
 
         var expectedReclaimItem = new ReclaimItem
         {
-            CliIwIlt = CLI_IW_ILT.Create(reclaimPaymentRequest),
-            CliIwIna = CLI_IW_INA.Create(reclaimPaymentRequest),
-            CliIwInl = CLI_IW_INL.Create(reclaimPaymentRequest),
-            CliIwInv = CLI_IW_INV.Create(reclaimPaymentRequest),
-            CliIwItl = CLI_IW_ITL.Create(reclaimPaymentRequest),
+            CliIwIlt = _reclaimConverter.CreateCliIwIlt(reclaimPaymentRequest),
+            CliIwIna = _reclaimConverter.CreateCliIwIna(reclaimPaymentRequest),
+            CliIwInl = _reclaimConverter.CreateCliIwInl(reclaimPaymentRequest),
+            CliIwInv = _reclaimConverter.CreateCliIwInv(reclaimPaymentRequest),
+            CliIwItl = _reclaimConverter.CreateCliIwItl(reclaimPaymentRequest),
         };
 
         // Act

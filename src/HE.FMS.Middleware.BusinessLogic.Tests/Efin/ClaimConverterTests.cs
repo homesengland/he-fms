@@ -17,8 +17,8 @@ public class ClaimConverterTests
 
         var expectedClaimItem = new ClaimItem
         {
-            CliInvoice = CLI_Invoice.Create(claimPaymentRequest),
-            ClaInvoiceAnalysis = CLA_InvoiceAnalysis.Create(claimPaymentRequest),
+            CliInvoice = _claimConverter.CreateCliInvoice(claimPaymentRequest),
+            ClaInvoiceAnalysis = _claimConverter.CreateClaInvoiceAnalysis(claimPaymentRequest),
         };
 
         // Act
