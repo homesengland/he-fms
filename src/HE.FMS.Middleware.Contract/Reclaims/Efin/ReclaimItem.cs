@@ -11,12 +11,12 @@ public class ReclaimItem
 
     public CLI_IW_ITL CliIwItl { get; set; }
 
-    public void SetBatchIndex(string batchIndex)
+    public void SetBatchRef(string batchRef)
     {
-        CliIwIlt.cliwt_batch_ref = batchIndex;
-        CliIwIna.cliwa_batch_ref = batchIndex;
-        CliIwInl.cliwl_batch_ref = batchIndex;
-        CliIwInv.cliwi_batch_ref = batchIndex;
-        CliIwIlt.cliwt_batch_ref = batchIndex;
+        CliIwIlt.cliwt_batch_ref = batchRef;
+        CliIwIna.cliwa_batch_ref = batchRef;
+        CliIwInl.cliwl_batch_ref = batchRef;
+        CliIwInv.cliwi_batch_ref = batchRef;
+        CliIwIlt.cliwt_batch_ref = batchRef;
     }
 }

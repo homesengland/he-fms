@@ -10,6 +10,7 @@ using HE.FMS.Middleware.Common.Extensions;
 using HE.FMS.Middleware.Contract.Claims.Efin;
 using HE.FMS.Middleware.Contract.Common;
 using HE.FMS.Middleware.Contract.Common.CosmosDb;
+using HE.FMS.Middleware.Contract.Constants;
 using HE.FMS.Middleware.Contract.Efin.CosmosDb;
 using HE.FMS.Middleware.Providers.File;
 using HE.FMS.Middleware.Shared.Base;
@@ -54,10 +55,10 @@ public class ProcessAndStoreClaimTimeTrigger : DataExportFunctionBase<ClaimItemS
             throw new ArgumentException(nameof(claims));
         }
 
-        string batchNumber;
+        EfinConfigItem efinConfigItem;
         try
         {
-            batchNumber = await _configurationClient.GetNextIndex(IndexConfiguration.Claim.BatchIndex, CosmosDbItemType.Claim);
+            efinConfigItem = await _configurationClient.GetNextIndex(IndexConfiguration.Claim.BatchIndex, CosmosDbItemType.Claim);
         }
         catch (MissingConfigurationException)
         {
@@ -67,18 +68,22 @@ public class ProcessAndStoreClaimTimeTrigger : DataExportFunctionBase<ClaimItemS
                 IndexConfiguration.Claim.BatchIndexPrefix,
                 IndexConfiguration.Claim.BatchIndexLength);
 
-            batchNumber = await _configurationClient.GetNextIndex(IndexConfiguration.Claim.BatchIndex, CosmosDbItemType.Claim);
+            efinConfigItem = await _configurationClient.GetNextIndex(IndexConfiguration.Claim.BatchIndex, CosmosDbItemType.Claim);
         }
+
+        var batchRef = efinConfigItem.GetCurrentId();
+        var batchNumber = efinConfigItem.GetCurrentIndex();
 
         var itemSet = new ClaimItemSet
         {
             IdempotencyKey = items.First().IdempotencyKey,
-            CLCLB_Batch = CLCLB_Batch.Create(claims, batchNumber),
+            BatchNumber = batchNumber,
+            CLCLB_Batch = CLCLB_Batch.Create(claims, batchRef),
         };
 
         foreach (var claimItem in claims)
         {
-            claimItem.SetBatchIndex(batchNumber);
+            claimItem.SetBatchRef(batchRef);
             itemSet.CLI_Invoices.Add(claimItem.CliInvoice);
             itemSet.CLA_InvoiceAnalyses.Add(claimItem.ClaInvoiceAnalysis);
         }
@@ -88,8 +93,17 @@ public class ProcessAndStoreClaimTimeTrigger : DataExportFunctionBase<ClaimItemS
 
     protected override IEnumerable<BlobData> PrepareFiles(ClaimItemSet convertedData) =>
         [
-            _csvFileGenerator.GenerateFile(convertedData.CLCLB_Batch.AsEnumerable()),
-            _csvFileGenerator.GenerateFile(convertedData.CLI_Invoices),
-            _csvFileGenerator.GenerateFile(convertedData.CLA_InvoiceAnalyses),
+            _csvFileGenerator.GenerateFile(
+                convertedData.CLCLB_Batch.AsEnumerable(),
+                EfinConstants.Default.Claim.FileNamePrefix.ClclbBatch,
+                convertedData.BatchNumber),
+            _csvFileGenerator.GenerateFile(
+                convertedData.CLI_Invoices,
+                EfinConstants.Default.Claim.FileNamePrefix.CliInvoice,
+                convertedData.BatchNumber),
+            _csvFileGenerator.GenerateFile(
+                convertedData.CLA_InvoiceAnalyses,
+                EfinConstants.Default.Claim.FileNamePrefix.ClaInvoiceAnalysis,
+                convertedData.BatchNumber),
         ];
 }

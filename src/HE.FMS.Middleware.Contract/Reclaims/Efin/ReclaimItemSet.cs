@@ -17,4 +17,6 @@ public class ReclaimItemSet : IItemSet
     public IList<CLI_IW_ITL> CLI_IW_ITLes { get; set; } = [];
 
     public string IdempotencyKey { get; set; }
+
+    public string BatchNumber { get; set; }
 }

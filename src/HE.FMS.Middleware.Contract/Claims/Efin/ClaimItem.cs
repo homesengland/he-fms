@@ -5,9 +5,9 @@ public class ClaimItem
 
     public CLA_InvoiceAnalysis ClaInvoiceAnalysis { get; set; }
 
-    public void SetBatchIndex(string batchIndex)
+    public void SetBatchRef(string batchRef)
     {
-        CliInvoice.cli_batch_ref = batchIndex;
-        ClaInvoiceAnalysis.cla_batch_ref = batchIndex;
+        CliInvoice.cli_batch_ref = batchRef;
+        ClaInvoiceAnalysis.cla_batch_ref = batchRef;
     }
 }
