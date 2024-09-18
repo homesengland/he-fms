@@ -77,6 +77,18 @@ public sealed class FakeEfinLookupService : IEfinLookupCacheService
                 { "PracticalCompletion", "PC" },
             };
         }
+        else if (key.Equals(EfinConstants.Lookups.TenureLookup, StringComparison.OrdinalIgnoreCase))
+        {
+            dict = new Dictionary<string, string>
+            {
+                { "AffordableRent", "7572" },
+                { "SocialRent", "7667" },
+                { "SharedOwnership", "7666" },
+                { "RentToBuy", "7655" },
+                { "HOLD", "7666" },
+                { "OPSO", "7666" },
+            };
+        }
 
         return Task.FromResult(dict);
     }

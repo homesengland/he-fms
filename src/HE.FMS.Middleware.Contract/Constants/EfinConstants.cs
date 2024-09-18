@@ -7,6 +7,7 @@ public static class EfinConstants
         public const string ReclaimDefault = nameof(ReclaimDefault);
         public const string MilestoneLookup = nameof(MilestoneLookup);
         public const string RegionLookup = nameof(RegionLookup);
+        public const string TenureLookup = nameof(TenureLookup);
     }
 
     public static class Default
@@ -282,19 +283,5 @@ public static class EfinConstants
     {
         public const string Revenue = "Revenue";
         public const string Capital = "Capital";
-    }
-
-    public static class Tenure
-    {
-        public const int AffordableRent = 7572;
-        public const int SocialRent = 7667;
-        public const int SharedOwnership = 7666;
-        public const int RentToBuy = 7655;
-
-        // ReSharper disable InconsistentNaming
-        public const int HOLD = 7666;
-        public const int OPSO = 7666;
-
-        // ReSharper restore InconsistentNaming
     }
 }

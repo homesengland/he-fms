@@ -1,4 +1,5 @@
 using System.Globalization;
+using HE.FMS.Middleware.Common.Extensions;
 using HE.FMS.Middleware.Contract.Claims;
 using HE.FMS.Middleware.Contract.Claims.Efin;
 using HE.FMS.Middleware.Contract.Constants;
@@ -52,6 +53,7 @@ public class ClaimConverter : IClaimConverter
         var defaultDictionary = await _lookupCacheService.GetValue(EfinConstants.Lookups.ClaimDefault);
         var milestoneLookup = await _lookupCacheService.GetValue(EfinConstants.Lookups.MilestoneLookup);
         var regionLookup = await _lookupCacheService.GetValue(EfinConstants.Lookups.RegionLookup);
+        var tenureLookup = await _lookupCacheService.GetValue(EfinConstants.Lookups.TenureLookup);
 
         return new CLI_Invoice()
         {
@@ -73,7 +75,7 @@ public class ClaimConverter : IClaimConverter
             cli_due_date = claimPayment.Claim.AuthorisedOn.AddDays(7).ToString(CultureInfo.InvariantCulture),
             cli_cost_centre = regionLookup[claimPayment.Application.Region],
             cli_job = claimPayment.Application.Id,
-            cli_activity = claimPayment.Application.EfinTenure,
+            cli_activity = tenureLookup[claimPayment.Application.Tenure.RemoveSpecialCharacters()],
         };
     }
 
@@ -84,6 +86,7 @@ public class ClaimConverter : IClaimConverter
         var defaultDictionary = await _lookupCacheService.GetValue(EfinConstants.Lookups.ClaimDefault);
         var milestoneLookup = await _lookupCacheService.GetValue(EfinConstants.Lookups.MilestoneLookup);
         var regionLookup = await _lookupCacheService.GetValue(EfinConstants.Lookups.RegionLookup);
+        var tenureLookup = await _lookupCacheService.GetValue(EfinConstants.Lookups.TenureLookup);
 
         return new CLA_InvoiceAnalysis()
         {
@@ -92,7 +95,7 @@ public class ClaimConverter : IClaimConverter
             cla_batch_ref = string.Empty,
             cla_cfacs_cc = regionLookup[claimPayment.Application.Region],
             cla_cfacs_ac = claimPayment.Organisation.PartnerType,
-            cla_cfacs_actv = claimPayment.Application.EfinTenure,
+            cla_cfacs_actv = tenureLookup[claimPayment.Application.Tenure.RemoveSpecialCharacters()],
             cla_cfacs_job = claimPayment.Application.Id,
             cla_amount = claimPayment.Claim.Amount.ToString("F", CultureInfo.InvariantCulture),
             cla_vat_code = claimPayment.Application.VatCode,

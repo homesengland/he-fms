@@ -26,18 +26,6 @@ public sealed class ClaimApplicationDetails
     [MaxLength(ValidatorConstants.EnumMaxLength)]
     public string Tenure { get; set; }
 
-    public string EfinTenure =>
-        Tenure.RemoveSpecialCharacters() switch
-        {
-            nameof(EfinConstants.Tenure.AffordableRent) => EfinConstants.Tenure.AffordableRent.ToString(CultureInfo.InvariantCulture),
-            nameof(EfinConstants.Tenure.SocialRent) => EfinConstants.Tenure.SocialRent.ToString(CultureInfo.InvariantCulture),
-            nameof(EfinConstants.Tenure.SharedOwnership) => EfinConstants.Tenure.SharedOwnership.ToString(CultureInfo.InvariantCulture),
-            nameof(EfinConstants.Tenure.RentToBuy) => EfinConstants.Tenure.RentToBuy.ToString(CultureInfo.InvariantCulture),
-            nameof(EfinConstants.Tenure.HOLD) => EfinConstants.Tenure.HOLD.ToString(CultureInfo.InvariantCulture),
-            nameof(EfinConstants.Tenure.OPSO) => EfinConstants.Tenure.OPSO.ToString(CultureInfo.InvariantCulture),
-            _ => string.Empty,
-        };
-
     [Required]
     [MaxLength(ValidatorConstants.EnumMaxLength)]
     public string RevenueIndicator { get; set; }
