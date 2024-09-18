@@ -5,16 +5,6 @@ variables:
   buildMinor: 1
   buildBranch: $[replace(variables['Build.SourceBranch'], '/', '.')]
 
-parameters:
-- name: dockerPush
-  displayName: Push Docker Image
-  type: boolean
-  default: true
-- name: dockerPushProd
-  displayName: Push Docker Image to Prod
-  type: boolean
-  default: false
-
 pool: 'vmss-ado-chs-nonprod-001'
 
 name: $(buildMajor).$(buildMinor).$(Rev:r)-$(buildBranch)
@@ -34,5 +24,3 @@ stages:
 - template: pipelines/azure-pipelines-build.yml@he-fms-deployment
   parameters:
     dotnetVersion: '8.0.x'
-    dockerPush: ${{ parameters.dockerPush }}
-    dockerPushProd: ${{ parameters.dockerPushProd }}
