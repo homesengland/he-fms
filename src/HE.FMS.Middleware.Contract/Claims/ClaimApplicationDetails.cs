@@ -22,16 +22,6 @@ public sealed class ClaimApplicationDetails
     [MaxLength(ValidatorConstants.EnumMaxLength)]
     public string Region { get; set; }
 
-    public string EfinRegion =>
-        Region.RemoveSpecialCharacters() switch
-        {
-            nameof(EfinConstants.Region.North) => EfinConstants.Region.North,
-            nameof(EfinConstants.Region.South) => EfinConstants.Region.South,
-            nameof(EfinConstants.Region.Midlands) => EfinConstants.Region.Midlands,
-            nameof(EfinConstants.Region.London) => EfinConstants.Region.London,
-            _ => string.Empty,
-        };
-
     [Required]
     [MaxLength(ValidatorConstants.EnumMaxLength)]
     public string Tenure { get; set; }

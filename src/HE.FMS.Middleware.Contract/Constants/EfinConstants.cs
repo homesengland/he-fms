@@ -6,6 +6,7 @@ public static class EfinConstants
         public const string ClaimDefault = nameof(ClaimDefault);
         public const string ReclaimDefault = nameof(ReclaimDefault);
         public const string MilestoneLookup = nameof(MilestoneLookup);
+        public const string RegionLookup = nameof(RegionLookup);
 
         public static class Claim
         {
@@ -272,14 +273,6 @@ public static class EfinConstants
                 public const string CliIwItl = "cpiw_hf";
             }
         }
-    }
-
-    public static class Region
-    {
-        public const string North = "ASWRN";
-        public const string South = "ASWRS";
-        public const string Midlands = "ASWRM";
-        public const string London = "ASWRL";
     }
 
     public static class RevenueIndicator

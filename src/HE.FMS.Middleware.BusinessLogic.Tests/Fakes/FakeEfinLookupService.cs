@@ -58,6 +58,25 @@ public sealed class FakeEfinLookupService : IEfinLookupCacheService
                 { "cliwt_text", "HOUSING FOR RENT GRANT RECLAIM" },
             };
         }
+        else if (key.Equals(EfinConstants.Default.RegionLookup, StringComparison.OrdinalIgnoreCase))
+        {
+            dict = new Dictionary<string, string>
+            {
+                { "North", "ASWRN" },
+                { "South", "ASWRS" },
+                { "Midlands", "ASWRM" },
+                { "London", "ASWRL" },
+            };
+        }
+        else if (key.Equals(EfinConstants.Default.MilestoneLookup, StringComparison.OrdinalIgnoreCase))
+        {
+            dict = new Dictionary<string, string>
+            {
+                { "Acquisition", "ACQ" },
+                { "StartOnSite", "SOS" },
+                { "PracticalCompletion", "PC" },
+            };
+        }
 
         return Task.FromResult(dict);
     }

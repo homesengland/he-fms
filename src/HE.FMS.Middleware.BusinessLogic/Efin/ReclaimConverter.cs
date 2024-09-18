@@ -70,6 +70,7 @@ public class ReclaimConverter : IReclaimConverter
         ArgumentNullException.ThrowIfNull(reclaimPayment);
 
         var defaultDictionary = await _lookupCacheService.GetValue(EfinConstants.Default.ReclaimDefault);
+        var regionLookup = await _lookupCacheService.GetValue(EfinConstants.Default.RegionLookup);
 
         return new CLI_IW_INA()
         {
@@ -77,7 +78,7 @@ public class ReclaimConverter : IReclaimConverter
             cliwa_batch_ref = string.Empty,
             cliwa_inv_ref = reclaimPayment.Application.AllocationId,
             cliwa_item_sequence = defaultDictionary[nameof(CLI_IW_INA.cliwa_item_sequence)],
-            cliwa_cost_centre = reclaimPayment.Application.EfinRegion,
+            cliwa_cost_centre = regionLookup[reclaimPayment.Application.Region],
             cliwa_account = reclaimPayment.Organisation.PartnerType,
             cliwa_activity = reclaimPayment.Application.EfinTenure,
             cliwa_job = reclaimPayment.Application.Id,
@@ -113,6 +114,7 @@ public class ReclaimConverter : IReclaimConverter
 
         var defaultDictionary = await _lookupCacheService.GetValue(EfinConstants.Default.ReclaimDefault);
         var milestoneLookup = await _lookupCacheService.GetValue(EfinConstants.Default.MilestoneLookup);
+        var regionLookup = await _lookupCacheService.GetValue(EfinConstants.Default.RegionLookup);
 
         return new CLI_IW_INV()
         {
@@ -125,7 +127,7 @@ public class ReclaimConverter : IReclaimConverter
             cliwi_trans_type = defaultDictionary[nameof(CLI_IW_INV.cliwi_trans_type)],
             cliwi_date = _dateTimeProvider.UtcNow.ToString("d-MMM-yy", CultureInfo.InvariantCulture),
             cliwi_terms_code = defaultDictionary[nameof(CLI_IW_INV.cliwi_terms_code)],
-            cliwi_cost_centre = reclaimPayment.Application.EfinRegion,
+            cliwi_cost_centre = regionLookup[reclaimPayment.Application.Region],
             cliwi_job = reclaimPayment.Application.Id,
             cliwi_account = reclaimPayment.Organisation.PartnerType,
             cliwi_activity = reclaimPayment.Application.EfinTenure,

@@ -51,6 +51,7 @@ public class ClaimConverter : IClaimConverter
 
         var defaultDictionary = await _lookupCacheService.GetValue(EfinConstants.Default.ClaimDefault);
         var milestoneLookup = await _lookupCacheService.GetValue(EfinConstants.Default.MilestoneLookup);
+        var regionLookup = await _lookupCacheService.GetValue(EfinConstants.Default.RegionLookup);
 
         return new CLI_Invoice()
         {
@@ -70,7 +71,7 @@ public class ClaimConverter : IClaimConverter
             cli_description = string.Format(CultureInfo.InvariantCulture, "{0} {1} {2}", milestoneLookup[claimPayment.Claim.Milestone], claimPayment.Claim.Id, claimPayment.Application.Id),
             cli_terms_code = defaultDictionary[nameof(CLI_Invoice.cli_terms_code)],
             cli_due_date = claimPayment.Claim.AuthorisedOn.AddDays(7).ToString(CultureInfo.InvariantCulture),
-            cli_cost_centre = claimPayment.Application.EfinRegion,
+            cli_cost_centre = regionLookup[claimPayment.Application.Region],
             cli_job = claimPayment.Application.Id,
             cli_activity = claimPayment.Application.EfinTenure,
         };
@@ -82,13 +83,14 @@ public class ClaimConverter : IClaimConverter
 
         var defaultDictionary = await _lookupCacheService.GetValue(EfinConstants.Default.ClaimDefault);
         var milestoneLookup = await _lookupCacheService.GetValue(EfinConstants.Default.MilestoneLookup);
+        var regionLookup = await _lookupCacheService.GetValue(EfinConstants.Default.RegionLookup);
 
         return new CLA_InvoiceAnalysis()
         {
             cla_sub_ledger = defaultDictionary[nameof(CLA_InvoiceAnalysis.cla_sub_ledger)],
             cla_inv_ref = claimPayment.Application.AllocationId,
             cla_batch_ref = string.Empty,
-            cla_cfacs_cc = claimPayment.Application.EfinRegion,
+            cla_cfacs_cc = regionLookup[claimPayment.Application.Region],
             cla_cfacs_ac = claimPayment.Organisation.PartnerType,
             cla_cfacs_actv = claimPayment.Application.EfinTenure,
             cla_cfacs_job = claimPayment.Application.Id,
