@@ -14,7 +14,7 @@ resources:
   - repository: he-fms-deployment
     type: git
     name: 'FMS/he-fms-deployment'
-    ref: 'main'
+    ref: 'feature/automated-pipeline-for-pr'
   - repository: templates
     type: git
     name: 'Cloud Hosting Service/Templates'
