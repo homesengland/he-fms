@@ -103,27 +103,27 @@ public class ProcessAndStoreReclaimTimeTrigger : DataExportFunctionBase<ReclaimI
         [
             _csvFileGenerator.GenerateFile(
                 convertedData.CLI_IW_BAT.AsEnumerable(),
-                EfinConstants.Default.Reclaim.FileNamePrefix.CliIwBat,
+                EfinConstants.FileNamePrefix.Reclaim.CliIwBat,
                 convertedData.BatchNumber),
             _csvFileGenerator.GenerateFile(
                 convertedData.CLI_IW_ILTes,
-                EfinConstants.Default.Reclaim.FileNamePrefix.CliIwIlt,
+                EfinConstants.FileNamePrefix.Reclaim.CliIwIlt,
                 convertedData.BatchNumber),
             _csvFileGenerator.GenerateFile(
                 convertedData.CLI_IW_INAes,
-                EfinConstants.Default.Reclaim.FileNamePrefix.CliIwIna,
+                EfinConstants.FileNamePrefix.Reclaim.CliIwIna,
                 convertedData.BatchNumber),
             _csvFileGenerator.GenerateFile(
                 convertedData.CLI_IW_INLes,
-                EfinConstants.Default.Reclaim.FileNamePrefix.CliIwInl,
+                EfinConstants.FileNamePrefix.Reclaim.CliIwInl,
                 convertedData.BatchNumber),
             _csvFileGenerator.GenerateFile(
                 convertedData.CLI_IW_INVes,
-                EfinConstants.Default.Reclaim.FileNamePrefix.CliIwInv,
+                EfinConstants.FileNamePrefix.Reclaim.CliIwInv,
                 convertedData.BatchNumber),
             _csvFileGenerator.GenerateFile(
                 convertedData.CLI_IW_ITLes,
-                EfinConstants.Default.Reclaim.FileNamePrefix.CliIwItl,
+                EfinConstants.FileNamePrefix.Reclaim.CliIwItl,
                 convertedData.BatchNumber),
         ];
     }

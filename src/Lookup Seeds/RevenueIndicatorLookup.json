@@ -1,0 +1,8 @@
+{
+    "id": "RevenueIndicatorLookup",
+    "PartitionKey": "fms",
+    "Value": {
+        "Revenue": "Revenue",
+        "Capital": "Capital"
+    }
+}

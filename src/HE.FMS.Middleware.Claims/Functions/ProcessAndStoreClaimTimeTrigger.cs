@@ -98,15 +98,15 @@ public class ProcessAndStoreClaimTimeTrigger : DataExportFunctionBase<ClaimItemS
         [
             _csvFileGenerator.GenerateFile(
                 convertedData.CLCLB_Batch.AsEnumerable(),
-                EfinConstants.Default.Claim.FileNamePrefix.ClclbBatch,
+                EfinConstants.FileNamePrefix.Claim.ClclbBatch,
                 convertedData.BatchNumber),
             _csvFileGenerator.GenerateFile(
                 convertedData.CLI_Invoices,
-                EfinConstants.Default.Claim.FileNamePrefix.CliInvoice,
+                EfinConstants.FileNamePrefix.Claim.CliInvoice,
                 convertedData.BatchNumber),
             _csvFileGenerator.GenerateFile(
                 convertedData.CLA_InvoiceAnalyses,
-                EfinConstants.Default.Claim.FileNamePrefix.ClaInvoiceAnalysis,
+                EfinConstants.FileNamePrefix.Claim.ClaInvoiceAnalysis,
                 convertedData.BatchNumber),
         ];
 }

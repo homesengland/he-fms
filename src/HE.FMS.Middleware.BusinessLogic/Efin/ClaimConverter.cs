@@ -94,7 +94,7 @@ public class ClaimConverter : IClaimConverter
             cla_inv_ref = claimPayment.Application.AllocationId,
             cla_batch_ref = string.Empty,
             cla_cfacs_cc = regionLookup[claimPayment.Application.Region],
-            cla_cfacs_ac = claimPayment.Organisation.PartnerType,
+            cla_cfacs_ac = claimPayment.EfinPartnerType.ToString(CultureInfo.InvariantCulture),
             cla_cfacs_actv = tenureLookup[claimPayment.Application.Tenure.RemoveSpecialCharacters()],
             cla_cfacs_job = claimPayment.Application.Id,
             cla_amount = claimPayment.Claim.Amount.ToString("F", CultureInfo.InvariantCulture),

@@ -89,6 +89,14 @@ public sealed class FakeEfinLookupService : IEfinLookupCacheService
                 { "OPSO", "7666" },
             };
         }
+        else if (key.Equals(EfinConstants.Lookups.RevenueIndicatorLookup, StringComparison.OrdinalIgnoreCase))
+        {
+            dict = new Dictionary<string, string>
+            {
+                { "Revenue", "Revenue" },
+                { "Capital", "Capital" },
+            };
+        }
 
         return Task.FromResult(dict);
     }

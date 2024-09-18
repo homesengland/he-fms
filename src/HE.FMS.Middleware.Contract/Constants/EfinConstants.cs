@@ -8,6 +8,27 @@ public static class EfinConstants
         public const string MilestoneLookup = nameof(MilestoneLookup);
         public const string RegionLookup = nameof(RegionLookup);
         public const string TenureLookup = nameof(TenureLookup);
+        public const string RevenueIndicatorLookup = nameof(RevenueIndicatorLookup);
+    }
+
+    public static class FileNamePrefix
+    {
+        public static class Claim
+        {
+            public const string ClclbBatch = "cpap_b";
+            public const string ClaInvoiceAnalysis = "cpap_a";
+            public const string CliInvoice = "cpap_i";
+        }
+
+        public static class Reclaim
+        {
+            public const string CliIwBat = "cpiw_bt";
+            public const string CliIwIlt = "cpiw_lt";
+            public const string CliIwIna = "cpiw_ia";
+            public const string CliIwInl = "cpiw_il";
+            public const string CliIwInv = "cpiw_in";
+            public const string CliIwItl = "cpiw_hf";
+        }
     }
 
     public static class Default
@@ -134,13 +155,6 @@ public static class EfinConstants
                     { nameof(UnregisteredHousingAssociation), UnregisteredHousingAssociation },
                 };
             }
-
-            public static class FileNamePrefix
-            {
-                public const string ClclbBatch = "cpap_b";
-                public const string ClaInvoiceAnalysis = "cpap_a";
-                public const string CliInvoice = "cpap_i";
-            }
         }
 
         public static class Reclaim
@@ -266,22 +280,6 @@ public static class EfinConstants
                     { nameof(UnregisteredHousingAssociation), UnregisteredHousingAssociation },
                 };
             }
-
-            public static class FileNamePrefix
-            {
-                public const string CliIwBat = "cpiw_bt";
-                public const string CliIwIlt = "cpiw_lt";
-                public const string CliIwIna = "cpiw_ia";
-                public const string CliIwInl = "cpiw_il";
-                public const string CliIwInv = "cpiw_in";
-                public const string CliIwItl = "cpiw_hf";
-            }
         }
-    }
-
-    public static class RevenueIndicator
-    {
-        public const string Revenue = "Revenue";
-        public const string Capital = "Capital";
     }
 }

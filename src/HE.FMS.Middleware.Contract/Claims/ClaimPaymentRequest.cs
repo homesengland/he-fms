@@ -18,12 +18,12 @@ public sealed class ClaimPaymentRequest
     {
         get
         {
-            if (string.Equals(Application.RevenueIndicator, EfinConstants.RevenueIndicator.Capital, StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(Application.RevenueIndicator, "Capital", StringComparison.OrdinalIgnoreCase))
             {
                 return EfinConstants.Default.Claim.CapitalPartnerType.Lookup.GetValueOrDefault(Organisation.PartnerType.RemoveSpecialCharacters());
             }
 
-            if (string.Equals(Application.RevenueIndicator, EfinConstants.RevenueIndicator.Revenue, StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(Application.RevenueIndicator, "Revenue", StringComparison.OrdinalIgnoreCase))
             {
                 return EfinConstants.Default.Claim.RevenuePartnerType.Lookup.GetValueOrDefault(Organisation.PartnerType.RemoveSpecialCharacters());
             }
