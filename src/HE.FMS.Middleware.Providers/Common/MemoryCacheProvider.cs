@@ -1,12 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using HE.FMS.Middleware.Common.Exceptions.Internal;
 using HE.FMS.Middleware.Providers.Common.Settings;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.IdentityModel.Abstractions;
 
 namespace HE.FMS.Middleware.Providers.Common;
 

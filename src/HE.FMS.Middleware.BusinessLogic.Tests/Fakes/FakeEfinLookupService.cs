@@ -2,7 +2,7 @@ using HE.FMS.Middleware.BusinessLogic.Efin;
 using HE.FMS.Middleware.Contract.Constants;
 
 namespace HE.FMS.Middleware.BusinessLogic.Tests.Fakes;
-internal class FakeEfinLookupService : IEfinLookupCacheService
+public sealed class FakeEfinLookupService : IEfinLookupCacheService
 {
     public Task<Dictionary<string, string>> GetValue(string key)
     {
@@ -55,7 +55,7 @@ internal class FakeEfinLookupService : IEfinLookupCacheService
                 { "cliwt_item_sequence", "1" },
                 { "cliwt_print_sequence", "1" },
                 { "cliwt_sub_ledger_id", "SL4" },
-                { "cliwt_text", "HOUSING FOR RENT GRANT RECLAIM" }
+                { "cliwt_text", "HOUSING FOR RENT GRANT RECLAIM" },
             };
         }
 

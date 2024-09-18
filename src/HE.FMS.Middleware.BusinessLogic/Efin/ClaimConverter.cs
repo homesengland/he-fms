@@ -2,7 +2,6 @@ using System.Globalization;
 using HE.FMS.Middleware.Contract.Claims;
 using HE.FMS.Middleware.Contract.Claims.Efin;
 using HE.FMS.Middleware.Contract.Constants;
-using HE.FMS.Middleware.Providers.Common;
 
 namespace HE.FMS.Middleware.BusinessLogic.Efin;
 public class ClaimConverter : IClaimConverter
