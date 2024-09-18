@@ -5,4 +5,5 @@ public enum CosmosDbItemType
     Claim,
     Reclaim,
     Grant,
+    Lookup,
 }

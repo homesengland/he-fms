@@ -3,20 +3,10 @@ public static class EfinConstants
 {
     public static class Default
     {
+        public const string ClaimDefault = nameof(ClaimDefault);
+
         public static class Claim
         {
-            public const string SubLedger = "PL4";
-            public const string User = "AH GRANTS";
-            public const string Grouping = "C";
-            public const string Amount = "0";
-
-            // ReSharper disable once InconsistentNaming
-            public const string UOM = "EA";
-            public const string UnitQuantity = "1";
-            public const string Volume = "1";
-            public const string TransType = "PI";
-            public const string TermsCode = "00";
-
             public static class CapitalPartnerType
             {
                 // ReSharper disable once InconsistentNaming

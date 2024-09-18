@@ -4,6 +4,7 @@ using Azure.Storage.Files.Shares;
 using HE.FMS.Middleware.Common;
 using HE.FMS.Middleware.Common.Extensions;
 using HE.FMS.Middleware.Providers.Common;
+using HE.FMS.Middleware.Providers.Common.Settings;
 using HE.FMS.Middleware.Providers.CosmosDb.Settings;
 using HE.FMS.Middleware.Providers.File;
 using HE.FMS.Middleware.Providers.File.Settings;
@@ -40,7 +41,8 @@ public static class ProvidersModule
     private static IServiceCollection AddCommon(this IServiceCollection services)
     {
         return services.AddSingleton<IDateTimeProvider, SystemDateTimeProvider>()
-            .AddSingleton<IFileWriter, FileShareWriter>();
+            .AddSingleton<IFileWriter, FileShareWriter>()
+            .AddAppConfiguration<MemoryCacheSettings>("MemoryCache");
     }
 
     private static IServiceCollection AddMambu(this IServiceCollection services)

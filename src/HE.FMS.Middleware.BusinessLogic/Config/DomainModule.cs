@@ -55,14 +55,24 @@ public static class DomainModule
             return new EfinCosmosClient(client, settings);
         });
 
-        services.AddSingleton<IEfinCosmosConfigClient, EfinConfigCosmosClient>(sp =>
+        services.AddSingleton<IEfinIndexCosmosClient, EfinIndexCosmosClient>(sp =>
         {
             var config = sp.GetRequiredService<IConfiguration>();
             var client = sp.GetRequiredService<CosmosClient>();
             var settings = sp.GetRequiredService<CosmosDbSettings>();
             settings.ContainerId = config["EfinConfigDb:ContainerId"] ?? string.Empty;
 
-            return new EfinConfigCosmosClient(client, settings);
+            return new EfinIndexCosmosClient(client, settings);
+        });
+
+        services.AddSingleton<IEfinLookupCosmosClient, EfinLookupCosmosClient>(sp =>
+        {
+            var config = sp.GetRequiredService<IConfiguration>();
+            var client = sp.GetRequiredService<CosmosClient>();
+            var settings = sp.GetRequiredService<CosmosDbSettings>();
+            settings.ContainerId = config["EfinConfigDb:ContainerId"] ?? string.Empty;
+
+            return new EfinLookupCosmosClient(client, settings);
         });
 
         services.AddSingleton<ITraceCosmosClient, TraceCosmosClient>(sp =>
@@ -77,6 +87,7 @@ public static class DomainModule
 
         return services.AddSingleton<IClaimConverter, ClaimConverter>()
             .AddSingleton<IReclaimConverter, ReclaimConverter>()
-            .AddSingleton<ICsvFileGenerator, CsvFileGenerator>();
+            .AddSingleton<ICsvFileGenerator, CsvFileGenerator>()
+            .AddSingleton<IEfinLookupCacheService, EfinLookupCacheService>();
     }
 }

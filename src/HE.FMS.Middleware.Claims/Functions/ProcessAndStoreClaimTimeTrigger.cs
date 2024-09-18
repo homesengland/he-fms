@@ -23,21 +23,21 @@ namespace HE.FMS.Middleware.Claims.Functions;
 public class ProcessAndStoreClaimTimeTrigger : DataExportFunctionBase<ClaimItemSet>
 {
     private readonly ICsvFileGenerator _csvFileGenerator;
-    private readonly IEfinCosmosConfigClient _configurationClient;
+    private readonly IEfinIndexCosmosClient _indexClient;
     private readonly IClaimConverter _claimConverter;
 
     public ProcessAndStoreClaimTimeTrigger(
         IEfinCosmosClient efinCosmosDbClient,
         IFileWriter csvFileWriter,
         ICsvFileGenerator csvFileGenerator,
-        IEfinCosmosConfigClient efinCosmosConfigClient,
+        IEfinIndexCosmosClient indexClient,
         IClaimConverter claimConverter)
         : base(
             efinCosmosDbClient,
             csvFileWriter)
     {
         _csvFileGenerator = csvFileGenerator;
-        _configurationClient = efinCosmosConfigClient;
+        _indexClient = indexClient;
         _claimConverter = claimConverter;
     }
 
@@ -58,30 +58,30 @@ public class ProcessAndStoreClaimTimeTrigger : DataExportFunctionBase<ClaimItemS
             throw new ArgumentException(nameof(claims));
         }
 
-        EfinConfigItem efinConfigItem;
+        EfinIndexItem indexItem;
         try
         {
-            efinConfigItem = await _configurationClient.GetNextIndex(IndexConfiguration.Claim.BatchIndex, CosmosDbItemType.Claim);
+            indexItem = await _indexClient.GetNextIndex(IndexConfiguration.Claim.BatchIndex, CosmosDbItemType.Claim);
         }
         catch (MissingConfigurationException)
         {
-            await _configurationClient.CreateItem(
+            await _indexClient.CreateItem(
                 IndexConfiguration.Claim.BatchIndex,
                 CosmosDbItemType.Claim,
                 IndexConfiguration.Claim.BatchIndexPrefix,
                 IndexConfiguration.Claim.BatchIndexLength);
 
-            efinConfigItem = await _configurationClient.GetNextIndex(IndexConfiguration.Claim.BatchIndex, CosmosDbItemType.Claim);
+            indexItem = await _indexClient.GetNextIndex(IndexConfiguration.Claim.BatchIndex, CosmosDbItemType.Claim);
         }
 
-        var batchRef = efinConfigItem.GetCurrentId();
-        var batchNumber = efinConfigItem.GetCurrentIndex();
+        var batchRef = indexItem.GetCurrentId();
+        var batchNumber = indexItem.GetCurrentIndex();
 
         var itemSet = new ClaimItemSet
         {
             IdempotencyKey = items.First().IdempotencyKey,
             BatchNumber = batchNumber,
-            CLCLB_Batch = _claimConverter.CreateBatch(claims, batchRef),
+            CLCLB_Batch = await _claimConverter.CreateBatch(claims, batchRef),
         };
 
         foreach (var claimItem in claims)

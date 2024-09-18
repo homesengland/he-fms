@@ -23,21 +23,21 @@ namespace HE.FMS.Middleware.Reclaims.Functions;
 public class ProcessAndStoreReclaimTimeTrigger : DataExportFunctionBase<ReclaimItemSet>
 {
     private readonly ICsvFileGenerator _csvFileGenerator;
-    private readonly IEfinCosmosConfigClient _configurationClient;
+    private readonly IEfinIndexCosmosClient _indexClient;
     private readonly IReclaimConverter _reclaimConverter;
 
     public ProcessAndStoreReclaimTimeTrigger(
         IEfinCosmosClient efinCosmosDbClient,
         IFileWriter csvFileWriter,
         ICsvFileGenerator csvFileGenerator,
-        IEfinCosmosConfigClient configurationClient,
+        IEfinIndexCosmosClient indexClient,
         IReclaimConverter reclaimConverter)
         : base(
             efinCosmosDbClient,
             csvFileWriter)
     {
         _csvFileGenerator = csvFileGenerator;
-        _configurationClient = configurationClient;
+        _indexClient = indexClient;
         _reclaimConverter = reclaimConverter;
     }
 
@@ -58,24 +58,24 @@ public class ProcessAndStoreReclaimTimeTrigger : DataExportFunctionBase<ReclaimI
             throw new ArgumentException(nameof(reclaims));
         }
 
-        EfinConfigItem efinConfigItem;
+        EfinIndexItem indexItem;
         try
         {
-            efinConfigItem = await _configurationClient.GetNextIndex(IndexConfiguration.Reclaim.BatchIndex, CosmosDbItemType.Reclaim);
+            indexItem = await _indexClient.GetNextIndex(IndexConfiguration.Reclaim.BatchIndex, CosmosDbItemType.Reclaim);
         }
         catch (MissingConfigurationException)
         {
-            await _configurationClient.CreateItem(
+            await _indexClient.CreateItem(
                 IndexConfiguration.Reclaim.BatchIndex,
                 CosmosDbItemType.Reclaim,
                 IndexConfiguration.Reclaim.BatchIndexPrefix,
                 IndexConfiguration.Reclaim.BatchIndexLength);
 
-            efinConfigItem = await _configurationClient.GetNextIndex(IndexConfiguration.Reclaim.BatchIndex, CosmosDbItemType.Reclaim);
+            indexItem = await _indexClient.GetNextIndex(IndexConfiguration.Reclaim.BatchIndex, CosmosDbItemType.Reclaim);
         }
 
-        var batchRef = efinConfigItem.GetCurrentId();
-        var batchNumber = efinConfigItem.GetCurrentIndex();
+        var batchRef = indexItem.GetCurrentId();
+        var batchNumber = indexItem.GetCurrentIndex();
 
         var itemSet = new ReclaimItemSet
         {

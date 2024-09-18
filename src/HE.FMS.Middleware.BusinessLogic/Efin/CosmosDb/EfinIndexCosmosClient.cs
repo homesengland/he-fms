@@ -7,14 +7,14 @@ using HE.FMS.Middleware.Providers.CosmosDb.Settings;
 using Microsoft.Azure.Cosmos;
 
 namespace HE.FMS.Middleware.BusinessLogic.Efin.CosmosDb;
-public sealed class EfinConfigCosmosClient : CosmosDbClient<EfinConfigItem>, IEfinCosmosConfigClient
+public sealed class EfinIndexCosmosClient : CosmosDbClient<EfinIndexItem>, IEfinIndexCosmosClient
 {
-    public EfinConfigCosmosClient(CosmosClient client, CosmosDbSettings settings)
+    public EfinIndexCosmosClient(CosmosClient client, CosmosDbSettings settings)
         : base(client, settings)
     {
     }
 
-    public async Task<EfinConfigItem> GetNextIndex(string indexName, CosmosDbItemType type)
+    public async Task<EfinIndexItem> GetNextIndex(string indexName, CosmosDbItemType type)
     {
         var item = (await GetItems(indexName, type)).FirstOrDefault() ?? throw new MissingConfigurationException($"{indexName} in {type}");
         item.GetNextId();
@@ -23,7 +23,7 @@ public sealed class EfinConfigCosmosClient : CosmosDbClient<EfinConfigItem>, IEf
         return item;
     }
 
-    public async Task<EfinConfigItem> CreateItem(string indexName, CosmosDbItemType type, string indexPrefix, int indexLength)
+    public async Task<EfinIndexItem> CreateItem(string indexName, CosmosDbItemType type, string indexPrefix, int indexLength)
     {
         var item = (await GetItems(indexName, type)).FirstOrDefault();
 
@@ -32,16 +32,16 @@ public sealed class EfinConfigCosmosClient : CosmosDbClient<EfinConfigItem>, IEf
             return item;
         }
 
-        item = EfinConfigItem.Create(Constants.CosmosDbConfiguration.ConfigPartitonKey, CosmosDbItemType.Claim, indexName, indexLength, indexPrefix);
+        item = EfinIndexItem.Create(Constants.CosmosDbConfiguration.PartitonKey, CosmosDbItemType.Claim, indexName, indexLength, indexPrefix);
         await UpsertItem(item, CancellationToken.None);
 
         return item;
     }
 
-    private async Task<IEnumerable<EfinConfigItem>> GetItems(string fieldName, CosmosDbItemType type)
+    private async Task<IEnumerable<EfinIndexItem>> GetItems(string fieldName, CosmosDbItemType type)
     {
         return await FindAllItems(
             x => x.IndexName == fieldName && x.Type == type,
-            Constants.CosmosDbConfiguration.ConfigPartitonKey);
+            Constants.CosmosDbConfiguration.PartitonKey);
     }
 }
