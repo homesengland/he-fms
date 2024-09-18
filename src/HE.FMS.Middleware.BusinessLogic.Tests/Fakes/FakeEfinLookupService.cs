@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using HE.FMS.Middleware.BusinessLogic.Efin;
 using HE.FMS.Middleware.Contract.Constants;
 
@@ -31,6 +26,36 @@ internal class FakeEfinLookupService : IEfinLookupCacheService
                 { "cli_uom", "EA" },
                 { "cli_vat", "0" },
                 { "cli_volume", "1" },
+            };
+        }
+        else if (key.Equals(EfinConstants.Default.ReclaimDefault, StringComparison.OrdinalIgnoreCase))
+        {
+            dict = new Dictionary<string, string>
+            {
+                { "cliwa_item_sequence", "1" },
+                { "cliwa_pre_pay_yn", "N" },
+                { "cliwa_sub_ledger_id", "SL4" },
+                { "cliwa_uom", "EA" },
+                { "cliwb_default_prefix", "H" },
+                { "cliwb_description", "AHP-RECLAIM" },
+                { "cliwb_sub_ledger", "SL4" },
+                { "cliwb_user", "GRANTS" },
+                { "cliwl_item_sequence", "1" },
+                { "cliwl_line_no", "1" },
+                { "cliwl_line_ref", "1" },
+                { "cliwl_product_id", "GRANT RECLAIM" },
+                { "cliwl_sub_ledger_id", "SL4" },
+                { "cliwx_header_footer", "H" },
+                { "cliwx_line_no", "1" },
+                { "cliwx_sub_ledger_id", "SL4" },
+                { "cliwi_invoice_prefix", "H" },
+                { "cliwi_sub_ledger_id", "SL4" },
+                { "cliwi_terms_code", "00" },
+                { "cliwi_trans_type", "I" },
+                { "cliwt_item_sequence", "1" },
+                { "cliwt_print_sequence", "1" },
+                { "cliwt_sub_ledger_id", "SL4" },
+                { "cliwt_text", "HOUSING FOR RENT GRANT RECLAIM" }
             };
         }
 

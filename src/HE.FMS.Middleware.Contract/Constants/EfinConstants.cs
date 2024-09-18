@@ -4,6 +4,7 @@ public static class EfinConstants
     public static class Default
     {
         public const string ClaimDefault = nameof(ClaimDefault);
+        public const string ReclaimDefault = nameof(ReclaimDefault);
 
         public static class Claim
         {
@@ -138,23 +139,6 @@ public static class EfinConstants
 
         public static class Reclaim
         {
-            public const string SubLedger = "SL4";
-            public const string Description = "AHP-RECLAIM";
-            public const string User = "GRANTS";
-            public const string Prefix = "H";
-            public const string HeaderFooter = "H";
-            public const string TransType = "I";
-            public const string TermsCode = "00";
-            public const string ItemSequence = "1";
-            public const string PrintSequence = "1";
-            public const string Product = "GRANT RECLAIM";
-            public const string Line = "1";
-            public const string Text = "HOUSING FOR RENT GRANT RECLAIM";
-
-            // ReSharper disable once InconsistentNaming
-            public const string UOM = "EA";
-            public const string PrePay = "N";
-
             public static class AmountReclaim
             {
                 // ReSharper disable once InconsistentNaming

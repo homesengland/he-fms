@@ -79,7 +79,7 @@ public class ProcessAndStoreReclaimTimeTrigger : DataExportFunctionBase<ReclaimI
 
         var itemSet = new ReclaimItemSet
         {
-            CLI_IW_BAT = _reclaimConverter.CreateBatch(reclaims, batchRef),
+            CLI_IW_BAT = await _reclaimConverter.CreateBatch(reclaims, batchRef),
             BatchNumber = batchNumber,
             IdempotencyKey = items.First().IdempotencyKey,
         };
