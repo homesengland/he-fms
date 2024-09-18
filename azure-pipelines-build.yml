@@ -1,5 +1,16 @@
 trigger: none
 
+pr:
+  branches:
+    include:
+    - development_R3
+
+parameters:
+  - name: forcePushToProd
+    displayName: Force Push to Production
+    type: boolean
+    default: false
+
 variables:
   buildMajor: 1
   buildMinor: 1
