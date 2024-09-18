@@ -50,6 +50,7 @@ public class ClaimConverter : IClaimConverter
         ArgumentNullException.ThrowIfNull(claimPayment);
 
         var defaultDictionary = await _lookupCacheService.GetValue(EfinConstants.Default.ClaimDefault);
+        var milestoneLookup = await _lookupCacheService.GetValue(EfinConstants.Default.MilestoneLookup);
 
         return new CLI_Invoice()
         {
@@ -66,7 +67,7 @@ public class ClaimConverter : IClaimConverter
             cli_their_ref = claimPayment.Application.AllocationId,
             cli_trans_type = defaultDictionary[nameof(CLI_Invoice.cli_trans_type)],
             cli_date = claimPayment.Claim.AuthorisedOn.ToString(CultureInfo.InvariantCulture),
-            cli_description = string.Format(CultureInfo.InvariantCulture, "{0} {1} {2}", claimPayment.Claim.Milestone[..3], claimPayment.Claim.Id, claimPayment.Application.Id),
+            cli_description = string.Format(CultureInfo.InvariantCulture, "{0} {1} {2}", milestoneLookup[claimPayment.Claim.Milestone], claimPayment.Claim.Id, claimPayment.Application.Id),
             cli_terms_code = defaultDictionary[nameof(CLI_Invoice.cli_terms_code)],
             cli_due_date = claimPayment.Claim.AuthorisedOn.AddDays(7).ToString(CultureInfo.InvariantCulture),
             cli_cost_centre = claimPayment.Application.EfinRegion,
@@ -80,6 +81,7 @@ public class ClaimConverter : IClaimConverter
         ArgumentNullException.ThrowIfNull(claimPayment);
 
         var defaultDictionary = await _lookupCacheService.GetValue(EfinConstants.Default.ClaimDefault);
+        var milestoneLookup = await _lookupCacheService.GetValue(EfinConstants.Default.MilestoneLookup);
 
         return new CLA_InvoiceAnalysis()
         {
@@ -94,7 +96,7 @@ public class ClaimConverter : IClaimConverter
             cla_vat_code = claimPayment.Application.VatCode,
             cla_vat_rate = claimPayment.Application.VatRate.ToString("F", CultureInfo.InvariantCulture),
             cla_vat = (claimPayment.Claim.Amount * claimPayment.Application.VatRate).ToString("F", CultureInfo.InvariantCulture),
-            cla_description = string.Format(CultureInfo.InvariantCulture, "{0} {1} {2}", claimPayment.Claim.Milestone[..3], claimPayment.Claim.Id, claimPayment.Application.Id),
+            cla_description = string.Format(CultureInfo.InvariantCulture, "{0} {1} {2}", milestoneLookup[claimPayment.Claim.Milestone], claimPayment.Claim.Id, claimPayment.Application.Id),
             cla_unit_qty = defaultDictionary[nameof(CLA_InvoiceAnalysis.cla_unit_qty)],
             cla_uom = defaultDictionary[nameof(CLA_InvoiceAnalysis.cla_uom)],
             cla_volume = defaultDictionary[nameof(CLA_InvoiceAnalysis.cla_volume)],

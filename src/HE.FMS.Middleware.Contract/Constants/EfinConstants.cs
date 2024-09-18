@@ -5,6 +5,7 @@ public static class EfinConstants
     {
         public const string ClaimDefault = nameof(ClaimDefault);
         public const string ReclaimDefault = nameof(ReclaimDefault);
+        public const string MilestoneLookup = nameof(MilestoneLookup);
 
         public static class Claim
         {
@@ -271,13 +272,6 @@ public static class EfinConstants
                 public const string CliIwItl = "cpiw_hf";
             }
         }
-    }
-
-    public static class Milestone
-    {
-        public const string Acquisition = "ACQ";
-        public const string StartOnSite = "SOS";
-        public const string PracticalCompletion = "PC";
     }
 
     public static class Region

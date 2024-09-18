@@ -15,8 +15,6 @@ public sealed class ReclaimPaymentRequest
     [Required]
     public ClaimOrganisationDetails Organisation { get; set; }
 
-    public string EfinSchemeName => Application.Name.Truncate(24) + Reclaim.EfinMilestoneName;
-
     public int EfinPartnerType
     {
         get

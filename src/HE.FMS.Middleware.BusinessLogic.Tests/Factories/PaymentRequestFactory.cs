@@ -17,7 +17,7 @@ public static class PaymentRequestFactory
             {
                 Amount = randomizer.Decimal(),
                 Id = randomizer.String2(10),
-                Milestone = EfinConstants.Milestone.Acquisition,
+                Milestone = "ACQ",
                 AuthorisedOn = DateTimeOffset.UtcNow,
                 AuthorisedBy = randomizer.String2(10),
             },
@@ -50,7 +50,7 @@ public static class PaymentRequestFactory
             {
                 Amount = randomizer.Decimal2(),
                 Id = randomizer.String2(10),
-                Milestone = EfinConstants.Milestone.Acquisition,
+                Milestone = "ACQ",
                 AuthorisedOn = DateTimeOffset.UtcNow,
                 AuthorisedBy = randomizer.String2(10),
                 InterestAmount = randomizer.Decimal2(),

@@ -112,6 +112,7 @@ public class ReclaimConverter : IReclaimConverter
         ArgumentNullException.ThrowIfNull(reclaimPayment);
 
         var defaultDictionary = await _lookupCacheService.GetValue(EfinConstants.Default.ReclaimDefault);
+        var milestoneLookup = await _lookupCacheService.GetValue(EfinConstants.Default.MilestoneLookup);
 
         return new CLI_IW_INV()
         {
@@ -131,7 +132,7 @@ public class ReclaimConverter : IReclaimConverter
             cliwi_entry_date = _dateTimeProvider.UtcNow.ToString("F", CultureInfo.InvariantCulture),
             cliwi_invoice_prefix = defaultDictionary[nameof(CLI_IW_INV.cliwi_invoice_prefix)],
             cliwi_tax_point = _dateTimeProvider.UtcNow.ToString("F", CultureInfo.InvariantCulture),
-            cliwi_description = string.Format(CultureInfo.InvariantCulture, "{0} {1} {2}", reclaimPayment.Reclaim.Milestone[..3], reclaimPayment.Reclaim.Id, reclaimPayment.Application.Id),
+            cliwi_description = string.Format(CultureInfo.InvariantCulture, "{0} {1} {2}", milestoneLookup[reclaimPayment.Reclaim.Milestone], reclaimPayment.Reclaim.Id, reclaimPayment.Application.Id),
         };
     }
 
@@ -140,6 +141,7 @@ public class ReclaimConverter : IReclaimConverter
         ArgumentNullException.ThrowIfNull(reclaimPayment);
 
         var defaultDictionary = await _lookupCacheService.GetValue(EfinConstants.Default.ReclaimDefault);
+        var milestoneLookup = await _lookupCacheService.GetValue(EfinConstants.Default.MilestoneLookup);
 
         return new CLI_IW_ITL()
         {
@@ -148,7 +150,7 @@ public class ReclaimConverter : IReclaimConverter
             cliwx_inv_ref = reclaimPayment.Application.AllocationId,
             cliwx_line_no = defaultDictionary[nameof(CLI_IW_ITL.cliwx_line_no)],
             cliwx_header_footer = defaultDictionary[nameof(CLI_IW_ITL.cliwx_header_footer)],
-            cliwx_text = string.Format(CultureInfo.InvariantCulture, "{0} {1} {2}", reclaimPayment.Reclaim.Milestone[..3], reclaimPayment.Reclaim.Id, reclaimPayment.Application.Id),
+            cliwx_text = string.Format(CultureInfo.InvariantCulture, "{0} {1} {2}", milestoneLookup[reclaimPayment.Reclaim.Milestone], reclaimPayment.Reclaim.Id, reclaimPayment.Application.Id),
         };
     }
 }

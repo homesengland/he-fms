@@ -12,15 +12,6 @@ public class ClaimDetailsBase
     [MaxLength(ValidatorConstants.EnumMaxLength)]
     public string Milestone { get; set; }
 
-    public string EfinMilestoneName =>
-        Milestone switch
-        {
-            nameof(EfinConstants.Milestone.Acquisition) => EfinConstants.Milestone.Acquisition,
-            nameof(EfinConstants.Milestone.StartOnSite) => EfinConstants.Milestone.StartOnSite,
-            nameof(EfinConstants.Milestone.PracticalCompletion) => EfinConstants.Milestone.PracticalCompletion,
-            _ => string.Empty,
-        };
-
     [Required]
     [MaxLength(ValidatorConstants.CustomNameMaxLength)]
     public string AuthorisedBy { get; set; }
