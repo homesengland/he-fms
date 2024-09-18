@@ -32,7 +32,7 @@ public class ReclaimConverter : IReclaimConverter
     {
         ArgumentNullException.ThrowIfNull(reclaims);
 
-        var defaultDictionary = await _lookupCacheService.GetValue(EfinConstants.Default.ReclaimDefault);
+        var defaultDictionary = await _lookupCacheService.GetValue(EfinConstants.Lookups.ReclaimDefault);
 
         return new CLI_IW_BAT()
         {
@@ -52,7 +52,7 @@ public class ReclaimConverter : IReclaimConverter
     {
         ArgumentNullException.ThrowIfNull(reclaimPayment);
 
-        var defaultDictionary = await _lookupCacheService.GetValue(EfinConstants.Default.ReclaimDefault);
+        var defaultDictionary = await _lookupCacheService.GetValue(EfinConstants.Lookups.ReclaimDefault);
 
         return new CLI_IW_ILT()
         {
@@ -69,8 +69,8 @@ public class ReclaimConverter : IReclaimConverter
     {
         ArgumentNullException.ThrowIfNull(reclaimPayment);
 
-        var defaultDictionary = await _lookupCacheService.GetValue(EfinConstants.Default.ReclaimDefault);
-        var regionLookup = await _lookupCacheService.GetValue(EfinConstants.Default.RegionLookup);
+        var defaultDictionary = await _lookupCacheService.GetValue(EfinConstants.Lookups.ReclaimDefault);
+        var regionLookup = await _lookupCacheService.GetValue(EfinConstants.Lookups.RegionLookup);
 
         return new CLI_IW_INA()
         {
@@ -92,7 +92,7 @@ public class ReclaimConverter : IReclaimConverter
     {
         ArgumentNullException.ThrowIfNull(reclaimPayment);
 
-        var defaultDictionary = await _lookupCacheService.GetValue(EfinConstants.Default.ReclaimDefault);
+        var defaultDictionary = await _lookupCacheService.GetValue(EfinConstants.Lookups.ReclaimDefault);
 
         return new CLI_IW_INL()
         {
@@ -112,9 +112,9 @@ public class ReclaimConverter : IReclaimConverter
     {
         ArgumentNullException.ThrowIfNull(reclaimPayment);
 
-        var defaultDictionary = await _lookupCacheService.GetValue(EfinConstants.Default.ReclaimDefault);
-        var milestoneLookup = await _lookupCacheService.GetValue(EfinConstants.Default.MilestoneLookup);
-        var regionLookup = await _lookupCacheService.GetValue(EfinConstants.Default.RegionLookup);
+        var defaultDictionary = await _lookupCacheService.GetValue(EfinConstants.Lookups.ReclaimDefault);
+        var milestoneLookup = await _lookupCacheService.GetValue(EfinConstants.Lookups.MilestoneLookup);
+        var regionLookup = await _lookupCacheService.GetValue(EfinConstants.Lookups.RegionLookup);
 
         return new CLI_IW_INV()
         {
@@ -142,8 +142,8 @@ public class ReclaimConverter : IReclaimConverter
     {
         ArgumentNullException.ThrowIfNull(reclaimPayment);
 
-        var defaultDictionary = await _lookupCacheService.GetValue(EfinConstants.Default.ReclaimDefault);
-        var milestoneLookup = await _lookupCacheService.GetValue(EfinConstants.Default.MilestoneLookup);
+        var defaultDictionary = await _lookupCacheService.GetValue(EfinConstants.Lookups.ReclaimDefault);
+        var milestoneLookup = await _lookupCacheService.GetValue(EfinConstants.Lookups.MilestoneLookup);
 
         return new CLI_IW_ITL()
         {

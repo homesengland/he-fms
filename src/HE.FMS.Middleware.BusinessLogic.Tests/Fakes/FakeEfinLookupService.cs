@@ -8,7 +8,7 @@ public sealed class FakeEfinLookupService : IEfinLookupCacheService
     {
         var dict = new Dictionary<string, string>();
 
-        if (key.Equals(EfinConstants.Default.ClaimDefault, StringComparison.OrdinalIgnoreCase))
+        if (key.Equals(EfinConstants.Lookups.ClaimDefault, StringComparison.OrdinalIgnoreCase))
         {
             dict = new Dictionary<string, string>
             {
@@ -28,7 +28,7 @@ public sealed class FakeEfinLookupService : IEfinLookupCacheService
                 { "cli_volume", "1" },
             };
         }
-        else if (key.Equals(EfinConstants.Default.ReclaimDefault, StringComparison.OrdinalIgnoreCase))
+        else if (key.Equals(EfinConstants.Lookups.ReclaimDefault, StringComparison.OrdinalIgnoreCase))
         {
             dict = new Dictionary<string, string>
             {
@@ -58,7 +58,7 @@ public sealed class FakeEfinLookupService : IEfinLookupCacheService
                 { "cliwt_text", "HOUSING FOR RENT GRANT RECLAIM" },
             };
         }
-        else if (key.Equals(EfinConstants.Default.RegionLookup, StringComparison.OrdinalIgnoreCase))
+        else if (key.Equals(EfinConstants.Lookups.RegionLookup, StringComparison.OrdinalIgnoreCase))
         {
             dict = new Dictionary<string, string>
             {
@@ -68,7 +68,7 @@ public sealed class FakeEfinLookupService : IEfinLookupCacheService
                 { "London", "ASWRL" },
             };
         }
-        else if (key.Equals(EfinConstants.Default.MilestoneLookup, StringComparison.OrdinalIgnoreCase))
+        else if (key.Equals(EfinConstants.Lookups.MilestoneLookup, StringComparison.OrdinalIgnoreCase))
         {
             dict = new Dictionary<string, string>
             {

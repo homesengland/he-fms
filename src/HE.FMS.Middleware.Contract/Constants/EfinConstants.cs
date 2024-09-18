@@ -1,13 +1,16 @@
 namespace HE.FMS.Middleware.Contract.Constants;
 public static class EfinConstants
 {
-    public static class Default
+    public static class Lookups
     {
         public const string ClaimDefault = nameof(ClaimDefault);
         public const string ReclaimDefault = nameof(ReclaimDefault);
         public const string MilestoneLookup = nameof(MilestoneLookup);
         public const string RegionLookup = nameof(RegionLookup);
+    }
 
+    public static class Default
+    {
         public static class Claim
         {
             public static class CapitalPartnerType

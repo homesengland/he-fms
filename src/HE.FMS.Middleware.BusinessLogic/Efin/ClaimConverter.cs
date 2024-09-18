@@ -26,7 +26,7 @@ public class ClaimConverter : IClaimConverter
     {
         ArgumentNullException.ThrowIfNull(claims);
 
-        var defaultDictionary = await _lookupCacheService.GetValue(EfinConstants.Default.ClaimDefault);
+        var defaultDictionary = await _lookupCacheService.GetValue(EfinConstants.Lookups.ClaimDefault);
 
         var culture = new CultureInfo("en-GB");
         return new CLCLB_Batch()
@@ -49,9 +49,9 @@ public class ClaimConverter : IClaimConverter
     {
         ArgumentNullException.ThrowIfNull(claimPayment);
 
-        var defaultDictionary = await _lookupCacheService.GetValue(EfinConstants.Default.ClaimDefault);
-        var milestoneLookup = await _lookupCacheService.GetValue(EfinConstants.Default.MilestoneLookup);
-        var regionLookup = await _lookupCacheService.GetValue(EfinConstants.Default.RegionLookup);
+        var defaultDictionary = await _lookupCacheService.GetValue(EfinConstants.Lookups.ClaimDefault);
+        var milestoneLookup = await _lookupCacheService.GetValue(EfinConstants.Lookups.MilestoneLookup);
+        var regionLookup = await _lookupCacheService.GetValue(EfinConstants.Lookups.RegionLookup);
 
         return new CLI_Invoice()
         {
@@ -81,9 +81,9 @@ public class ClaimConverter : IClaimConverter
     {
         ArgumentNullException.ThrowIfNull(claimPayment);
 
-        var defaultDictionary = await _lookupCacheService.GetValue(EfinConstants.Default.ClaimDefault);
-        var milestoneLookup = await _lookupCacheService.GetValue(EfinConstants.Default.MilestoneLookup);
-        var regionLookup = await _lookupCacheService.GetValue(EfinConstants.Default.RegionLookup);
+        var defaultDictionary = await _lookupCacheService.GetValue(EfinConstants.Lookups.ClaimDefault);
+        var milestoneLookup = await _lookupCacheService.GetValue(EfinConstants.Lookups.MilestoneLookup);
+        var regionLookup = await _lookupCacheService.GetValue(EfinConstants.Lookups.RegionLookup);
 
         return new CLA_InvoiceAnalysis()
         {
