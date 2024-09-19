@@ -97,6 +97,14 @@ public sealed class FakeEfinLookupService : IEfinLookupCacheService
                 { "Capital", "Capital" },
             };
         }
+        else if (key.Equals(EfinConstants.Lookups.PartnerTypeLookup, StringComparison.OrdinalIgnoreCase))
+        {
+            dict = new Dictionary<string, string>
+            {
+                { "Claim_Capital_Bank", "1551" },
+                { "Reclaim_Amount_Bank", "0029" },
+            };
+        }
 
         return Task.FromResult(dict);
     }

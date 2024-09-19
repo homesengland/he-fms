@@ -1,7 +1,6 @@
 using Bogus;
 using Bogus.Extensions;
 using HE.FMS.Middleware.Contract.Claims;
-using HE.FMS.Middleware.Contract.Constants;
 using HE.FMS.Middleware.Contract.Reclaims;
 
 namespace HE.FMS.Middleware.BusinessLogic.Tests.Factories;
@@ -35,7 +34,7 @@ public static class PaymentRequestFactory
             Organisation = new ClaimOrganisationDetails
             {
                 Name = randomizer.String2(10),
-                PartnerType = nameof(EfinConstants.Default.Claim.CapitalPartnerType.Bank),
+                PartnerType = "Bank",
             },
         };
     }
@@ -70,7 +69,7 @@ public static class PaymentRequestFactory
             Organisation = new ClaimOrganisationDetails
             {
                 Name = randomizer.String2(10),
-                PartnerType = nameof(EfinConstants.Default.Claim.CapitalPartnerType.Bank),
+                PartnerType = "Bank",
             },
         };
     }
