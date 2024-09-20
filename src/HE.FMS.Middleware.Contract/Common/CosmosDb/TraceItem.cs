@@ -1,5 +1,3 @@
-using HE.FMS.Middleware.Common;
-
 namespace HE.FMS.Middleware.Contract.Common.CosmosDb;
 public class TraceItem : CosmosDataItem
 {

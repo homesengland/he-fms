@@ -11,4 +11,7 @@
     <PackageReference Include="MiniValidation" Version="0.9.1" />
     <PackageReference Include="System.Memory.Data" Version="1.0.2" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HE.FMS.Middleware.Contract\HE.FMS.Middleware.Contract.csproj" />
+  </ItemGroup>
 </Project>

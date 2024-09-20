@@ -1,5 +1,4 @@
 using HE.FMS.Middleware.Contract.Common;
-using Microsoft.Extensions.Configuration;
 
 // ReSharper disable InconsistentNaming
 namespace HE.FMS.Middleware.Contract.Claims.Efin;

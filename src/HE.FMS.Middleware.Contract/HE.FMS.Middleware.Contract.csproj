@@ -8,7 +8,4 @@
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\HE.FMS.Middleware.Common\HE.FMS.Middleware.Common.csproj" />
-  </ItemGroup>
 </Project>
