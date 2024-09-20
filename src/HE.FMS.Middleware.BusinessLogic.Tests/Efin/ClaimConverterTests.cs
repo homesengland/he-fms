@@ -2,13 +2,14 @@ using HE.FMS.Middleware.BusinessLogic.Efin;
 using HE.FMS.Middleware.BusinessLogic.Tests.Factories;
 using HE.FMS.Middleware.BusinessLogic.Tests.Fakes;
 using HE.FMS.Middleware.Contract.Claims.Efin;
+using HE.FMS.Middleware.Providers.Common;
 using Xunit;
 
 namespace HE.FMS.Middleware.BusinessLogic.Tests.Efin;
 
 public class ClaimConverterTests
 {
-    private readonly ClaimConverter _claimConverter = new(new FakeEfinLookupService());
+    private readonly ClaimConverter _claimConverter = new(new FakeDateTimeProvider(), new FakeEfinLookupService());
 
     [Fact]
     public async Task Convert_ShouldReturnExpectedClaimItem()
