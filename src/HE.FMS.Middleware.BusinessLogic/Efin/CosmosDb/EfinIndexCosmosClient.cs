@@ -31,7 +31,7 @@ public sealed class EfinIndexCosmosClient : CosmosDbClient<EfinIndexItem>, IEfin
             return item;
         }
 
-        item = EfinIndexItem.Create(Common.Constants.CosmosDbConfiguration.PartitonKey, CosmosDbItemType.Claim, indexName, indexLength, indexPrefix);
+        item = EfinIndexItem.Create(Common.Constants.CosmosDbConfiguration.PartitonKey, type, indexName, indexLength, indexPrefix);
         await UpsertItem(item, CancellationToken.None);
 
         return item;
