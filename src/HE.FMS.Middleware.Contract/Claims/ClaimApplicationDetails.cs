@@ -1,6 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using System.Globalization;
-using HE.FMS.Middleware.Common.Extensions;
 using HE.FMS.Middleware.Contract.Constants;
 
 namespace HE.FMS.Middleware.Contract.Claims;

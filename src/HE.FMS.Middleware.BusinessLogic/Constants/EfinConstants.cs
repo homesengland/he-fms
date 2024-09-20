@@ -1,4 +1,4 @@
-namespace HE.FMS.Middleware.Contract.Constants;
+namespace HE.FMS.Middleware.BusinessLogic.Constants;
 public static class EfinConstants
 {
     public static class Lookups

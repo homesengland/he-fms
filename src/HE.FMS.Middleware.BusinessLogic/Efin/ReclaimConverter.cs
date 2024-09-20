@@ -4,6 +4,7 @@ using HE.FMS.Middleware.Contract.Constants;
 using HE.FMS.Middleware.Contract.Reclaims;
 using HE.FMS.Middleware.Contract.Reclaims.Efin;
 using HE.FMS.Middleware.Providers.Common;
+using EfinConstants = HE.FMS.Middleware.BusinessLogic.Constants.EfinConstants;
 
 namespace HE.FMS.Middleware.BusinessLogic.Efin;
 public class ReclaimConverter : IReclaimConverter

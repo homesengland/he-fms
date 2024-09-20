@@ -1,5 +1,4 @@
 using HE.FMS.Middleware.BusinessLogic.Efin.CosmosDb;
-using HE.FMS.Middleware.Common;
 using HE.FMS.Middleware.Common.Exceptions.Internal;
 using HE.FMS.Middleware.Providers.Common;
 using HE.FMS.Middleware.Providers.Common.Settings;
@@ -23,7 +22,7 @@ public class EfinLookupCacheService : MemoryCacheProvider<Dictionary<string, str
 
     protected override async Task<Dictionary<string, string>> RetrieveValue(string key)
     {
-        var item = await _lookupClient.GetItem(key, Constants.CosmosDbConfiguration.PartitonKey);
+        var item = await _lookupClient.GetItem(key, Common.Constants.CosmosDbConfiguration.PartitonKey);
 
         if (item is not null && item.Value is not null)
         {

@@ -1,4 +1,3 @@
-using HE.FMS.Middleware.Common;
 using HE.FMS.Middleware.Common.Exceptions.Internal;
 using HE.FMS.Middleware.Contract.Common.CosmosDb;
 using HE.FMS.Middleware.Contract.Efin.CosmosDb;
@@ -32,7 +31,7 @@ public sealed class EfinIndexCosmosClient : CosmosDbClient<EfinIndexItem>, IEfin
             return item;
         }
 
-        item = EfinIndexItem.Create(Constants.CosmosDbConfiguration.PartitonKey, CosmosDbItemType.Claim, indexName, indexLength, indexPrefix);
+        item = EfinIndexItem.Create(Common.Constants.CosmosDbConfiguration.PartitonKey, CosmosDbItemType.Claim, indexName, indexLength, indexPrefix);
         await UpsertItem(item, CancellationToken.None);
 
         return item;
@@ -42,6 +41,6 @@ public sealed class EfinIndexCosmosClient : CosmosDbClient<EfinIndexItem>, IEfin
     {
         return await FindAllItems(
             x => x.IndexName == fieldName && x.Type == type,
-            Constants.CosmosDbConfiguration.PartitonKey);
+            Common.Constants.CosmosDbConfiguration.PartitonKey);
     }
 }

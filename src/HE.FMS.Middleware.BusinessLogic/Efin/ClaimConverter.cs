@@ -3,6 +3,7 @@ using HE.FMS.Middleware.Common.Extensions;
 using HE.FMS.Middleware.Contract.Claims;
 using HE.FMS.Middleware.Contract.Claims.Efin;
 using HE.FMS.Middleware.Contract.Constants;
+using EfinConstants = HE.FMS.Middleware.BusinessLogic.Constants.EfinConstants;
 
 namespace HE.FMS.Middleware.BusinessLogic.Efin;
 public class ClaimConverter : IClaimConverter

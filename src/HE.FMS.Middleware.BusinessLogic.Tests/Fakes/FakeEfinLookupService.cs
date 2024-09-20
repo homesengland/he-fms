@@ -1,5 +1,5 @@
+using HE.FMS.Middleware.BusinessLogic.Constants;
 using HE.FMS.Middleware.BusinessLogic.Efin;
-using HE.FMS.Middleware.Contract.Constants;
 
 namespace HE.FMS.Middleware.BusinessLogic.Tests.Fakes;
 public sealed class FakeEfinLookupService : IEfinLookupCacheService
