@@ -1,6 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using System.Globalization;
-using HE.FMS.Middleware.Common.Extensions;
 using HE.FMS.Middleware.Contract.Constants;
 
 namespace HE.FMS.Middleware.Contract.Claims;
@@ -22,31 +20,9 @@ public sealed class ClaimApplicationDetails
     [MaxLength(ValidatorConstants.EnumMaxLength)]
     public string Region { get; set; }
 
-    public string EfinRegion =>
-        Region.RemoveSpecialCharacters() switch
-        {
-            nameof(EfinConstants.Region.North) => EfinConstants.Region.North,
-            nameof(EfinConstants.Region.South) => EfinConstants.Region.South,
-            nameof(EfinConstants.Region.Midlands) => EfinConstants.Region.Midlands,
-            nameof(EfinConstants.Region.London) => EfinConstants.Region.London,
-            _ => string.Empty,
-        };
-
     [Required]
     [MaxLength(ValidatorConstants.EnumMaxLength)]
     public string Tenure { get; set; }
-
-    public string EfinTenure =>
-        Tenure.RemoveSpecialCharacters() switch
-        {
-            nameof(EfinConstants.Tenure.AffordableRent) => EfinConstants.Tenure.AffordableRent.ToString(CultureInfo.InvariantCulture),
-            nameof(EfinConstants.Tenure.SocialRent) => EfinConstants.Tenure.SocialRent.ToString(CultureInfo.InvariantCulture),
-            nameof(EfinConstants.Tenure.SharedOwnership) => EfinConstants.Tenure.SharedOwnership.ToString(CultureInfo.InvariantCulture),
-            nameof(EfinConstants.Tenure.RentToBuy) => EfinConstants.Tenure.RentToBuy.ToString(CultureInfo.InvariantCulture),
-            nameof(EfinConstants.Tenure.HOLD) => EfinConstants.Tenure.HOLD.ToString(CultureInfo.InvariantCulture),
-            nameof(EfinConstants.Tenure.OPSO) => EfinConstants.Tenure.OPSO.ToString(CultureInfo.InvariantCulture),
-            _ => string.Empty,
-        };
 
     [Required]
     [MaxLength(ValidatorConstants.EnumMaxLength)]

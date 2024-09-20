@@ -1,4 +1,3 @@
-using HE.FMS.Middleware.Common;
 using HE.FMS.Middleware.Contract.Common.CosmosDb;
 using HE.FMS.Middleware.Contract.Efin.CosmosDb;
 using HE.FMS.Middleware.Providers.CosmosDb;
@@ -18,14 +17,14 @@ public sealed class EfinCosmosClient : CosmosDbClient<EfinItem>, IEfinCosmosClie
     {
         return await FindAllItems(
             x => x.Type == type && x.Status == CosmosDbItemStatus.NotProcessed,
-            Constants.CosmosDbConfiguration.PartitonKey);
+            Common.Constants.CosmosDbConfiguration.PartitonKey);
     }
 
     public async Task ChangeItemsStatusAsync(IEnumerable<EfinItem> items, CosmosDbItemStatus status, CancellationToken cancellationToken)
     {
         foreach (var item in items)
         {
-            await UpdateFieldAsync(item, nameof(EfinItem.Status), status, Constants.CosmosDbConfiguration.PartitonKey);
+            await UpdateFieldAsync(item, nameof(EfinItem.Status), status, Common.Constants.CosmosDbConfiguration.PartitonKey);
         }
     }
 }

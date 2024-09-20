@@ -18,7 +18,7 @@ public class EfinConfigItemTests
         var prefix = "PREFIX";
 
         // Act  
-        var item = EfinConfigItem.Create(partitionKey, type, indexName, indexLength, prefix);
+        var item = EfinIndexItem.Create(partitionKey, type, indexName, indexLength, prefix);
 
         // Assert  
         item.Should().NotBeNull();
@@ -35,7 +35,7 @@ public class EfinConfigItemTests
     public void GetNextIndex_ShouldIncrementIndexAndReturnFormattedString()
     {
         // Arrange  
-        var item = new EfinConfigItem
+        var item = new EfinIndexItem
         {
             Index = 0,
             IndexLength = 5,
@@ -54,7 +54,7 @@ public class EfinConfigItemTests
     public void GetNextIndex_ShouldHandleMultipleIncrements()
     {
         // Arrange  
-        var item = new EfinConfigItem
+        var item = new EfinIndexItem
         {
             Index = 0,
             IndexLength = 3,

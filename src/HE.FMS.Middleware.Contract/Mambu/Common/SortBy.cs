@@ -1,4 +1,4 @@
-﻿using HE.FMS.Middleware.Common.Extensions;
+using HE.FMS.Middleware.Contract.Extensions;
 using HE.FMS.Middleware.Contract.Mambu.Common.Enums;
 
 namespace HE.FMS.Middleware.Contract.Mambu.Common;

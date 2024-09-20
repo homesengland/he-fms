@@ -39,6 +39,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HE.FMS.Middleware.Shared", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Azure Functions", "Azure Functions", "{D40961D8-C4A2-4E5B-8197-C0FC079165CE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lookup Seeds", "Lookup Seeds", "{BDABDE85-4181-4E31-BC03-6CCB04B79B96}"
+	ProjectSection(SolutionItems) = preProject
+		Lookup Seeds\ClaimDefault.json = Lookup Seeds\ClaimDefault.json
+		Lookup Seeds\MilestoneLookup.json = Lookup Seeds\MilestoneLookup.json
+		Lookup Seeds\ReclaimDefault.json = Lookup Seeds\ReclaimDefault.json
+		Lookup Seeds\RegionLookup.json = Lookup Seeds\RegionLookup.json
+		Lookup Seeds\RevenueIndicatorLookup.json = Lookup Seeds\RevenueIndicatorLookup.json
+		Lookup Seeds\TenureLookup.json = Lookup Seeds\TenureLookup.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

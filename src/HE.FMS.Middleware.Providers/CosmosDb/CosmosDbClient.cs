@@ -33,6 +33,11 @@ public abstract class CosmosDbClient<TMessage> : ICosmosDbClient<TMessage>, IDis
             cancellationToken: cancellationToken);
     }
 
+    public async Task<TMessage> GetItem(string id, string partitionKey)
+    {
+        return await _container.ReadItemAsync<TMessage>(id, new PartitionKey(partitionKey));
+    }
+
     public async Task<IList<TMessage>> FindAllItems(Expression<Func<TMessage, bool>> predicate, string partitionKey)
     {
         var queryable = _container

@@ -1,7 +1,6 @@
 using Bogus;
 using Bogus.Extensions;
 using HE.FMS.Middleware.Contract.Claims;
-using HE.FMS.Middleware.Contract.Constants;
 using HE.FMS.Middleware.Contract.Reclaims;
 
 namespace HE.FMS.Middleware.BusinessLogic.Tests.Factories;
@@ -17,7 +16,7 @@ public static class PaymentRequestFactory
             {
                 Amount = randomizer.Decimal(),
                 Id = randomizer.String2(10),
-                Milestone = EfinConstants.Milestone.Acquisition,
+                Milestone = "Acquisition",
                 AuthorisedOn = DateTimeOffset.UtcNow,
                 AuthorisedBy = randomizer.String2(10),
             },
@@ -26,16 +25,16 @@ public static class PaymentRequestFactory
                 AllocationId = randomizer.String2(10),
                 Id = randomizer.String2(10),
                 Name = randomizer.String2(10),
-                Region = EfinConstants.Region.North,
-                RevenueIndicator = EfinConstants.RevenueIndicator.Capital,
-                Tenure = nameof(EfinConstants.Tenure.SocialRent),
+                Region = "North",
+                RevenueIndicator = "Capital",
+                Tenure = "SocialRent",
                 VatCode = "05",
                 VatRate = 23,
             },
             Organisation = new ClaimOrganisationDetails
             {
                 Name = randomizer.String2(10),
-                PartnerType = nameof(EfinConstants.Default.Claim.CapitalPartnerType.Bank),
+                PartnerType = "Bank",
             },
         };
     }
@@ -50,7 +49,7 @@ public static class PaymentRequestFactory
             {
                 Amount = randomizer.Decimal2(),
                 Id = randomizer.String2(10),
-                Milestone = EfinConstants.Milestone.Acquisition,
+                Milestone = "Acquisition",
                 AuthorisedOn = DateTimeOffset.UtcNow,
                 AuthorisedBy = randomizer.String2(10),
                 InterestAmount = randomizer.Decimal2(),
@@ -61,16 +60,16 @@ public static class PaymentRequestFactory
                 AllocationId = randomizer.String2(10),
                 Id = randomizer.String2(10),
                 Name = randomizer.String2(10),
-                Region = EfinConstants.Region.North,
-                RevenueIndicator = EfinConstants.RevenueIndicator.Capital,
-                Tenure = nameof(EfinConstants.Tenure.SocialRent),
+                Region = "North",
+                RevenueIndicator = "Capital",
+                Tenure = "SocialRent",
                 VatCode = "05",
                 VatRate = 23,
             },
             Organisation = new ClaimOrganisationDetails
             {
                 Name = randomizer.String2(10),
-                PartnerType = nameof(EfinConstants.Default.Claim.CapitalPartnerType.Bank),
+                PartnerType = "Bank",
             },
         };
     }

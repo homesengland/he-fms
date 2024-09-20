@@ -1,4 +1,4 @@
-﻿using HE.FMS.Middleware.Common.Extensions;
+using HE.FMS.Middleware.Contract.Extensions;
 using HE.FMS.Middleware.Contract.Mambu.Common;
 using HE.FMS.Middleware.Contract.Mambu.Common.Enums;
 using HE.FMS.Middleware.Contract.Mambu.LoanAccount.Enums;

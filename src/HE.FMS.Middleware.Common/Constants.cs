@@ -25,7 +25,6 @@ public static class Constants
     public static class CosmosDbConfiguration
     {
         public const string PartitonKey = "fms";
-        public const string ConfigPartitonKey = "fms-config";
     }
 
     public static class IndexConfiguration

@@ -1,7 +1,7 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using System.Reflection;
 
-namespace HE.FMS.Middleware.Common.Extensions;
+namespace HE.FMS.Middleware.Contract.Extensions;
 
 public static class EnumExtensions
 {

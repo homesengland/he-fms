@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using HE.FMS.Middleware.BusinessLogic.Constants;
 using HE.FMS.Middleware.BusinessLogic.Efin;
 using HE.FMS.Middleware.BusinessLogic.Efin.CosmosDb;
 using HE.FMS.Middleware.Common.Exceptions.Internal;
 using HE.FMS.Middleware.Common.Extensions;
 using HE.FMS.Middleware.Contract.Common;
 using HE.FMS.Middleware.Contract.Common.CosmosDb;
-using HE.FMS.Middleware.Contract.Constants;
 using HE.FMS.Middleware.Contract.Efin.CosmosDb;
 using HE.FMS.Middleware.Contract.Reclaims.Efin;
 using HE.FMS.Middleware.Providers.File;
@@ -23,21 +23,21 @@ namespace HE.FMS.Middleware.Reclaims.Functions;
 public class ProcessAndStoreReclaimTimeTrigger : DataExportFunctionBase<ReclaimItemSet>
 {
     private readonly ICsvFileGenerator _csvFileGenerator;
-    private readonly IEfinCosmosConfigClient _configurationClient;
+    private readonly IEfinIndexCosmosClient _indexClient;
     private readonly IReclaimConverter _reclaimConverter;
 
     public ProcessAndStoreReclaimTimeTrigger(
         IEfinCosmosClient efinCosmosDbClient,
         IFileWriter csvFileWriter,
         ICsvFileGenerator csvFileGenerator,
-        IEfinCosmosConfigClient configurationClient,
+        IEfinIndexCosmosClient indexClient,
         IReclaimConverter reclaimConverter)
         : base(
             efinCosmosDbClient,
             csvFileWriter)
     {
         _csvFileGenerator = csvFileGenerator;
-        _configurationClient = configurationClient;
+        _indexClient = indexClient;
         _reclaimConverter = reclaimConverter;
     }
 
@@ -58,28 +58,28 @@ public class ProcessAndStoreReclaimTimeTrigger : DataExportFunctionBase<ReclaimI
             throw new ArgumentException(nameof(reclaims));
         }
 
-        EfinConfigItem efinConfigItem;
+        EfinIndexItem indexItem;
         try
         {
-            efinConfigItem = await _configurationClient.GetNextIndex(IndexConfiguration.Reclaim.BatchIndex, CosmosDbItemType.Reclaim);
+            indexItem = await _indexClient.GetNextIndex(IndexConfiguration.Reclaim.BatchIndex, CosmosDbItemType.Reclaim);
         }
         catch (MissingConfigurationException)
         {
-            await _configurationClient.CreateItem(
+            await _indexClient.CreateItem(
                 IndexConfiguration.Reclaim.BatchIndex,
                 CosmosDbItemType.Reclaim,
                 IndexConfiguration.Reclaim.BatchIndexPrefix,
                 IndexConfiguration.Reclaim.BatchIndexLength);
 
-            efinConfigItem = await _configurationClient.GetNextIndex(IndexConfiguration.Reclaim.BatchIndex, CosmosDbItemType.Reclaim);
+            indexItem = await _indexClient.GetNextIndex(IndexConfiguration.Reclaim.BatchIndex, CosmosDbItemType.Reclaim);
         }
 
-        var batchRef = efinConfigItem.GetCurrentId();
-        var batchNumber = efinConfigItem.GetCurrentIndex();
+        var batchRef = indexItem.GetCurrentId();
+        var batchNumber = indexItem.GetCurrentIndex();
 
         var itemSet = new ReclaimItemSet
         {
-            CLI_IW_BAT = _reclaimConverter.CreateBatch(reclaims, batchRef),
+            CLI_IW_BAT = await _reclaimConverter.CreateBatch(reclaims, batchRef),
             BatchNumber = batchNumber,
             IdempotencyKey = items.First().IdempotencyKey,
         };
@@ -103,27 +103,27 @@ public class ProcessAndStoreReclaimTimeTrigger : DataExportFunctionBase<ReclaimI
         [
             _csvFileGenerator.GenerateFile(
                 convertedData.CLI_IW_BAT.AsEnumerable(),
-                EfinConstants.Default.Reclaim.FileNamePrefix.CliIwBat,
+                EfinConstants.FileNamePrefix.Reclaim.CliIwBat,
                 convertedData.BatchNumber),
             _csvFileGenerator.GenerateFile(
                 convertedData.CLI_IW_ILTes,
-                EfinConstants.Default.Reclaim.FileNamePrefix.CliIwIlt,
+                EfinConstants.FileNamePrefix.Reclaim.CliIwIlt,
                 convertedData.BatchNumber),
             _csvFileGenerator.GenerateFile(
                 convertedData.CLI_IW_INAes,
-                EfinConstants.Default.Reclaim.FileNamePrefix.CliIwIna,
+                EfinConstants.FileNamePrefix.Reclaim.CliIwIna,
                 convertedData.BatchNumber),
             _csvFileGenerator.GenerateFile(
                 convertedData.CLI_IW_INLes,
-                EfinConstants.Default.Reclaim.FileNamePrefix.CliIwInl,
+                EfinConstants.FileNamePrefix.Reclaim.CliIwInl,
                 convertedData.BatchNumber),
             _csvFileGenerator.GenerateFile(
                 convertedData.CLI_IW_INVes,
-                EfinConstants.Default.Reclaim.FileNamePrefix.CliIwInv,
+                EfinConstants.FileNamePrefix.Reclaim.CliIwInv,
                 convertedData.BatchNumber),
             _csvFileGenerator.GenerateFile(
                 convertedData.CLI_IW_ITLes,
-                EfinConstants.Default.Reclaim.FileNamePrefix.CliIwItl,
+                EfinConstants.FileNamePrefix.Reclaim.CliIwItl,
                 convertedData.BatchNumber),
         ];
     }

@@ -1,6 +1,7 @@
-﻿using System.Globalization;
+using System.Globalization;
 using System.Web;
 using HE.FMS.Middleware.Common.Extensions;
+using HE.FMS.Middleware.Contract.Extensions;
 using HE.FMS.Middleware.Contract.Mambu.Common;
 
 namespace HE.FMS.Middleware.Providers.Mambu.Extensions;

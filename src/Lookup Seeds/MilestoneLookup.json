@@ -1,0 +1,9 @@
+{
+    "id": "MilestoneLookup",
+    "PartitionKey": "fms",
+    "Value": {
+        "Acquisition": "ACQ",
+        "StartOnSite": "SOS",
+        "PracticalCompletion": "PC"
+    }
+}
