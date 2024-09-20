@@ -40,11 +40,11 @@ public class ReclaimConverter : IReclaimConverter
             cliwb_sub_ledger = defaultDictionary[nameof(CLI_IW_BAT.cliwb_sub_ledger)],
             cliwb_batch_ref = batchRef,
             cliwb_description = defaultDictionary[nameof(CLI_IW_BAT.cliwb_description)],
-            cliwb_year = (DateTime.Now.Month is >= 1 and <= 3 ? DateTime.Now.Year - 1 : DateTime.Now.Year).ToString(CultureInfo.InvariantCulture),
-            cliwb_period = DateTime.UtcNow.Month.ToString(CultureInfo.InvariantCulture),
+            cliwb_year = (_dateTimeProvider.UtcNow.Month is >= 1 and <= 3 ? _dateTimeProvider.UtcNow.Year - 1 : _dateTimeProvider.UtcNow.Year).ToString(CultureInfo.InvariantCulture),
+            cliwb_period = _dateTimeProvider.UtcNow.Month.ToString(CultureInfo.InvariantCulture),
             cliwb_no_invoices = reclaims.Count().ToString(CultureInfo.InvariantCulture),
             cliwb_user = defaultDictionary[nameof(CLI_IW_BAT.cliwb_user)],
-            cliwb_entry_date = DateTime.UtcNow.ToString("d-MMM-yy", CultureInfo.InvariantCulture),
+            cliwb_entry_date = _dateTimeProvider.UtcNow.ToString("d-MMM-yy", CultureInfo.InvariantCulture),
             cliwb_default_prefix = defaultDictionary[nameof(CLI_IW_BAT.cliwb_default_prefix)],
         };
     }
@@ -143,7 +143,7 @@ public class ReclaimConverter : IReclaimConverter
             cliwi_entry_date = _dateTimeProvider.UtcNow.ToString("F", CultureInfo.InvariantCulture),
             cliwi_invoice_prefix = defaultDictionary[nameof(CLI_IW_INV.cliwi_invoice_prefix)],
             cliwi_tax_point = _dateTimeProvider.UtcNow.ToString("F", CultureInfo.InvariantCulture),
-            cliwi_description = string.Format(CultureInfo.InvariantCulture, "{0} {1} {2}", milestoneLookup[reclaimPayment.Reclaim.Milestone], reclaimPayment.Reclaim.Id, reclaimPayment.Application.Id),
+            cliwi_description = string.Format(CultureInfo.InvariantCulture, "{0}{1}", reclaimPayment.Application.Name.TrimEnd(3), milestoneLookup[reclaimPayment.Reclaim.Milestone]),
         };
     }
 
@@ -161,7 +161,7 @@ public class ReclaimConverter : IReclaimConverter
             cliwx_inv_ref = reclaimPayment.Application.AllocationId,
             cliwx_line_no = defaultDictionary[nameof(CLI_IW_ITL.cliwx_line_no)],
             cliwx_header_footer = defaultDictionary[nameof(CLI_IW_ITL.cliwx_header_footer)],
-            cliwx_text = string.Format(CultureInfo.InvariantCulture, "{0} {1} {2}", milestoneLookup[reclaimPayment.Reclaim.Milestone], reclaimPayment.Reclaim.Id, reclaimPayment.Application.Id),
+            cliwx_text = string.Format(CultureInfo.InvariantCulture, "{0}{1}", reclaimPayment.Application.Name.TrimEnd(3), milestoneLookup[reclaimPayment.Reclaim.Milestone]),
         };
     }
 }

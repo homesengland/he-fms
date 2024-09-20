@@ -23,6 +23,13 @@ public static class StringExtensions
             : value;
     }
 
+    public static string? TrimEnd(this string? value, int trimLength)
+    {
+        return value?.Length > trimLength
+            ? value[..^trimLength]
+            : value;
+    }
+
     public static string ReplaceAt(this string value, int index, int length, string replace)
     {
         return value
