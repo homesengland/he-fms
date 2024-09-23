@@ -83,10 +83,10 @@ public class ReclaimConverter : IReclaimConverter
             cliwa_item_sequence = defaultDictionary[nameof(CLI_IW_INA.cliwa_item_sequence)],
             cliwa_cost_centre = regionLookup[reclaimPayment.Application.Region],
             cliwa_account = reclaimPayment.Reclaim.Amount != 0 ?
-                partnerTypeLookup[$"Reclaim_{nameof(ReclaimPaymentRequest.Reclaim.Amount)}_{reclaimPayment.Organisation.PartnerType.RemoveSpecialCharacters()}"] :
-                partnerTypeLookup[$"Reclaim_{nameof(ReclaimPaymentRequest.Reclaim.InterestAmount)}_{reclaimPayment.Organisation.PartnerType.RemoveSpecialCharacters()}"],
+                partnerTypeLookup[$"Reclaim_{nameof(ReclaimPaymentRequest.Reclaim.Amount)}_{reclaimPayment.Account.PartnerType.RemoveSpecialCharacters()}"] :
+                partnerTypeLookup[$"Reclaim_{nameof(ReclaimPaymentRequest.Reclaim.InterestAmount)}_{reclaimPayment.Account.PartnerType.RemoveSpecialCharacters()}"],
             cliwa_activity = tenureLookup[reclaimPayment.Application.Tenure.RemoveSpecialCharacters()],
-            cliwa_job = reclaimPayment.Application.Id,
+            cliwa_job = reclaimPayment.Application.ApplicationId,
             cliwa_amount = reclaimPayment.Reclaim.Amount.ToString("F", CultureInfo.InvariantCulture),
             cliwa_uom = defaultDictionary[nameof(CLI_IW_INA.cliwa_uom)],
             cliwa_pre_pay_yn = defaultDictionary[nameof(CLI_IW_INA.cliwa_pre_pay_yn)],
@@ -135,15 +135,15 @@ public class ReclaimConverter : IReclaimConverter
             cliwi_date = _dateTimeProvider.UtcNow.ToString("d-MMM-yy", CultureInfo.InvariantCulture),
             cliwi_terms_code = defaultDictionary[nameof(CLI_IW_INV.cliwi_terms_code)],
             cliwi_cost_centre = regionLookup[reclaimPayment.Application.Region],
-            cliwi_job = reclaimPayment.Application.Id,
+            cliwi_job = reclaimPayment.Application.ApplicationId,
             cliwi_account = reclaimPayment.Reclaim.Amount != 0 ?
-                partnerTypeLookup[$"Reclaim_{nameof(ReclaimPaymentRequest.Reclaim.Amount)}_{reclaimPayment.Organisation.PartnerType.RemoveSpecialCharacters()}"] :
-                partnerTypeLookup[$"Reclaim_{nameof(ReclaimPaymentRequest.Reclaim.InterestAmount)}_{reclaimPayment.Organisation.PartnerType.RemoveSpecialCharacters()}"],
+                partnerTypeLookup[$"Reclaim_{nameof(ReclaimPaymentRequest.Reclaim.Amount)}_{reclaimPayment.Account.PartnerType.RemoveSpecialCharacters()}"] :
+                partnerTypeLookup[$"Reclaim_{nameof(ReclaimPaymentRequest.Reclaim.InterestAmount)}_{reclaimPayment.Account.PartnerType.RemoveSpecialCharacters()}"],
             cliwi_activity = tenureLookup[reclaimPayment.Application.Tenure.RemoveSpecialCharacters()],
             cliwi_entry_date = _dateTimeProvider.UtcNow.ToString("F", CultureInfo.InvariantCulture),
             cliwi_invoice_prefix = defaultDictionary[nameof(CLI_IW_INV.cliwi_invoice_prefix)],
             cliwi_tax_point = _dateTimeProvider.UtcNow.ToString("F", CultureInfo.InvariantCulture),
-            cliwi_description = string.Format(CultureInfo.InvariantCulture, "{0}{1}", reclaimPayment.Application.Name.TrimEnd(3), milestoneLookup[reclaimPayment.Reclaim.Milestone]),
+            cliwi_description = string.Format(CultureInfo.InvariantCulture, "{0}{1}", reclaimPayment.Application.SchemaName.TrimEnd(3), milestoneLookup[reclaimPayment.Reclaim.Milestone]),
         };
     }
 
@@ -161,7 +161,7 @@ public class ReclaimConverter : IReclaimConverter
             cliwx_inv_ref = reclaimPayment.Application.AllocationId,
             cliwx_line_no = defaultDictionary[nameof(CLI_IW_ITL.cliwx_line_no)],
             cliwx_header_footer = defaultDictionary[nameof(CLI_IW_ITL.cliwx_header_footer)],
-            cliwx_text = string.Format(CultureInfo.InvariantCulture, "{0}{1}", reclaimPayment.Application.Name.TrimEnd(3), milestoneLookup[reclaimPayment.Reclaim.Milestone]),
+            cliwx_text = string.Format(CultureInfo.InvariantCulture, "{0}{1}", reclaimPayment.Application.SchemaName.TrimEnd(3), milestoneLookup[reclaimPayment.Reclaim.Milestone]),
         };
     }
 }

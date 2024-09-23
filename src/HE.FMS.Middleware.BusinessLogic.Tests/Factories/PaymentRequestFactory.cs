@@ -2,10 +2,13 @@ using Bogus;
 using Bogus.Extensions;
 using HE.FMS.Middleware.Contract.Claims;
 using HE.FMS.Middleware.Contract.Reclaims;
+using HE.FMS.Middleware.Providers.Common;
 
 namespace HE.FMS.Middleware.BusinessLogic.Tests.Factories;
 public static class PaymentRequestFactory
 {
+    private static readonly FakeDateTimeProvider DateTimeProvider = new();
+
     public static ClaimPaymentRequest CreateRandomClaimPaymentRequest()
     {
         var randomizer = new Randomizer();
@@ -17,21 +20,21 @@ public static class PaymentRequestFactory
                 Amount = randomizer.Decimal(),
                 Id = randomizer.String2(10),
                 Milestone = "Acquisition",
-                AuthorisedOn = DateTimeOffset.UtcNow,
-                AuthorisedBy = randomizer.String2(10),
+                ApprovedOn = DateTimeProvider.UtcNow,
+                ApprovedBy = randomizer.String2(10),
             },
             Application = new ClaimApplicationDetails
             {
                 AllocationId = randomizer.String2(10),
-                Id = randomizer.String2(10),
-                Name = randomizer.String2(10),
+                ApplicationId = randomizer.String2(10),
+                SchemaName = randomizer.String2(10),
                 Region = "North",
                 RevenueIndicator = "Capital",
                 Tenure = "SocialRent",
                 VatCode = "05",
                 VatRate = 23,
             },
-            Organisation = new ClaimOrganisationDetails
+            Account = new ClaimAccountDetails
             {
                 Name = randomizer.String2(10),
                 PartnerType = "Bank",
@@ -50,23 +53,21 @@ public static class PaymentRequestFactory
                 Amount = randomizer.Decimal2(),
                 Id = randomizer.String2(10),
                 Milestone = "Acquisition",
-                AuthorisedOn = DateTimeOffset.UtcNow,
-                AuthorisedBy = randomizer.String2(10),
                 InterestAmount = randomizer.Decimal2(),
                 TotalAmount = randomizer.Decimal2(),
             },
             Application = new ClaimApplicationDetails
             {
                 AllocationId = randomizer.String2(10),
-                Id = randomizer.String2(10),
-                Name = randomizer.String2(10),
+                ApplicationId = randomizer.String2(10),
+                SchemaName = randomizer.String2(10),
                 Region = "North",
                 RevenueIndicator = "Capital",
                 Tenure = "SocialRent",
                 VatCode = "05",
                 VatRate = 23,
             },
-            Organisation = new ClaimOrganisationDetails
+            Account = new ClaimAccountDetails
             {
                 Name = randomizer.String2(10),
                 PartnerType = "Bank",

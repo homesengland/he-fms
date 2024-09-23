@@ -8,9 +8,9 @@ using Microsoft.VisualBasic;
 namespace HE.FMS.Middleware.Providers.Common;
 public class FakeDateTimeProvider : IDateTimeProvider
 {
-    public DateTime Now => DateTime.MinValue;
+    public DateTime Now => new(2000, 1, 1, 1, 1, 1, DateTimeKind.Utc);
 
-    public DateTime Today => DateTime.MinValue;
+    public DateTime Today => new(2000, 1, 1, 1, 1, 1, DateTimeKind.Utc);
 
-    public DateTime UtcNow => DateTime.MinValue;
+    public DateTime UtcNow => new(2000, 1, 1, 1, 1, 1, DateTimeKind.Utc);
 }
