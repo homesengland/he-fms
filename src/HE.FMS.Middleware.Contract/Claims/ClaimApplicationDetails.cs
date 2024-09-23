@@ -6,11 +6,11 @@ public sealed class ClaimApplicationDetails
 {
     [Required]
     [MaxLength(ValidatorConstants.IdMaxLength)]
-    public string Id { get; set; }
+    public string ApplicationId { get; set; }
 
     [Required]
     [MaxLength(ValidatorConstants.CustomNameMaxLength)]
-    public string Name { get; set; }
+    public string SchemaName { get; set; }
 
     [Required]
     [MaxLength(ValidatorConstants.CustomNameMaxLength)]

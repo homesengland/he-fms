@@ -11,5 +11,5 @@ public sealed class ReclaimPaymentRequest
     public ClaimApplicationDetails Application { get; set; }
 
     [Required]
-    public ClaimOrganisationDetails Organisation { get; set; }
+    public ClaimAccountDetails Account { get; set; }
 }

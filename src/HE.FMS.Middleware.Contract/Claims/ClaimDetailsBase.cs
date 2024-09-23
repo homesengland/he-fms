@@ -14,8 +14,8 @@ public class ClaimDetailsBase
 
     [Required]
     [MaxLength(ValidatorConstants.CustomNameMaxLength)]
-    public string AuthorisedBy { get; set; }
+    public string ApprovedBy { get; set; }
 
     [Required]
-    public DateTimeOffset AuthorisedOn { get; set; }
+    public DateTimeOffset ApprovedOn { get; set; }
 }

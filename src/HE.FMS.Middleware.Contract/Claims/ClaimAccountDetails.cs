@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace HE.FMS.Middleware.Contract.Claims;
-public sealed class ClaimOrganisationDetails
+public sealed class ClaimAccountDetails
 {
     [Required]
     [MaxLength(Constants.ValidatorConstants.CustomNameMaxLength)]
