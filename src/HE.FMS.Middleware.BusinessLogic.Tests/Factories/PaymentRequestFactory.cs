@@ -53,8 +53,6 @@ public static class PaymentRequestFactory
                 Amount = randomizer.Decimal2(),
                 Id = randomizer.String2(10),
                 Milestone = "Acquisition",
-                ApprovedOn = DateTimeProvider.UtcNow,
-                ApprovedBy = randomizer.String2(10),
                 InterestAmount = randomizer.Decimal2(),
                 TotalAmount = randomizer.Decimal2(),
             },

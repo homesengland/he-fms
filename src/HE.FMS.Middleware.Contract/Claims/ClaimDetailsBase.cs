@@ -11,11 +11,4 @@ public class ClaimDetailsBase
     [Required]
     [MaxLength(ValidatorConstants.EnumMaxLength)]
     public string Milestone { get; set; }
-
-    [Required]
-    [MaxLength(ValidatorConstants.CustomNameMaxLength)]
-    public string ApprovedBy { get; set; }
-
-    [Required]
-    public DateTimeOffset ApprovedOn { get; set; }
 }
