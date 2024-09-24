@@ -1,5 +1,6 @@
 using System.Globalization;
 using HE.FMS.Middleware.Common.Extensions;
+using HE.FMS.Middleware.Contract.Claims.Efin;
 using HE.FMS.Middleware.Contract.Reclaims;
 using HE.FMS.Middleware.Contract.Reclaims.Efin;
 using HE.FMS.Middleware.Providers.Common;
@@ -86,7 +87,7 @@ public class ReclaimConverter : IReclaimConverter
                 partnerTypeLookup[$"Reclaim_{nameof(ReclaimPaymentRequest.Reclaim.Amount)}_{reclaimPayment.Account.PartnerType}"] :
                 partnerTypeLookup[$"Reclaim_{nameof(ReclaimPaymentRequest.Reclaim.InterestAmount)}_{reclaimPayment.Account.PartnerType}"],
             cliwa_activity = tenureLookup[reclaimPayment.Application.Tenure.ToString()],
-            cliwa_job = reclaimPayment.Application.ApplicationId,
+            cliwa_job = defaultDictionary[nameof(CLI_IW_INA.cliwa_job)],
             cliwa_amount = reclaimPayment.Reclaim.Amount.ToString("F", CultureInfo.InvariantCulture),
             cliwa_uom = defaultDictionary[nameof(CLI_IW_INA.cliwa_uom)],
             cliwa_pre_pay_yn = defaultDictionary[nameof(CLI_IW_INA.cliwa_pre_pay_yn)],
@@ -107,7 +108,7 @@ public class ReclaimConverter : IReclaimConverter
             cliwl_item_sequence = defaultDictionary[nameof(CLI_IW_INL.cliwl_item_sequence)],
             cliwl_product_id = defaultDictionary[nameof(CLI_IW_INL.cliwl_product_id)],
             cliwl_goods_value = reclaimPayment.Reclaim.Amount.ToString("F", CultureInfo.InvariantCulture),
-            cliwl_vat_code = reclaimPayment.Application.VatCode.ToString(),
+            cliwl_vat_code = reclaimPayment.Application.VatCode.ToString().Replace("VatCode", string.Empty, StringComparison.OrdinalIgnoreCase),
             cliwl_vat_amount = (reclaimPayment.Reclaim.Amount * reclaimPayment.Application.VatRate).ToString("F", CultureInfo.InvariantCulture),
             cliwl_line_ref = defaultDictionary[nameof(CLI_IW_INL.cliwl_line_ref)],
         };
@@ -135,7 +136,7 @@ public class ReclaimConverter : IReclaimConverter
             cliwi_date = _dateTimeProvider.UtcNow.ToString("d-MMM-yy", CultureInfo.InvariantCulture),
             cliwi_terms_code = defaultDictionary[nameof(CLI_IW_INV.cliwi_terms_code)],
             cliwi_cost_centre = regionLookup[reclaimPayment.Application.Region.ToString()],
-            cliwi_job = reclaimPayment.Application.ApplicationId,
+            cliwi_job = defaultDictionary[nameof(CLI_IW_INV.cliwi_job)],
             cliwi_account = reclaimPayment.Reclaim.Amount != 0 ?
                 partnerTypeLookup[$"Reclaim_{nameof(ReclaimPaymentRequest.Reclaim.Amount)}_{reclaimPayment.Account.PartnerType}"] :
                 partnerTypeLookup[$"Reclaim_{nameof(ReclaimPaymentRequest.Reclaim.InterestAmount)}_{reclaimPayment.Account.PartnerType}"],
