@@ -35,7 +35,7 @@ internal sealed class StreamSerializer : IStreamSerializer
         catch (JsonException ex)
         {
             _logger.LogError(ex, "Error during http request deserialization");
-            throw new FailedSerializationException();
+            throw new FailedSerializationException(ex.Message);
         }
 
         if (!MiniValidator.TryValidate(requestModel, out var validationErrors))

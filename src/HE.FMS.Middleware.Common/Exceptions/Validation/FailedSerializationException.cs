@@ -1,4 +1,4 @@
-﻿namespace HE.FMS.Middleware.Common.Exceptions.Validation;
+namespace HE.FMS.Middleware.Common.Exceptions.Validation;
 
 public sealed class FailedSerializationException : ValidationException
 {
