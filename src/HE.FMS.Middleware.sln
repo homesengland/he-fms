@@ -43,6 +43,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lookup Seeds", "Lookup Seed
 	ProjectSection(SolutionItems) = preProject
 		Lookup Seeds\ClaimDefault.json = Lookup Seeds\ClaimDefault.json
 		Lookup Seeds\MilestoneLookup.json = Lookup Seeds\MilestoneLookup.json
+		Lookup Seeds\PartnerTypeLookup.json = Lookup Seeds\PartnerTypeLookup.json
 		Lookup Seeds\ReclaimDefault.json = Lookup Seeds\ReclaimDefault.json
 		Lookup Seeds\RegionLookup.json = Lookup Seeds\RegionLookup.json
 		Lookup Seeds\RevenueIndicatorLookup.json = Lookup Seeds\RevenueIndicatorLookup.json

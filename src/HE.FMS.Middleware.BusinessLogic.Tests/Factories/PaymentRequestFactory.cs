@@ -1,6 +1,7 @@
 using Bogus;
 using Bogus.Extensions;
 using HE.FMS.Middleware.Contract.Claims;
+using HE.FMS.Middleware.Contract.Enums;
 using HE.FMS.Middleware.Contract.Reclaims;
 using HE.FMS.Middleware.Providers.Common;
 
@@ -19,7 +20,7 @@ public static class PaymentRequestFactory
             {
                 Amount = randomizer.Decimal(),
                 Id = randomizer.String2(10),
-                Milestone = "Acquisition",
+                Milestone = randomizer.Enum<Milestone>(),
                 ApprovedOn = DateTimeProvider.UtcNow,
                 ApprovedBy = randomizer.String2(10),
             },
@@ -28,16 +29,16 @@ public static class PaymentRequestFactory
                 AllocationId = randomizer.String2(10),
                 ApplicationId = randomizer.String2(10),
                 SchemaName = randomizer.String2(10),
-                Region = "North",
-                RevenueIndicator = "Capital",
-                Tenure = "SocialRent",
-                VatCode = "05",
+                Region = randomizer.Enum<Region>(),
+                RevenueIndicator = randomizer.Enum<RevenueIndicator>(),
+                Tenure = randomizer.Enum<Tenure>(),
+                VatCode = randomizer.Enum<VatCode>(),
                 VatRate = 23,
             },
             Account = new ClaimAccountDetails
             {
                 Name = randomizer.String2(10),
-                PartnerType = "Bank",
+                PartnerType = randomizer.Enum<PartnerType>(),
             },
         };
     }
@@ -52,7 +53,7 @@ public static class PaymentRequestFactory
             {
                 Amount = randomizer.Decimal2(),
                 Id = randomizer.String2(10),
-                Milestone = "Acquisition",
+                Milestone = randomizer.Enum<Milestone>(),
                 InterestAmount = randomizer.Decimal2(),
                 TotalAmount = randomizer.Decimal2(),
             },
@@ -61,16 +62,16 @@ public static class PaymentRequestFactory
                 AllocationId = randomizer.String2(10),
                 ApplicationId = randomizer.String2(10),
                 SchemaName = randomizer.String2(10),
-                Region = "North",
-                RevenueIndicator = "Capital",
-                Tenure = "SocialRent",
-                VatCode = "05",
+                Region = randomizer.Enum<Region>(),
+                RevenueIndicator = randomizer.Enum<RevenueIndicator>(),
+                Tenure = randomizer.Enum<Tenure>(),
+                VatCode = randomizer.Enum<VatCode>(),
                 VatRate = 23,
             },
             Account = new ClaimAccountDetails
             {
                 Name = randomizer.String2(10),
-                PartnerType = "Bank",
+                PartnerType = randomizer.Enum<PartnerType>(),
             },
         };
     }

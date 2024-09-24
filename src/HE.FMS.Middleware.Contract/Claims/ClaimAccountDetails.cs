@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using HE.FMS.Middleware.Contract.Enums;
 
 namespace HE.FMS.Middleware.Contract.Claims;
 public sealed class ClaimAccountDetails
@@ -8,6 +9,5 @@ public sealed class ClaimAccountDetails
     public string Name { get; set; }
 
     [Required]
-    [MaxLength(Constants.ValidatorConstants.EnumMaxLength)]
-    public string PartnerType { get; set; }
+    public PartnerType PartnerType { get; set; }
 }

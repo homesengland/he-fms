@@ -81,11 +81,11 @@ public class ReclaimConverter : IReclaimConverter
             cliwa_batch_ref = string.Empty,
             cliwa_inv_ref = reclaimPayment.Application.AllocationId,
             cliwa_item_sequence = defaultDictionary[nameof(CLI_IW_INA.cliwa_item_sequence)],
-            cliwa_cost_centre = regionLookup[reclaimPayment.Application.Region],
+            cliwa_cost_centre = regionLookup[reclaimPayment.Application.Region.ToString()],
             cliwa_account = reclaimPayment.Reclaim.Amount != 0 ?
-                partnerTypeLookup[$"Reclaim_{nameof(ReclaimPaymentRequest.Reclaim.Amount)}_{reclaimPayment.Account.PartnerType.RemoveSpecialCharacters()}"] :
-                partnerTypeLookup[$"Reclaim_{nameof(ReclaimPaymentRequest.Reclaim.InterestAmount)}_{reclaimPayment.Account.PartnerType.RemoveSpecialCharacters()}"],
-            cliwa_activity = tenureLookup[reclaimPayment.Application.Tenure.RemoveSpecialCharacters()],
+                partnerTypeLookup[$"Reclaim_{nameof(ReclaimPaymentRequest.Reclaim.Amount)}_{reclaimPayment.Account.PartnerType}"] :
+                partnerTypeLookup[$"Reclaim_{nameof(ReclaimPaymentRequest.Reclaim.InterestAmount)}_{reclaimPayment.Account.PartnerType}"],
+            cliwa_activity = tenureLookup[reclaimPayment.Application.Tenure.ToString()],
             cliwa_job = reclaimPayment.Application.ApplicationId,
             cliwa_amount = reclaimPayment.Reclaim.Amount.ToString("F", CultureInfo.InvariantCulture),
             cliwa_uom = defaultDictionary[nameof(CLI_IW_INA.cliwa_uom)],
@@ -107,7 +107,7 @@ public class ReclaimConverter : IReclaimConverter
             cliwl_item_sequence = defaultDictionary[nameof(CLI_IW_INL.cliwl_item_sequence)],
             cliwl_product_id = defaultDictionary[nameof(CLI_IW_INL.cliwl_product_id)],
             cliwl_goods_value = reclaimPayment.Reclaim.Amount.ToString("F", CultureInfo.InvariantCulture),
-            cliwl_vat_code = reclaimPayment.Application.VatCode,
+            cliwl_vat_code = reclaimPayment.Application.VatCode.ToString(),
             cliwl_vat_amount = (reclaimPayment.Reclaim.Amount * reclaimPayment.Application.VatRate).ToString("F", CultureInfo.InvariantCulture),
             cliwl_line_ref = defaultDictionary[nameof(CLI_IW_INL.cliwl_line_ref)],
         };
@@ -134,16 +134,16 @@ public class ReclaimConverter : IReclaimConverter
             cliwi_trans_type = defaultDictionary[nameof(CLI_IW_INV.cliwi_trans_type)],
             cliwi_date = _dateTimeProvider.UtcNow.ToString("d-MMM-yy", CultureInfo.InvariantCulture),
             cliwi_terms_code = defaultDictionary[nameof(CLI_IW_INV.cliwi_terms_code)],
-            cliwi_cost_centre = regionLookup[reclaimPayment.Application.Region],
+            cliwi_cost_centre = regionLookup[reclaimPayment.Application.Region.ToString()],
             cliwi_job = reclaimPayment.Application.ApplicationId,
             cliwi_account = reclaimPayment.Reclaim.Amount != 0 ?
-                partnerTypeLookup[$"Reclaim_{nameof(ReclaimPaymentRequest.Reclaim.Amount)}_{reclaimPayment.Account.PartnerType.RemoveSpecialCharacters()}"] :
-                partnerTypeLookup[$"Reclaim_{nameof(ReclaimPaymentRequest.Reclaim.InterestAmount)}_{reclaimPayment.Account.PartnerType.RemoveSpecialCharacters()}"],
-            cliwi_activity = tenureLookup[reclaimPayment.Application.Tenure.RemoveSpecialCharacters()],
+                partnerTypeLookup[$"Reclaim_{nameof(ReclaimPaymentRequest.Reclaim.Amount)}_{reclaimPayment.Account.PartnerType}"] :
+                partnerTypeLookup[$"Reclaim_{nameof(ReclaimPaymentRequest.Reclaim.InterestAmount)}_{reclaimPayment.Account.PartnerType}"],
+            cliwi_activity = tenureLookup[reclaimPayment.Application.Tenure.ToString()],
             cliwi_entry_date = _dateTimeProvider.UtcNow.ToString("F", CultureInfo.InvariantCulture),
             cliwi_invoice_prefix = defaultDictionary[nameof(CLI_IW_INV.cliwi_invoice_prefix)],
             cliwi_tax_point = _dateTimeProvider.UtcNow.ToString("F", CultureInfo.InvariantCulture),
-            cliwi_description = string.Format(CultureInfo.InvariantCulture, "{0}{1}", reclaimPayment.Application.SchemaName.TrimEnd(3), milestoneLookup[reclaimPayment.Reclaim.Milestone]),
+            cliwi_description = string.Format(CultureInfo.InvariantCulture, "{0}{1}", reclaimPayment.Application.SchemaName.TrimEnd(3), milestoneLookup[reclaimPayment.Reclaim.Milestone.ToString()]),
         };
     }
 
@@ -161,7 +161,7 @@ public class ReclaimConverter : IReclaimConverter
             cliwx_inv_ref = reclaimPayment.Application.AllocationId,
             cliwx_line_no = defaultDictionary[nameof(CLI_IW_ITL.cliwx_line_no)],
             cliwx_header_footer = defaultDictionary[nameof(CLI_IW_ITL.cliwx_header_footer)],
-            cliwx_text = string.Format(CultureInfo.InvariantCulture, "{0}{1}", reclaimPayment.Application.SchemaName.TrimEnd(3), milestoneLookup[reclaimPayment.Reclaim.Milestone]),
+            cliwx_text = string.Format(CultureInfo.InvariantCulture, "{0}{1}", reclaimPayment.Application.SchemaName.TrimEnd(3), milestoneLookup[reclaimPayment.Reclaim.Milestone.ToString()]),
         };
     }
 }

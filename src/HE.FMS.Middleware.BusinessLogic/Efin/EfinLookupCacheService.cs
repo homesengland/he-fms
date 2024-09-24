@@ -28,7 +28,10 @@ public class EfinLookupCacheService : MemoryCacheProvider<Dictionary<string, str
         {
             var json = (JObject)item.Value;
 
-            return json.ToObject<Dictionary<string, string>>() ?? throw new InvalidCastException();
+            var dictionary = json.ToObject<Dictionary<string, string>>() ?? throw new InvalidCastException();
+
+            // return dictionary with case-insensitive keys
+            return new Dictionary<string, string>(dictionary, StringComparer.OrdinalIgnoreCase);
         }
         else
         {

@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using HE.FMS.Middleware.Contract.Constants;
+using HE.FMS.Middleware.Contract.Enums;
 
 namespace HE.FMS.Middleware.Contract.Claims;
 public class ClaimDetailsBase
@@ -9,6 +10,5 @@ public class ClaimDetailsBase
     public string Id { get; set; }
 
     [Required]
-    [MaxLength(ValidatorConstants.EnumMaxLength)]
-    public string Milestone { get; set; }
+    public Milestone Milestone { get; set; }
 }

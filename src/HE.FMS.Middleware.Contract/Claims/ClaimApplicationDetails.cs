@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using HE.FMS.Middleware.Contract.Constants;
+using HE.FMS.Middleware.Contract.Enums;
 
 namespace HE.FMS.Middleware.Contract.Claims;
 public sealed class ClaimApplicationDetails
@@ -17,20 +18,16 @@ public sealed class ClaimApplicationDetails
     public string AllocationId { get; set; }
 
     [Required]
-    [MaxLength(ValidatorConstants.EnumMaxLength)]
-    public string Region { get; set; }
+    public Region Region { get; set; }
 
     [Required]
-    [MaxLength(ValidatorConstants.EnumMaxLength)]
-    public string Tenure { get; set; }
+    public Tenure Tenure { get; set; }
 
     [Required]
-    [MaxLength(ValidatorConstants.EnumMaxLength)]
-    public string RevenueIndicator { get; set; }
+    public RevenueIndicator RevenueIndicator { get; set; }
 
     [Required]
-    [MaxLength(ValidatorConstants.EnumMaxLength)]
-    public string VatCode { get; set; }
+    public VatCode VatCode { get; set; }
 
     [Required]
     [Range(0, int.MaxValue)]
