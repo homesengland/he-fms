@@ -7,5 +7,5 @@ public interface IEfinCosmosClient : ICosmosDbClient<EfinItem>
 {
     Task<IEnumerable<EfinItem>> GetAllNewItemsAsync(CosmosDbItemType type, string environment);
 
-    Task ChangeItemsStatusAsync(IEnumerable<EfinItem> items, CosmosDbItemStatus status, CancellationToken cancellationToken);
+    Task ChangeItemsStatusAsync(IEnumerable<EfinItem> items, string environment, CosmosDbItemStatus status, CancellationToken cancellationToken);
 }

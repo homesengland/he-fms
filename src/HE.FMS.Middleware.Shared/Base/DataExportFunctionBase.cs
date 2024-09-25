@@ -31,7 +31,7 @@ public abstract class DataExportFunctionBase<T>
             return;
         }
 
-        await _efinCosmosDbClient.ChangeItemsStatusAsync(items, CosmosDbItemStatus.InProgress, cancellationToken);
+        await _efinCosmosDbClient.ChangeItemsStatusAsync(items, environment, CosmosDbItemStatus.InProgress, cancellationToken);
 
         var convertedData = await Convert(items);
 
@@ -47,7 +47,7 @@ public abstract class DataExportFunctionBase<T>
             }
         }
 
-        await _efinCosmosDbClient.ChangeItemsStatusAsync(items, CosmosDbItemStatus.Processed, cancellationToken);
+        await _efinCosmosDbClient.ChangeItemsStatusAsync(items, environment, CosmosDbItemStatus.Processed, cancellationToken);
     }
 
     protected abstract Task<T> Convert(IEnumerable<EfinItem> items);

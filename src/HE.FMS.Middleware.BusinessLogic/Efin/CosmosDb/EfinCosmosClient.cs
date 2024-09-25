@@ -22,11 +22,13 @@ public sealed class EfinCosmosClient : CosmosDbClient<EfinItem>, IEfinCosmosClie
             partitionKey);
     }
 
-    public async Task ChangeItemsStatusAsync(IEnumerable<EfinItem> items, CosmosDbItemStatus status, CancellationToken cancellationToken)
+    public async Task ChangeItemsStatusAsync(IEnumerable<EfinItem> items, string environment, CosmosDbItemStatus status, CancellationToken cancellationToken)
     {
+        var partitionKey = $"{Common.Constants.CosmosDbConfiguration.PartitonKey}-{environment}";
+
         foreach (var item in items)
         {
-            await UpdateFieldAsync(item, nameof(EfinItem.Status), status, Common.Constants.CosmosDbConfiguration.PartitonKey);
+            await UpdateFieldAsync(item, nameof(EfinItem.Status), status, partitionKey);
         }
     }
 }
