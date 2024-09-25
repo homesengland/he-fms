@@ -16,7 +16,7 @@
     "cli_uom": "EA",
     "cli_vat": "0",
     "cli_volume": "1",
-    "cli_job": "<JOB>",
-    "cla_cfacs_job": "<JOB>"
+    "cli_job": "X0000089",
+    "cla_cfacs_job": "X0000089"
   }
 }
