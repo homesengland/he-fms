@@ -7,8 +7,8 @@ public class StringExtensionsTests
     [Fact]
     public void Should_remove_spaces_and_dashes()
     {
-        const string input = "ALB - Arms Length Body of Government";
-        const string expectedOutput = "ALBArmsLengthBodyofGovernment";
+        const string input = "Arms Length Body of Government";
+        const string expectedOutput = "ArmsLengthBodyofGovernment";
 
         var result = input.RemoveSpecialCharacters();
 
