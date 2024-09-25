@@ -86,8 +86,8 @@ public sealed class FakeEfinLookupService : IEfinLookupCacheService
                 { "SocialRent", "7667" },
                 { "SharedOwnership", "7666" },
                 { "RentToBuy", "7655" },
-                { "HOLD", "7666" },
-                { "OPSO", "7666" },
+                { "HomeOwnershipForPeopleWithLongTermDisabilities", "7666" },
+                { "OlderPersonsSharedOwnership", "7666" },
             };
         }
         else if (key.Equals(EfinConstants.Lookups.RevenueIndicatorLookup, StringComparison.OrdinalIgnoreCase))

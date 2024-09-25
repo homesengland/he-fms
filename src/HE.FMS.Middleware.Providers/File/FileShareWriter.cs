@@ -22,8 +22,17 @@ public class FileShareWriter : IFileWriter
 
         await _shareClient.CreateIfNotExistsAsync();
 
-        var directoryClient = _shareClient.GetDirectoryClient(blobContainerName);
-        await directoryClient.CreateIfNotExistsAsync();
+        var arrayPath = blobContainerName.Split('/');
+        var buildPath = new StringBuilder();
+        var directoryClient = _shareClient.GetRootDirectoryClient();
+
+        for (var i = 0; i < arrayPath.Length; i++)
+        {
+            buildPath.Append(arrayPath[i]);
+            directoryClient = _shareClient.GetDirectoryClient(buildPath.ToString());
+            await directoryClient.CreateIfNotExistsAsync();
+            buildPath.Append('/');
+        }
 
         var fileClient = directoryClient.GetFileClient(blobData.Name);
         var fileContent = Encoding.UTF8.GetBytes(blobData.Content);

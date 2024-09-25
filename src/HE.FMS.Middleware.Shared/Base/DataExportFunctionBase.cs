@@ -22,9 +22,9 @@ public abstract class DataExportFunctionBase<T>
         _efinCosmosDbClient = efinCosmosDbClient;
     }
 
-    protected async Task Process(CosmosDbItemType type, CancellationToken cancellationToken)
+    protected async Task Process(CosmosDbItemType type, string environment, CancellationToken cancellationToken)
     {
-        var items = await _efinCosmosDbClient.GetAllNewItemsAsync(type);
+        var items = await _efinCosmosDbClient.GetAllNewItemsAsync(type, environment);
 
         if (items.IsNullOrEmpty())
         {
@@ -42,7 +42,7 @@ public abstract class DataExportFunctionBase<T>
             foreach (var blob in blobs)
             {
                 await _csvFileWriter.WriteAsync(
-                    $"{type.ToString().ToLower(CultureInfo.InvariantCulture)}-container",
+                    $"{environment}/{type.ToString().ToLower(CultureInfo.InvariantCulture)}",
                     blob);
             }
         }

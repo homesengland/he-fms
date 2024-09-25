@@ -44,7 +44,7 @@ public class OpenNewGrantAccountHttpTrigger
 
         var idempotencyKey = request.GetIdempotencyHeader();
 
-        var cosmosDbOutput = TraceItem.CreateTraceItem(Constants.CosmosDbConfiguration.PartitonKey, inputData, idempotencyKey, CosmosDbItemType.Grant);
+        var cosmosDbOutput = TraceItem.CreateTraceItem(Constants.CosmosDbConfiguration.PartitonKey, inputData, idempotencyKey, string.Empty, CosmosDbItemType.Grant);
 
         await _cosmosDbClient.UpsertItem(cosmosDbOutput, cancellationToken);
 

@@ -13,11 +13,13 @@ public sealed class EfinCosmosClient : CosmosDbClient<EfinItem>, IEfinCosmosClie
     {
     }
 
-    public async Task<IEnumerable<EfinItem>> GetAllNewItemsAsync(CosmosDbItemType type)
+    public async Task<IEnumerable<EfinItem>> GetAllNewItemsAsync(CosmosDbItemType type, string environment)
     {
+        var partitionKey = $"{Common.Constants.CosmosDbConfiguration.PartitonKey}-{environment}";
+
         return await FindAllItems(
-            x => x.Type == type && x.Status == CosmosDbItemStatus.NotProcessed,
-            Common.Constants.CosmosDbConfiguration.PartitonKey);
+            x => x.Type == type && x.Status == CosmosDbItemStatus.NotProcessed && x.Environment == environment,
+            partitionKey);
     }
 
     public async Task ChangeItemsStatusAsync(IEnumerable<EfinItem> items, CosmosDbItemStatus status, CancellationToken cancellationToken)

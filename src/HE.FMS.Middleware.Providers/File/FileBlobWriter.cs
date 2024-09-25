@@ -1,5 +1,6 @@
 using System.Text;
 using Azure.Storage.Blobs;
+using Azure.Storage.Files.Shares;
 using HE.FMS.Middleware.Contract.Common;
 
 namespace HE.FMS.Middleware.Providers.File;
@@ -27,9 +28,18 @@ public class FileBlobWriter : IFileWriter
         await writer.FlushAsync();
         memoryStream.Position = 0;
 
-        // Upload the memory stream to Blob Storage  
+        var arrayPath = blobContainerName.Split('/');
+        var buildPath = new StringBuilder();
         var containerClient = _blobServiceClient.GetBlobContainerClient(blobContainerName);
-        await containerClient.CreateIfNotExistsAsync();
+
+        for (var i = 0; i < arrayPath.Length; i++)
+        {
+            buildPath.Append(arrayPath[i]);
+            containerClient = _blobServiceClient.GetBlobContainerClient(buildPath.ToString());
+            await containerClient.CreateIfNotExistsAsync();
+            buildPath.Append('/');
+        }
+
         var blobClient = containerClient.GetBlobClient(blobData.Name);
         await blobClient.UploadAsync(memoryStream, overwrite: true);
     }

@@ -12,6 +12,7 @@ using HE.FMS.Middleware.Contract.Common;
 using HE.FMS.Middleware.Contract.Common.CosmosDb;
 using HE.FMS.Middleware.Contract.Efin.CosmosDb;
 using HE.FMS.Middleware.Contract.Reclaims.Efin;
+using HE.FMS.Middleware.Providers.Common;
 using HE.FMS.Middleware.Providers.File;
 using HE.FMS.Middleware.Shared.Base;
 using Microsoft.Azure.Functions.Worker;
@@ -25,13 +26,15 @@ public class ProcessAndStoreReclaimTimeTrigger : DataExportFunctionBase<ReclaimI
     private readonly ICsvFileGenerator _csvFileGenerator;
     private readonly IEfinIndexCosmosClient _indexClient;
     private readonly IReclaimConverter _reclaimConverter;
+    private readonly IEnvironmentValidator _environmentValidator;
 
     public ProcessAndStoreReclaimTimeTrigger(
         IEfinCosmosClient efinCosmosDbClient,
         IFileWriter csvFileWriter,
         ICsvFileGenerator csvFileGenerator,
         IEfinIndexCosmosClient indexClient,
-        IReclaimConverter reclaimConverter)
+        IReclaimConverter reclaimConverter,
+        IEnvironmentValidator environmentValidator)
         : base(
             efinCosmosDbClient,
             csvFileWriter)
@@ -39,6 +42,7 @@ public class ProcessAndStoreReclaimTimeTrigger : DataExportFunctionBase<ReclaimI
         _csvFileGenerator = csvFileGenerator;
         _indexClient = indexClient;
         _reclaimConverter = reclaimConverter;
+        _environmentValidator = environmentValidator;
     }
 
     [Function("ProcessCreateReclaim")]
@@ -46,7 +50,12 @@ public class ProcessAndStoreReclaimTimeTrigger : DataExportFunctionBase<ReclaimI
         [TimerTrigger("%Reclaims:Create:CronExpression%")] TimerInfo myTimer,
         CancellationToken cancellationToken)
     {
-        await Process(CosmosDbItemType.Reclaim, cancellationToken);
+        var environments = _environmentValidator.GetAllowedEnvironments();
+
+        foreach (var environment in environments)
+        {
+            await Process(CosmosDbItemType.Reclaim, environment, cancellationToken);
+        }
     }
 
     protected override async Task<ReclaimItemSet> Convert(IEnumerable<EfinItem> items)
