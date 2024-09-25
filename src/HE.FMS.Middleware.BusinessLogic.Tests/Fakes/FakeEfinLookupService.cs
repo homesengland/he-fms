@@ -26,6 +26,8 @@ public sealed class FakeEfinLookupService : IEfinLookupCacheService
                 { "cli_uom", "EA" },
                 { "cli_vat", "0" },
                 { "cli_volume", "1" },
+                { "cli_job", "X0000089" },
+                { "cla_cfacs_job", "X0000089" },
             };
         }
         else if (key.Equals(EfinConstants.Lookups.ReclaimDefault, StringComparison.OrdinalIgnoreCase))
@@ -56,6 +58,8 @@ public sealed class FakeEfinLookupService : IEfinLookupCacheService
                 { "cliwt_print_sequence", "1" },
                 { "cliwt_sub_ledger_id", "SL4" },
                 { "cliwt_text", "HOUSING FOR RENT GRANT RECLAIM" },
+                { "cliwa_job", "X0000089" },
+                { "cliwi_job", "X0000089" },
             };
         }
         else if (key.Equals(EfinConstants.Lookups.RegionLookup, StringComparison.OrdinalIgnoreCase))
@@ -102,7 +106,7 @@ public sealed class FakeEfinLookupService : IEfinLookupCacheService
         {
             dictionary = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
             {
-                { "Claim_Capital_ALBArmsLengthBodyofGovernment", "1552" },
+                { "Claim_Capital_ArmsLengthBodyofGovernment", "1552" },
                 { "Claim_Capital_ALMOArmsLengthManagementOrganisation", "1553" },
                 { "Claim_Capital_Bank", "1551" },
                 { "Claim_Capital_CombinedAuthority", "1553" },
@@ -127,7 +131,7 @@ public sealed class FakeEfinLookupService : IEfinLookupCacheService
                 { "Claim_Capital_RegisteredCharitableOrganisation", "1558" },
                 { "Claim_Capital_TradeAssociation", "1551" },
                 { "Claim_Capital_UnregisteredHousingAssociation", "1558" },
-                { "Claim_Revenue_ALBArmsLengthBodyofGovernment", "1554" },
+                { "Claim_Revenue_ArmsLengthBodyofGovernment", "1554" },
                 { "Claim_Revenue_ALMOArmsLengthManagementOrganisation", "1555" },
                 { "Claim_Revenue_Bank", "1575" },
                 { "Claim_Revenue_CombinedAuthority", "1555" },
@@ -152,7 +156,7 @@ public sealed class FakeEfinLookupService : IEfinLookupCacheService
                 { "Claim_Revenue_RegisteredCharitableOrganisation", "1559" },
                 { "Claim_Revenue_TradeAssociation", "1575" },
                 { "Claim_Revenue_UnregisteredHousingAssociation", "1559" },
-                { "Reclaim_Amount_ALBArmsLengthBodyofGovernment", "0028" },
+                { "Reclaim_Amount_ArmsLengthBodyofGovernment", "0028" },
                 { "Reclaim_Amount_ALMOArmsLengthManagementOrganisation", "0027" },
                 { "Reclaim_Amount_Bank", "0029" },
                 { "Reclaim_Amount_CombinedAuthority", "0027" },
@@ -177,7 +181,7 @@ public sealed class FakeEfinLookupService : IEfinLookupCacheService
                 { "Reclaim_Amount_RegisteredCharitableOrganisation", "0030" },
                 { "Reclaim_Amount_TradeAssociation", "0029" },
                 { "Reclaim_Amount_UnregisteredHousingAssociation", "0030" },
-                { "Reclaim_InterestAmount_ALBArmsLengthBodyofGovernment", "0067" },
+                { "Reclaim_InterestAmount_ArmsLengthBodyofGovernment", "0067" },
                 { "Reclaim_InterestAmount_ALMOArmsLengthManagementOrganisation", "0067" },
                 { "Reclaim_InterestAmount_Bank", "0067" },
                 { "Reclaim_InterestAmount_CombinedAuthority", "0067" },
