@@ -5,13 +5,14 @@ public class EfinItem : CosmosDataItem
 {
     public CosmosDbItemStatus Status { get; set; } = CosmosDbItemStatus.NotProcessed;
 
-    public static EfinItem CreateEfinItem(string partitionKey, object value, string idempotencyKey, CosmosDbItemType type)
+    public static EfinItem CreateEfinItem(string partitionKey, object value, string idempotencyKey, string environment, CosmosDbItemType type)
     {
         return new EfinItem
         {
             Id = Guid.NewGuid().ToString(),
-            PartitionKey = partitionKey,
+            PartitionKey = string.IsNullOrWhiteSpace(environment) ? partitionKey : $"{partitionKey}-{environment}",
             IdempotencyKey = idempotencyKey,
+            Environment = environment,
             CreationTime = DateTime.UtcNow,
             Value = value,
             Type = type,

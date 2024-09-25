@@ -15,15 +15,16 @@ public class EfinItemTests
         var value = new { Property1 = "Value1", Property2 = "Value2" };
         var idempotencyKey = "TestIdempotencyKey";
         var partitionKey = "fms";
+        var environment = "local";
         var type = CosmosDbItemType.Claim;
 
         // Act  
-        var item = EfinItem.CreateEfinItem(partitionKey, value, idempotencyKey, type);
+        var item = EfinItem.CreateEfinItem(partitionKey, value, idempotencyKey, environment, type);
 
         // Assert  
         item.Should().NotBeNull();
         item.Id.Should().NotBeNullOrEmpty();
-        item.PartitionKey.Should().Be(Constants.CosmosDbConfiguration.PartitonKey);
+        item.PartitionKey.Should().Be($"{partitionKey}-{environment}");
         item.IdempotencyKey.Should().Be(idempotencyKey);
         item.CreationTime.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(1));
         item.Value.Should().Be(value);

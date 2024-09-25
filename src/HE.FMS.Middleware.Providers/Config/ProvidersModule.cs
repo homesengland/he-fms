@@ -31,7 +31,6 @@ public static class ProvidersModule
     {
         return services
             .AddCommon()
-            .AddMambu()
             .AddCosmosDb()
             .AddKeyVault()
             .AddServiceBus()
@@ -42,23 +41,9 @@ public static class ProvidersModule
     {
         return services.AddSingleton<IDateTimeProvider, SystemDateTimeProvider>()
             .AddSingleton<IFileWriter, FileShareWriter>()
-            .AddAppConfiguration<MemoryCacheSettings>("MemoryCache");
-    }
-
-    private static IServiceCollection AddMambu(this IServiceCollection services)
-    {
-        services.AddAppConfiguration<IMambuApiSettings, MambuApiSettings>("Mambu:Api");
-        services.AddAppConfiguration<IMambuApiKeySettings, MambuApiKeySettings>("Mambu:ApiKey");
-        services.AddScoped<MambuApiKeyAuthorizationHandler>();
-        services.AddScoped<IMambuApiKeyProvider, MambuApiKeyProvider>();
-        services.Decorate<IMambuApiKeyProvider, MambuCachedApiKeyProviderDecorator>();
-
-        services.AddMambuApiClient<IMambuRotationApiClient, MambuRotationApiClient>().WithDefaultRetryPolicy();
-        services.AddMambuApiClient<IMambuGroupApiClient, MambuGroupApiClient>().WithApiKeyAuthorization().WithDefaultRetryPolicy();
-        services.AddMambuApiClient<IMambuCreditArrangementApiClient, MambuCreditArrangementApiClient>().WithApiKeyAuthorization().WithDefaultRetryPolicy();
-        services.AddMambuApiClient<IMambuLoanAccountApiClient, MambuLoanAccountApiClient>().WithApiKeyAuthorization().WithDefaultRetryPolicy();
-
-        return services;
+            .AddSingleton<IEnvironmentValidator, EnvironmentValidator>()
+            .AddAppConfiguration<MemoryCacheSettings>("MemoryCache")
+            .AddSingleton(x => new AllowedEnvironmentSettings(x.GetRequiredService<IConfiguration>()["AllowedEnvironments"]!));
     }
 
     private static IServiceCollection AddCosmosDb(this IServiceCollection services)
@@ -85,18 +70,6 @@ public static class ProvidersModule
         services.AddScoped<IKeyVaultSecretClient, KeyVaultSecretClient>();
 
         return services;
-    }
-
-    private static IHttpClientBuilder AddMambuApiClient<TService, TImplementation>(this IServiceCollection services)
-        where TImplementation : MambuApiHttpClientBase, TService
-        where TService : class
-    {
-        return services.AddHttpClient<TService, TImplementation>(
-            (serviceProvider, httpClient) =>
-            {
-                var settings = serviceProvider.GetRequiredService<IMambuApiSettings>();
-                httpClient.BaseAddress = settings.BaseUrl;
-            });
     }
 
     private static IServiceCollection AddServiceBus(this IServiceCollection services)
@@ -160,4 +133,36 @@ public static class ProvidersModule
 
         return services;
     }
+
+#pragma warning disable IDE0051 // Remove unused private members
+#pragma warning disable S1144 // Unused private types or members should be removed
+    private static IServiceCollection AddMambu(this IServiceCollection services)
+    {
+        services.AddAppConfiguration<IMambuApiSettings, MambuApiSettings>("Mambu:Api");
+        services.AddAppConfiguration<IMambuApiKeySettings, MambuApiKeySettings>("Mambu:ApiKey");
+        services.AddScoped<MambuApiKeyAuthorizationHandler>();
+        services.AddScoped<IMambuApiKeyProvider, MambuApiKeyProvider>();
+        services.Decorate<IMambuApiKeyProvider, MambuCachedApiKeyProviderDecorator>();
+
+        services.AddMambuApiClient<IMambuRotationApiClient, MambuRotationApiClient>().WithDefaultRetryPolicy();
+        services.AddMambuApiClient<IMambuGroupApiClient, MambuGroupApiClient>().WithApiKeyAuthorization().WithDefaultRetryPolicy();
+        services.AddMambuApiClient<IMambuCreditArrangementApiClient, MambuCreditArrangementApiClient>().WithApiKeyAuthorization().WithDefaultRetryPolicy();
+        services.AddMambuApiClient<IMambuLoanAccountApiClient, MambuLoanAccountApiClient>().WithApiKeyAuthorization().WithDefaultRetryPolicy();
+
+        return services;
+    }
+
+    private static IHttpClientBuilder AddMambuApiClient<TService, TImplementation>(this IServiceCollection services)
+        where TImplementation : MambuApiHttpClientBase, TService
+        where TService : class
+    {
+        return services.AddHttpClient<TService, TImplementation>(
+            (serviceProvider, httpClient) =>
+            {
+                var settings = serviceProvider.GetRequiredService<IMambuApiSettings>();
+                httpClient.BaseAddress = settings.BaseUrl;
+            });
+    }
+#pragma warning restore IDE0051 // Remove unused private members
+#pragma warning restore S1144 // Unused private types or members should be removed
 }

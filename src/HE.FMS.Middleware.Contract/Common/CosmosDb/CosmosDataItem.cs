@@ -11,5 +11,7 @@ public class CosmosDataItem : CosmosBaseItem
 
     public string IdempotencyKey { get; set; }
 
+    public string Environment { get; set; }
+
     public CosmosDbItemType Type { get; set; }
 }

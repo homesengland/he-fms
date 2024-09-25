@@ -12,6 +12,7 @@ using HE.FMS.Middleware.Contract.Claims.Efin;
 using HE.FMS.Middleware.Contract.Common;
 using HE.FMS.Middleware.Contract.Common.CosmosDb;
 using HE.FMS.Middleware.Contract.Efin.CosmosDb;
+using HE.FMS.Middleware.Providers.Common;
 using HE.FMS.Middleware.Providers.File;
 using HE.FMS.Middleware.Shared.Base;
 using Microsoft.Azure.Functions.Worker;
@@ -25,13 +26,15 @@ public class ProcessAndStoreClaimTimeTrigger : DataExportFunctionBase<ClaimItemS
     private readonly ICsvFileGenerator _csvFileGenerator;
     private readonly IEfinIndexCosmosClient _indexClient;
     private readonly IClaimConverter _claimConverter;
+    private readonly IEnvironmentValidator _environmentValidator;
 
     public ProcessAndStoreClaimTimeTrigger(
         IEfinCosmosClient efinCosmosDbClient,
         IFileWriter csvFileWriter,
         ICsvFileGenerator csvFileGenerator,
         IEfinIndexCosmosClient indexClient,
-        IClaimConverter claimConverter)
+        IClaimConverter claimConverter,
+        IEnvironmentValidator environmentValidator)
         : base(
             efinCosmosDbClient,
             csvFileWriter)
@@ -39,6 +42,7 @@ public class ProcessAndStoreClaimTimeTrigger : DataExportFunctionBase<ClaimItemS
         _csvFileGenerator = csvFileGenerator;
         _indexClient = indexClient;
         _claimConverter = claimConverter;
+        _environmentValidator = environmentValidator;
     }
 
     [Function(nameof(ProcessAndStoreClaimTimeTrigger))]
@@ -46,7 +50,12 @@ public class ProcessAndStoreClaimTimeTrigger : DataExportFunctionBase<ClaimItemS
         [TimerTrigger("%Claims:Create:CronExpression%")] TimerInfo myTimer,
         CancellationToken cancellationToken)
     {
-        await Process(CosmosDbItemType.Claim, cancellationToken);
+        var environments = _environmentValidator.GetAllowedEnvironments();
+
+        foreach (var environment in environments)
+        {
+            await Process(CosmosDbItemType.Claim, environment, cancellationToken);
+        }
     }
 
     protected override async Task<ClaimItemSet> Convert(IEnumerable<EfinItem> items)

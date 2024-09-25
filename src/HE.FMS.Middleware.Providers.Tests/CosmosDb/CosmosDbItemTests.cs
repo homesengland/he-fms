@@ -22,14 +22,15 @@ public class CosmosDbItemTests
         var value = new { Name = "Test" };
         var idempotencyKey = "test-key";
         var partitionKey = "fms";
+        var environment = "local";
         _configuration["CosmosDb:PartitionKey"].Returns(partitionKey);
 
         // Act
-        var result = TraceItem.CreateTraceItem(partitionKey, value, idempotencyKey, CosmosDbItemType.Log);
+        var result = TraceItem.CreateTraceItem(partitionKey, value, idempotencyKey, environment, CosmosDbItemType.Log);
 
         // Assert
         Assert.NotNull(result);
-        Assert.Equal(partitionKey, result.PartitionKey);
+        Assert.Equal($"{partitionKey}-{environment}", result.PartitionKey);
         Assert.Equal(idempotencyKey, result.IdempotencyKey);
         Assert.Equal(value, result.Value);
         Assert.NotEqual(default, result.CreationTime);
@@ -46,7 +47,7 @@ public class CosmosDbItemTests
         _configuration["CosmosDb:PartitionKey"].Returns((string)null!);
 
         // Act
-        var result = TraceItem.CreateTraceItem(partitionKey, value, idempotencyKey, CosmosDbItemType.Log);
+        var result = TraceItem.CreateTraceItem(partitionKey, value, idempotencyKey, string.Empty, CosmosDbItemType.Log);
 
         // Assert
         Assert.NotNull(result);
