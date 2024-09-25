@@ -18,6 +18,7 @@
     "IntegrationStorage:ShareName": "",
     "Reclaims:Create:TopicName": "",
     "Reclaims:Create:SubscriptionName": "",
-    "Reclaims:Create:CronExpression": "0 */5 * * * *"
+    "Reclaims:Create:CronExpression": "0 */5 * * * *",
+    "AllowedEnvironments": "local"
   }
 }

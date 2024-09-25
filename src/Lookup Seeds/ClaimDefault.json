@@ -1,20 +1,22 @@
 {
-    "id": "ClaimDefault",
-    "PartitionKey": "fms",
-    "Value": {
-        "cla_sub_ledger": "PL4",
-        "cla_uom": "EA",
-        "cla_unit_qty": "1",
-        "cla_volume": "1",
-        "clb_grouping": "C",
-        "clb_sub_ledger": "PL4",
-        "clb_user": "AH GRANTS",
-        "clb_vat_amount": "0",
-        "cli_sub_ledger": "PL4",
-        "cli_terms_code": "00",
-        "cli_trans_type": "PI",
-        "cli_uom": "EA",
-        "cli_vat": "0",
-        "cli_volume": "1"
-    }
+  "id": "ClaimDefault",
+  "PartitionKey": "fms",
+  "Value": {
+    "cla_sub_ledger": "PL4",
+    "cla_uom": "EA",
+    "cla_unit_qty": "1",
+    "cla_volume": "1",
+    "clb_grouping": "C",
+    "clb_sub_ledger": "PL4",
+    "clb_user": "AH GRANTS",
+    "clb_vat_amount": "0",
+    "cli_sub_ledger": "PL4",
+    "cli_terms_code": "00",
+    "cli_trans_type": "PI",
+    "cli_uom": "EA",
+    "cli_vat": "0",
+    "cli_volume": "1",
+    "cli_job": "X0000089",
+    "cla_cfacs_job": "X0000089"
+  }
 }

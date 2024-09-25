@@ -6,16 +6,26 @@ public static class HttpRequestExtensions
 {
     public static string GetIdempotencyHeader(this HttpRequestData requestData)
     {
-        var headers = requestData.Headers.GetValues(Constants.CustomHeaders.IdempotencyKey);
+        return requestData.GetCustomHeader(Constants.CustomHeaders.IdempotencyKey);
+    }
+
+    public static string GetEnvironmentHeader(this HttpRequestData requestData)
+    {
+        return requestData.GetCustomHeader(Constants.CustomHeaders.Environment);
+    }
+
+    public static string GetCustomHeader(this HttpRequestData requestData, string headerName)
+    {
+        var headers = requestData.Headers.GetValues(headerName);
 
         if (headers.IsNullOrEmpty())
         {
-            throw new MissingRequiredHeaderException(Constants.CustomHeaders.IdempotencyKey);
+            throw new MissingRequiredHeaderException(headerName);
         }
 
         if (headers.Count() > 1)
         {
-            throw new InvalidRequestException($"Multiple '{Constants.CustomHeaders.IdempotencyKey}' headers");
+            throw new InvalidRequestException($"Multiple '{headerName}' headers");
         }
 
         return headers.Single();

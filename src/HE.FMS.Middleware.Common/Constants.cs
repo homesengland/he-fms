@@ -5,6 +5,7 @@ public static class Constants
     public static class CustomHeaders
     {
         public const string IdempotencyKey = "Idempotency-Key";
+        public const string Environment = "X-Environment";
     }
 
     public static class FunctionsTriggers

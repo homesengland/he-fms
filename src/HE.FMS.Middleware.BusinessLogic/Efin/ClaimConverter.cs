@@ -2,7 +2,6 @@ using System.Globalization;
 using HE.FMS.Middleware.Common.Extensions;
 using HE.FMS.Middleware.Contract.Claims;
 using HE.FMS.Middleware.Contract.Claims.Efin;
-using HE.FMS.Middleware.Contract.Constants;
 using HE.FMS.Middleware.Providers.Common;
 using EfinConstants = HE.FMS.Middleware.BusinessLogic.Constants.EfinConstants;
 
@@ -41,7 +40,7 @@ public class ClaimConverter : IClaimConverter
             clb_year = (_dateTimeProvider.UtcNow.Month is >= 1 and <= 3 ? _dateTimeProvider.UtcNow.Year - 1 : _dateTimeProvider.UtcNow.Year).ToString(CultureInfo.InvariantCulture),
             clb_period = _dateTimeProvider.UtcNow.Month.ToString(CultureInfo.InvariantCulture),
             clb_net_amount = claims.Sum(x => decimal.Parse(x.CliInvoice.cli_net_amount, NumberStyles.Any, culture)).ToString("F", CultureInfo.InvariantCulture),
-            clb_vat_amount = defaultDictionary[nameof(CLCLB_Batch.clb_vat_amount)],
+            clb_vat_amount = claims.Sum(x => decimal.Parse(x.CliInvoice.cli_vat, NumberStyles.Any, culture)).ToString("F", CultureInfo.InvariantCulture),
             clb_no_invoices = claims.Count().ToString(CultureInfo.InvariantCulture),
             clb_quantity = claims.Count().ToString(CultureInfo.InvariantCulture),
             clb_user = defaultDictionary[nameof(CLCLB_Batch.clb_user)],
@@ -66,19 +65,19 @@ public class ClaimConverter : IClaimConverter
             cli_batch_ref = string.Empty,
             cli_cfacs_customer = claimPayment.Account.Name,
             cli_net_amount = claimPayment.Claim.Amount.ToString("F", CultureInfo.InvariantCulture),
-            cli_vat = defaultDictionary[nameof(CLI_Invoice.cli_vat)],
-            cli_gross = claimPayment.Claim.Amount.ToString("F", CultureInfo.InvariantCulture),
+            cli_vat = claimPayment.Application.VatRate.ToString("F", CultureInfo.InvariantCulture),
+            cli_gross = (claimPayment.Claim.Amount * claimPayment.Application.VatRate).ToString("F", CultureInfo.InvariantCulture),
             cli_volume = defaultDictionary[nameof(CLI_Invoice.cli_volume)],
             cli_uom = defaultDictionary[nameof(CLI_Invoice.cli_uom)],
             cli_our_ref_2 = claimPayment.Application.AllocationId,
             cli_their_ref = claimPayment.Application.AllocationId,
             cli_trans_type = defaultDictionary[nameof(CLI_Invoice.cli_trans_type)],
             cli_date = claimPayment.Claim.ApprovedOn.ToString(CultureInfo.InvariantCulture),
-            cli_description = string.Format(CultureInfo.InvariantCulture, "{0}{1}", claimPayment.Application.SchemaName.TrimEnd(3), milestoneLookup[claimPayment.Claim.Milestone.ToString()]),
+            cli_description = string.Format(CultureInfo.InvariantCulture, "{0}{1} {2}", milestoneLookup[claimPayment.Claim.Milestone.ToString()], claimPayment.Application.ApplicationId, claimPayment.Application.SchemaName[..19]),
             cli_terms_code = defaultDictionary[nameof(CLI_Invoice.cli_terms_code)],
             cli_due_date = claimPayment.Claim.ApprovedOn.AddDays(7).ToString(CultureInfo.InvariantCulture),
             cli_cost_centre = regionLookup[claimPayment.Application.Region.ToString()],
-            cli_job = claimPayment.Application.AllocationId,
+            cli_job = defaultDictionary[nameof(CLI_Invoice.cli_job)],
             cli_activity = tenureLookup[claimPayment.Application.Tenure.ToString()],
         };
     }
@@ -101,12 +100,12 @@ public class ClaimConverter : IClaimConverter
             cla_cfacs_cc = regionLookup[claimPayment.Application.Region.ToString()],
             cla_cfacs_ac = partnerTypeLookup[$"Claim_{claimPayment.Application.RevenueIndicator}_{claimPayment.Account.PartnerType}"],
             cla_cfacs_actv = tenureLookup[claimPayment.Application.Tenure.ToString()],
-            cla_cfacs_job = claimPayment.Application.AllocationId,
+            cla_cfacs_job = defaultDictionary[nameof(CLA_InvoiceAnalysis.cla_cfacs_job)],
             cla_amount = claimPayment.Claim.Amount.ToString("F", CultureInfo.InvariantCulture),
-            cla_vat_code = claimPayment.Application.VatCode.ToString(),
+            cla_vat_code = claimPayment.Application.VatCode.ToString().Replace("VatCode", string.Empty, StringComparison.OrdinalIgnoreCase),
             cla_vat_rate = claimPayment.Application.VatRate.ToString("F", CultureInfo.InvariantCulture),
             cla_vat = (claimPayment.Claim.Amount * claimPayment.Application.VatRate).ToString("F", CultureInfo.InvariantCulture),
-            cla_description = string.Format(CultureInfo.InvariantCulture, "{0}{1}", claimPayment.Application.SchemaName.TrimEnd(3), milestoneLookup[claimPayment.Claim.Milestone.ToString()]),
+            cla_description = string.Format(CultureInfo.InvariantCulture, "{0}{1} {2}", milestoneLookup[claimPayment.Claim.Milestone.ToString()], claimPayment.Application.ApplicationId, claimPayment.Application.SchemaName[..19]),
             cla_unit_qty = defaultDictionary[nameof(CLA_InvoiceAnalysis.cla_unit_qty)],
             cla_uom = defaultDictionary[nameof(CLA_InvoiceAnalysis.cla_uom)],
             cla_volume = defaultDictionary[nameof(CLA_InvoiceAnalysis.cla_volume)],
