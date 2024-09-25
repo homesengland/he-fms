@@ -1,11 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.Json.Serialization;
 
 namespace HE.FMS.Middleware.Contract.Enums;
 #pragma warning disable CA1712 // Do not prefix enum values with type name
+[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum VatCode
 {
     VatCode02,
