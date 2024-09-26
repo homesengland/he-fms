@@ -102,7 +102,7 @@ public class ClaimConverter : IClaimConverter
             cla_cfacs_actv = tenureLookup[claimPayment.Application.Tenure.ToString()],
             cla_cfacs_job = defaultDictionary[nameof(CLA_InvoiceAnalysis.cla_cfacs_job)],
             cla_amount = claimPayment.Claim.Amount.ToString("F", CultureInfo.InvariantCulture),
-            cla_vat_code = claimPayment.Application.VatCode.ToString().Replace("VatCode", string.Empty, StringComparison.OrdinalIgnoreCase),
+            cla_vat_code = ((int)claimPayment.Application.VatCode).ToString("D2", CultureInfo.InvariantCulture),
             cla_vat_rate = claimPayment.Application.VatRate.ToString("F", CultureInfo.InvariantCulture),
             cla_vat = (claimPayment.Claim.Amount * claimPayment.Application.VatRate).ToString("F", CultureInfo.InvariantCulture),
             cla_description = GetDescription(claimPayment, milestoneLookup),

@@ -108,7 +108,7 @@ public class ReclaimConverter : IReclaimConverter
             cliwl_item_sequence = defaultDictionary[nameof(CLI_IW_INL.cliwl_item_sequence)],
             cliwl_product_id = defaultDictionary[nameof(CLI_IW_INL.cliwl_product_id)],
             cliwl_goods_value = reclaimPayment.Reclaim.Amount.ToString("F", CultureInfo.InvariantCulture),
-            cliwl_vat_code = reclaimPayment.Application.VatCode.ToString().Replace("VatCode", string.Empty, StringComparison.OrdinalIgnoreCase),
+            cliwl_vat_code = ((int)reclaimPayment.Application.VatCode).ToString("D2", CultureInfo.InvariantCulture),
             cliwl_vat_amount = (reclaimPayment.Reclaim.Amount * reclaimPayment.Application.VatRate).ToString("F", CultureInfo.InvariantCulture),
             cliwl_line_ref = defaultDictionary[nameof(CLI_IW_INL.cliwl_line_ref)],
         };
