@@ -56,7 +56,7 @@ public sealed class FakeEfinLookupService : IEfinLookupCacheService
     private async Task<EfinLookupItem> DeserializeJsonFileAsync(string directoryPath, string fileName)
     {
         var solutionDirectory = TestContext.CurrentContext.TestDirectory;
-        var relativePathToDataFiles = Path.Combine(solutionDirectory, @"..\..\..\..\" + directoryPath);
+        var relativePathToDataFiles = Path.Combine(solutionDirectory, @"../../../../" + directoryPath);
 
         var filePath = Path.Combine(relativePathToDataFiles, fileName);
 
