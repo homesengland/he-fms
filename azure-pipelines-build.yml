@@ -1,10 +1,5 @@
 trigger: none
 
-pr:
-  branches:
-    include:
-    - development_R3
-
 parameters:
   - name: forcePushToProd
     displayName: Force Push to Production
@@ -13,7 +8,7 @@ parameters:
 
 variables:
   buildMajor: 1
-  buildMinor: 1
+  buildMinor: 2
   buildBranch: $[replace(variables['Build.SourceBranch'], '/', '.')]
 
 pool: 'vmss-ado-chs-nonprod-001'
