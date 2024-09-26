@@ -8,44 +8,35 @@ using NUnit.Framework;
 namespace HE.FMS.Middleware.BusinessLogic.Tests.Fakes;
 public sealed class FakeEfinLookupService : IEfinLookupCacheService
 {
-    private const string LookUpSeedFolder = "Lookup Seeds";
+    private const string LookUpSeedFolder = "LookupSeeds";
 
     public async Task<Dictionary<string, string>> GetValue(string key)
     {
-        var dictionary = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-
-        switch (key)
+        return key switch
         {
-            case var k when k.Equals(EfinConstants.Lookups.ClaimDefault, StringComparison.OrdinalIgnoreCase):
-                dictionary = await GetDictionaryFromFile(EfinConstants.Lookups.ClaimDefault);
-                break;
+            var k when k.Equals(EfinConstants.Lookups.ClaimDefault, StringComparison.OrdinalIgnoreCase)
+                => await GetDictionaryFromFile(EfinConstants.Lookups.ClaimDefault),
 
-            case var k when k.Equals(EfinConstants.Lookups.ReclaimDefault, StringComparison.OrdinalIgnoreCase):
-                dictionary = await GetDictionaryFromFile(EfinConstants.Lookups.ReclaimDefault);
-                break;
+            var k when k.Equals(EfinConstants.Lookups.ReclaimDefault, StringComparison.OrdinalIgnoreCase)
+                => await GetDictionaryFromFile(EfinConstants.Lookups.ReclaimDefault),
 
-            case var k when k.Equals(EfinConstants.Lookups.RegionLookup, StringComparison.OrdinalIgnoreCase):
-                dictionary = await GetDictionaryFromFile(EfinConstants.Lookups.RegionLookup);
-                break;
+            var k when k.Equals(EfinConstants.Lookups.RegionLookup, StringComparison.OrdinalIgnoreCase)
+                => await GetDictionaryFromFile(EfinConstants.Lookups.RegionLookup),
 
-            case var k when k.Equals(EfinConstants.Lookups.MilestoneLookup, StringComparison.OrdinalIgnoreCase):
-                dictionary = await GetDictionaryFromFile(EfinConstants.Lookups.MilestoneLookup);
-                break;
+            var k when k.Equals(EfinConstants.Lookups.MilestoneLookup, StringComparison.OrdinalIgnoreCase)
+                => await GetDictionaryFromFile(EfinConstants.Lookups.MilestoneLookup),
 
-            case var k when k.Equals(EfinConstants.Lookups.TenureLookup, StringComparison.OrdinalIgnoreCase):
-                dictionary = await GetDictionaryFromFile(EfinConstants.Lookups.TenureLookup);
-                break;
+            var k when k.Equals(EfinConstants.Lookups.TenureLookup, StringComparison.OrdinalIgnoreCase)
+                => await GetDictionaryFromFile(EfinConstants.Lookups.TenureLookup),
 
-            case var k when k.Equals(EfinConstants.Lookups.RevenueIndicatorLookup, StringComparison.OrdinalIgnoreCase):
-                dictionary = await GetDictionaryFromFile(EfinConstants.Lookups.RevenueIndicatorLookup);
-                break;
+            var k when k.Equals(EfinConstants.Lookups.RevenueIndicatorLookup, StringComparison.OrdinalIgnoreCase)
+                => await GetDictionaryFromFile(EfinConstants.Lookups.RevenueIndicatorLookup),
 
-            case var k when k.Equals(EfinConstants.Lookups.PartnerTypeLookup, StringComparison.OrdinalIgnoreCase):
-                dictionary = await GetDictionaryFromFile(EfinConstants.Lookups.PartnerTypeLookup);
-                break;
-        }
+            var k when k.Equals(EfinConstants.Lookups.PartnerTypeLookup, StringComparison.OrdinalIgnoreCase)
+                => await GetDictionaryFromFile(EfinConstants.Lookups.PartnerTypeLookup),
 
-        return dictionary;
+            _ => new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase),
+        };
     }
 
     public void InvalidateKey(string key)

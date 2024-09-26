@@ -41,13 +41,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Azure Functions", "Azure Fu
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lookup Seeds", "Lookup Seeds", "{BDABDE85-4181-4E31-BC03-6CCB04B79B96}"
 	ProjectSection(SolutionItems) = preProject
-		Lookup Seeds\ClaimDefault.json = Lookup Seeds\ClaimDefault.json
-		Lookup Seeds\MilestoneLookup.json = Lookup Seeds\MilestoneLookup.json
-		Lookup Seeds\PartnerTypeLookup.json = Lookup Seeds\PartnerTypeLookup.json
-		Lookup Seeds\ReclaimDefault.json = Lookup Seeds\ReclaimDefault.json
-		Lookup Seeds\RegionLookup.json = Lookup Seeds\RegionLookup.json
-		Lookup Seeds\RevenueIndicatorLookup.json = Lookup Seeds\RevenueIndicatorLookup.json
-		Lookup Seeds\TenureLookup.json = Lookup Seeds\TenureLookup.json
+		LookupSeeds\ClaimDefault.json = LookupSeeds\ClaimDefault.json
+		LookupSeeds\MilestoneLookup.json = LookupSeeds\MilestoneLookup.json
+		LookupSeeds\PartnerTypeLookup.json = LookupSeeds\PartnerTypeLookup.json
+		LookupSeeds\ReclaimDefault.json = LookupSeeds\ReclaimDefault.json
+		LookupSeeds\RegionLookup.json = LookupSeeds\RegionLookup.json
+		LookupSeeds\RevenueIndicatorLookup.json = LookupSeeds\RevenueIndicatorLookup.json
+		LookupSeeds\TenureLookup.json = LookupSeeds\TenureLookup.json
 	EndProjectSection
 EndProject
 Global
