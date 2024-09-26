@@ -1,10 +1,5 @@
 trigger: none
 
-pr:
-  branches:
-    include:
-    - development_R3
-
 parameters:
   - name: forcePushToProd
     displayName: Force Push to Production
