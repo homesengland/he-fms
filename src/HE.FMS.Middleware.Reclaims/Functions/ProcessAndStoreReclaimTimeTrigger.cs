@@ -16,6 +16,7 @@ using HE.FMS.Middleware.Providers.Common;
 using HE.FMS.Middleware.Providers.File;
 using HE.FMS.Middleware.Shared.Base;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using static HE.FMS.Middleware.Common.Constants;
 
@@ -27,6 +28,7 @@ public class ProcessAndStoreReclaimTimeTrigger : DataExportFunctionBase<ReclaimI
     private readonly IEfinIndexCosmosClient _indexClient;
     private readonly IReclaimConverter _reclaimConverter;
     private readonly IEnvironmentValidator _environmentValidator;
+    private readonly ILogger<ProcessAndStoreReclaimTimeTrigger> _logger;
 
     public ProcessAndStoreReclaimTimeTrigger(
         IEfinCosmosClient efinCosmosDbClient,
@@ -34,7 +36,8 @@ public class ProcessAndStoreReclaimTimeTrigger : DataExportFunctionBase<ReclaimI
         ICsvFileGenerator csvFileGenerator,
         IEfinIndexCosmosClient indexClient,
         IReclaimConverter reclaimConverter,
-        IEnvironmentValidator environmentValidator)
+        IEnvironmentValidator environmentValidator,
+        ILogger<ProcessAndStoreReclaimTimeTrigger> logger)
         : base(
             efinCosmosDbClient,
             csvFileWriter)
@@ -43,19 +46,24 @@ public class ProcessAndStoreReclaimTimeTrigger : DataExportFunctionBase<ReclaimI
         _indexClient = indexClient;
         _reclaimConverter = reclaimConverter;
         _environmentValidator = environmentValidator;
+        _logger = logger;
     }
 
-    [Function("ProcessCreateReclaim")]
+    [Function(nameof(ProcessAndStoreReclaimTimeTrigger))]
     public async Task Run(
         [TimerTrigger("%Reclaims:Create:CronExpression%")] TimerInfo myTimer,
         CancellationToken cancellationToken)
     {
+        _logger.LogInformation($"{nameof(ProcessAndStoreReclaimTimeTrigger)} function started");
+
         var environments = _environmentValidator.GetAllowedEnvironments();
 
         foreach (var environment in environments)
         {
             await Process(CosmosDbItemType.Reclaim, environment, cancellationToken);
         }
+
+        _logger.LogInformation($"{nameof(ProcessAndStoreReclaimTimeTrigger)} function ended");
     }
 
     protected override async Task<ReclaimItemSet> Convert(IEnumerable<EfinItem> items)

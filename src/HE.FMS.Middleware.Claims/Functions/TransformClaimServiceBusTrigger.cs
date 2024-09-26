@@ -7,7 +7,6 @@ using HE.FMS.Middleware.Common;
 using HE.FMS.Middleware.Common.Serialization;
 using HE.FMS.Middleware.Contract.Claims;
 using HE.FMS.Middleware.Contract.Common.CosmosDb;
-using HE.FMS.Middleware.Contract.Constants;
 using HE.FMS.Middleware.Contract.Efin.CosmosDb;
 using HE.FMS.Middleware.Providers.Common;
 using Microsoft.Azure.Functions.Worker;

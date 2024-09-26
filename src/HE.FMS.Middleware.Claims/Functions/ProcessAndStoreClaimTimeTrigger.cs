@@ -16,6 +16,7 @@ using HE.FMS.Middleware.Providers.Common;
 using HE.FMS.Middleware.Providers.File;
 using HE.FMS.Middleware.Shared.Base;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using static HE.FMS.Middleware.Common.Constants;
 
@@ -27,6 +28,7 @@ public class ProcessAndStoreClaimTimeTrigger : DataExportFunctionBase<ClaimItemS
     private readonly IEfinIndexCosmosClient _indexClient;
     private readonly IClaimConverter _claimConverter;
     private readonly IEnvironmentValidator _environmentValidator;
+    private readonly ILogger<ProcessAndStoreClaimTimeTrigger> _logger;
 
     public ProcessAndStoreClaimTimeTrigger(
         IEfinCosmosClient efinCosmosDbClient,
@@ -34,7 +36,8 @@ public class ProcessAndStoreClaimTimeTrigger : DataExportFunctionBase<ClaimItemS
         ICsvFileGenerator csvFileGenerator,
         IEfinIndexCosmosClient indexClient,
         IClaimConverter claimConverter,
-        IEnvironmentValidator environmentValidator)
+        IEnvironmentValidator environmentValidator,
+        ILogger<ProcessAndStoreClaimTimeTrigger> logger)
         : base(
             efinCosmosDbClient,
             csvFileWriter)
@@ -43,6 +46,7 @@ public class ProcessAndStoreClaimTimeTrigger : DataExportFunctionBase<ClaimItemS
         _indexClient = indexClient;
         _claimConverter = claimConverter;
         _environmentValidator = environmentValidator;
+        _logger = logger;
     }
 
     [Function(nameof(ProcessAndStoreClaimTimeTrigger))]
@@ -50,12 +54,16 @@ public class ProcessAndStoreClaimTimeTrigger : DataExportFunctionBase<ClaimItemS
         [TimerTrigger("%Claims:Create:CronExpression%")] TimerInfo myTimer,
         CancellationToken cancellationToken)
     {
+        _logger.LogInformation($"{nameof(ProcessAndStoreClaimTimeTrigger)} function started");
+
         var environments = _environmentValidator.GetAllowedEnvironments();
 
         foreach (var environment in environments)
         {
             await Process(CosmosDbItemType.Claim, environment, cancellationToken);
         }
+
+        _logger.LogInformation($"{nameof(ProcessAndStoreClaimTimeTrigger)} function ended");
     }
 
     protected override async Task<ClaimItemSet> Convert(IEnumerable<EfinItem> items)

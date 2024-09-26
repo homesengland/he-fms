@@ -28,7 +28,7 @@ public static class PaymentRequestFactory
             {
                 AllocationId = randomizer.String2(10),
                 ApplicationId = randomizer.String2(10),
-                SchemaName = randomizer.String2(10),
+                SchemaName = randomizer.String2(27),
                 Region = randomizer.Enum<Region>(),
                 RevenueIndicator = randomizer.Enum<RevenueIndicator>(),
                 Tenure = randomizer.Enum<Tenure>(),
@@ -61,7 +61,7 @@ public static class PaymentRequestFactory
             {
                 AllocationId = randomizer.String2(10),
                 ApplicationId = randomizer.String2(10),
-                SchemaName = randomizer.String2(10),
+                SchemaName = randomizer.String2(27),
                 Region = randomizer.Enum<Region>(),
                 RevenueIndicator = randomizer.Enum<RevenueIndicator>(),
                 Tenure = randomizer.Enum<Tenure>(),
