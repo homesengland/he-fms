@@ -73,7 +73,7 @@ public class ClaimConverter : IClaimConverter
             cli_their_ref = claimPayment.Application.AllocationId,
             cli_trans_type = defaultDictionary[nameof(CLI_Invoice.cli_trans_type)],
             cli_date = claimPayment.Claim.ApprovedOn.ToString(CultureInfo.InvariantCulture),
-            cli_description = string.Format(CultureInfo.InvariantCulture, "{0}{1} {2}", milestoneLookup[claimPayment.Claim.Milestone.ToString()], claimPayment.Application.ApplicationId, claimPayment.Application.SchemaName[..19]),
+            cli_description = GetDescription(claimPayment, milestoneLookup),
             cli_terms_code = defaultDictionary[nameof(CLI_Invoice.cli_terms_code)],
             cli_due_date = claimPayment.Claim.ApprovedOn.AddDays(7).ToString(CultureInfo.InvariantCulture),
             cli_cost_centre = regionLookup[claimPayment.Application.Region.ToString()],
@@ -105,10 +105,20 @@ public class ClaimConverter : IClaimConverter
             cla_vat_code = claimPayment.Application.VatCode.ToString().Replace("VatCode", string.Empty, StringComparison.OrdinalIgnoreCase),
             cla_vat_rate = claimPayment.Application.VatRate.ToString("F", CultureInfo.InvariantCulture),
             cla_vat = (claimPayment.Claim.Amount * claimPayment.Application.VatRate).ToString("F", CultureInfo.InvariantCulture),
-            cla_description = string.Format(CultureInfo.InvariantCulture, "{0}{1} {2}", milestoneLookup[claimPayment.Claim.Milestone.ToString()], claimPayment.Application.ApplicationId, claimPayment.Application.SchemaName[..19]),
+            cla_description = GetDescription(claimPayment, milestoneLookup),
             cla_unit_qty = defaultDictionary[nameof(CLA_InvoiceAnalysis.cla_unit_qty)],
             cla_uom = defaultDictionary[nameof(CLA_InvoiceAnalysis.cla_uom)],
             cla_volume = defaultDictionary[nameof(CLA_InvoiceAnalysis.cla_volume)],
         };
+    }
+
+    private string GetDescription(ClaimPaymentRequest claimPayment, Dictionary<string, string> milestoneLookup)
+    {
+        return string.Format(
+            CultureInfo.InvariantCulture,
+            "{0}{1} {2}",
+            milestoneLookup[claimPayment.Claim.Milestone.ToString()],
+            claimPayment.Application.ApplicationId,
+            claimPayment.Application.SchemaName.Truncate(19));
     }
 }

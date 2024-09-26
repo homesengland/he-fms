@@ -1,4 +1,6 @@
 using System.Globalization;
+using HE.FMS.Middleware.Common.Extensions;
+using HE.FMS.Middleware.Contract.Claims;
 using HE.FMS.Middleware.Contract.Reclaims;
 using HE.FMS.Middleware.Contract.Reclaims.Efin;
 using HE.FMS.Middleware.Providers.Common;
@@ -142,7 +144,7 @@ public class ReclaimConverter : IReclaimConverter
             cliwi_entry_date = _dateTimeProvider.UtcNow.ToString("F", CultureInfo.InvariantCulture),
             cliwi_invoice_prefix = defaultDictionary[nameof(CLI_IW_INV.cliwi_invoice_prefix)],
             cliwi_tax_point = _dateTimeProvider.UtcNow.ToString("F", CultureInfo.InvariantCulture),
-            cliwi_description = string.Format(CultureInfo.InvariantCulture, "{0}{1} {2}", milestoneLookup[reclaimPayment.Reclaim.Milestone.ToString()], reclaimPayment.Application.ApplicationId, reclaimPayment.Application.SchemaName[..19]),
+            cliwi_description = GetDescription(reclaimPayment, milestoneLookup),
         };
     }
 
@@ -160,7 +162,17 @@ public class ReclaimConverter : IReclaimConverter
             cliwx_inv_ref = reclaimPayment.Application.AllocationId,
             cliwx_line_no = defaultDictionary[nameof(CLI_IW_ITL.cliwx_line_no)],
             cliwx_header_footer = defaultDictionary[nameof(CLI_IW_ITL.cliwx_header_footer)],
-            cliwx_text = string.Format(CultureInfo.InvariantCulture, "{0}{1} {2}", milestoneLookup[reclaimPayment.Reclaim.Milestone.ToString()], reclaimPayment.Application.ApplicationId, reclaimPayment.Application.SchemaName[..19]),
+            cliwx_text = GetDescription(reclaimPayment, milestoneLookup),
         };
+    }
+
+    private string GetDescription(ReclaimPaymentRequest reclaimPayment, Dictionary<string, string> milestoneLookup)
+    {
+        return string.Format(
+            CultureInfo.InvariantCulture,
+            "{0}{1} {2}",
+            milestoneLookup[reclaimPayment.Reclaim.Milestone.ToString()],
+            reclaimPayment.Application.ApplicationId,
+            reclaimPayment.Application.SchemaName.Truncate(19));
     }
 }
