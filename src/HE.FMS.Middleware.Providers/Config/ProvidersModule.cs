@@ -80,7 +80,7 @@ public static class ProvidersModule
             sp =>
             {
                 var config = sp.GetRequiredService<IConfiguration>();
-                return config[Constants.Settings.ServiceBus.ConnectionString] ?? string.Empty;
+                return config[Constants.Settings.ServiceBus.FullyQualifiedNamespace] ?? string.Empty;
             },
             sp =>
             {
@@ -94,7 +94,7 @@ public static class ProvidersModule
             sp =>
             {
                 var config = sp.GetRequiredService<IConfiguration>();
-                return config[Constants.Settings.ServiceBus.ConnectionString] ?? string.Empty;
+                return config[Constants.Settings.ServiceBus.FullyQualifiedNamespace] ?? string.Empty;
             },
             sp =>
             {
