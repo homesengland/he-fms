@@ -21,7 +21,7 @@ public abstract class PaymentConverter
 
     protected decimal CalculateVatAmount(decimal netAmount, decimal vatRate)
     {
-        return netAmount * vatRate;
+        return netAmount * (vatRate / 100);
     }
 
     protected decimal CalculateGrossAmount(decimal netAmount, decimal vatRate)
