@@ -7,7 +7,7 @@ using HE.FMS.Middleware.Providers.Common;
 using EfinConstants = HE.FMS.Middleware.BusinessLogic.Constants.EfinConstants;
 
 namespace HE.FMS.Middleware.BusinessLogic.Efin;
-public class ReclaimConverter : IReclaimConverter
+public class ReclaimConverter : PaymentConverter, IReclaimConverter
 {
     private readonly IDateTimeProvider _dateTimeProvider;
     private readonly IEfinLookupCacheService _lookupCacheService;
@@ -109,7 +109,7 @@ public class ReclaimConverter : IReclaimConverter
             cliwl_product_id = defaultDictionary[nameof(CLI_IW_INL.cliwl_product_id)],
             cliwl_goods_value = reclaimPayment.Reclaim.Amount.ToString("F", CultureInfo.InvariantCulture),
             cliwl_vat_code = ((int)reclaimPayment.Application.VatCode).ToString("D2", CultureInfo.InvariantCulture),
-            cliwl_vat_amount = (reclaimPayment.Reclaim.Amount * reclaimPayment.Application.VatRate).ToString("F", CultureInfo.InvariantCulture),
+            cliwl_vat_amount = CalculateVatAmount(reclaimPayment.Reclaim.Amount, reclaimPayment.Application.VatRate).ToString("F", CultureInfo.InvariantCulture),
             cliwl_line_ref = defaultDictionary[nameof(CLI_IW_INL.cliwl_line_ref)],
         };
     }
@@ -144,7 +144,7 @@ public class ReclaimConverter : IReclaimConverter
             cliwi_entry_date = _dateTimeProvider.UtcNow.ToString("F", CultureInfo.InvariantCulture),
             cliwi_invoice_prefix = defaultDictionary[nameof(CLI_IW_INV.cliwi_invoice_prefix)],
             cliwi_tax_point = _dateTimeProvider.UtcNow.ToString("F", CultureInfo.InvariantCulture),
-            cliwi_description = GetDescription(reclaimPayment, milestoneLookup),
+            cliwi_description = GetDescription(reclaimPayment.Reclaim, reclaimPayment.Application, milestoneLookup),
         };
     }
 
@@ -162,17 +162,7 @@ public class ReclaimConverter : IReclaimConverter
             cliwx_inv_ref = reclaimPayment.Application.AllocationId,
             cliwx_line_no = defaultDictionary[nameof(CLI_IW_ITL.cliwx_line_no)],
             cliwx_header_footer = defaultDictionary[nameof(CLI_IW_ITL.cliwx_header_footer)],
-            cliwx_text = GetDescription(reclaimPayment, milestoneLookup),
+            cliwx_text = GetDescription(reclaimPayment.Reclaim, reclaimPayment.Application, milestoneLookup),
         };
-    }
-
-    private string GetDescription(ReclaimPaymentRequest reclaimPayment, Dictionary<string, string> milestoneLookup)
-    {
-        return string.Format(
-            CultureInfo.InvariantCulture,
-            "{0}{1} {2}",
-            milestoneLookup[reclaimPayment.Reclaim.Milestone.ToString()],
-            reclaimPayment.Application.ApplicationId,
-            reclaimPayment.Application.SchemaName.Truncate(19));
     }
 }
