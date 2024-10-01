@@ -6,7 +6,7 @@ public sealed class ClaimAccountDetails
 {
     [Required]
     [MaxLength(Constants.ValidatorConstants.CustomNameMaxLength)]
-    public string Name { get; set; }
+    public string ProviderId { get; set; }
 
     [Required]
     public PartnerType PartnerType { get; set; }

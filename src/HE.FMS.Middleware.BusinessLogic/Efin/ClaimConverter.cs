@@ -63,7 +63,7 @@ public class ClaimConverter : PaymentConverter, IClaimConverter
             cli_sub_ledger = defaultDictionary[nameof(CLI_Invoice.cli_sub_ledger)],
             cli_inv_ref = claimPayment.Application.AllocationId,
             cli_batch_ref = string.Empty,
-            cli_cfacs_customer = claimPayment.Account.Name,
+            cli_cfacs_customer = claimPayment.Account.ProviderId,
             cli_net_amount = claimPayment.Claim.Amount.ToString("F", CultureInfo.InvariantCulture),
             cli_vat = CalculateVatAmount(claimPayment.Claim.Amount, claimPayment.Application.VatRate).ToString("F", CultureInfo.InvariantCulture),
             cli_gross = CalculateGrossAmount(claimPayment.Claim.Amount, claimPayment.Application.VatRate).ToString("F", CultureInfo.InvariantCulture),
