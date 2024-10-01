@@ -1,4 +1,5 @@
-﻿using System.Net;
+using System.Diagnostics.CodeAnalysis;
+using System.Net;
 using HE.FMS.Middleware.Common.Exceptions.Communication;
 using HE.FMS.Middleware.Contract.Extensions;
 using HE.FMS.Middleware.Contract.Mambu.Common;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace HE.FMS.Middleware.Providers.Mambu;
 
+[ExcludeFromCodeCoverage]
 internal abstract class MambuRestApiClientBase<TDto, TReadDto, TGetAllParams> : MambuApiHttpClientBase, IMambuRestApiClient<TDto, TReadDto, TGetAllParams>
     where TDto : class
     where TReadDto : class, TDto

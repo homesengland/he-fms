@@ -1,6 +1,5 @@
 using System.Text;
 using Azure.Storage.Blobs;
-using Azure.Storage.Files.Shares;
 using HE.FMS.Middleware.Contract.Common;
 
 namespace HE.FMS.Middleware.Providers.File;

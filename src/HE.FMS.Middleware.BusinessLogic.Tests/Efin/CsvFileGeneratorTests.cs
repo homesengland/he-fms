@@ -1,5 +1,6 @@
 using System.Globalization;
 using HE.FMS.Middleware.BusinessLogic.Efin;
+using HE.FMS.Middleware.BusinessLogic.Tests.Fakes;
 using HE.FMS.Middleware.Contract.Attributes.Efin;
 using HE.FMS.Middleware.Providers.Common;
 using Xunit;

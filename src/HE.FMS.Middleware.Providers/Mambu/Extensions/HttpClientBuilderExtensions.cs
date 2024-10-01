@@ -1,4 +1,5 @@
-﻿using System.Net;
+using System.Diagnostics.CodeAnalysis;
+using System.Net;
 using HE.FMS.Middleware.Providers.Mambu.Auth;
 using HE.FMS.Middleware.Providers.Mambu.Settings;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,6 +8,7 @@ using Polly.Retry;
 
 namespace HE.FMS.Middleware.Providers.Mambu.Extensions;
 
+[ExcludeFromCodeCoverage]
 internal static class HttpClientBuilderExtensions
 {
     public static IHttpClientBuilder WithApiKeyAuthorization(this IHttpClientBuilder httpClientBuilder)

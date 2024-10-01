@@ -1,9 +1,11 @@
-﻿using HE.FMS.Middleware.Contract.Mambu.Common.Enums;
+using System.Diagnostics.CodeAnalysis;
+using HE.FMS.Middleware.Contract.Mambu.Common.Enums;
 using HE.FMS.Middleware.Contract.Mambu.CreditArrangement;
 using Microsoft.Extensions.Logging;
 
 namespace HE.FMS.Middleware.Providers.Mambu.Api.CreditArrangement;
 
+[ExcludeFromCodeCoverage]
 internal sealed class MambuCreditArrangementApiClient : MambuRestApiClientBase<CreditArrangementDto, CreditArrangementReadDto, GetAllCreditArrangementsParams>, IMambuCreditArrangementApiClient
 {
     public MambuCreditArrangementApiClient(HttpClient httpClient, ILogger<MambuCreditArrangementApiClient> logger)

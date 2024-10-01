@@ -1,7 +1,9 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+using System.Diagnostics.CodeAnalysis;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace HE.FMS.Middleware.Providers.Mambu.Auth;
 
+[ExcludeFromCodeCoverage]
 internal sealed class MambuCachedApiKeyProviderDecorator : IMambuApiKeyProvider
 {
     private const string CacheKey = "MambuApiKey";

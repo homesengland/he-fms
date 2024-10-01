@@ -1,9 +1,11 @@
-﻿using HE.FMS.Middleware.Contract.Mambu.Rotation;
+using System.Diagnostics.CodeAnalysis;
+using HE.FMS.Middleware.Contract.Mambu.Rotation;
 using HE.FMS.Middleware.Providers.KeyVault;
 using HE.FMS.Middleware.Providers.Mambu.Settings;
 
 namespace HE.FMS.Middleware.Providers.Mambu.Auth;
 
+[ExcludeFromCodeCoverage]
 internal sealed class MambuApiKeyProvider : IMambuApiKeyProvider
 {
     private readonly IKeyVaultSecretClient _keyVaultClient;
