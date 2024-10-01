@@ -17,6 +17,6 @@ public class ReclaimItem
         CliIwIna.cliwa_batch_ref = batchRef;
         CliIwInl.cliwl_batch_ref = batchRef;
         CliIwInv.cliwi_batch_ref = batchRef;
-        CliIwIlt.cliwt_batch_ref = batchRef;
+        CliIwItl.cliwx_batch_ref = batchRef;
     }
 }
