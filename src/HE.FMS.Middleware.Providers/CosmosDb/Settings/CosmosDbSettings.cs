@@ -1,5 +1,8 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace HE.FMS.Middleware.Providers.CosmosDb.Settings;
 
+[ExcludeFromCodeCoverage]
 public sealed class CosmosDbSettings
 {
     public string AccountEndpoint { get; set; }

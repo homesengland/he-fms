@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Azure.Identity;
 using Azure.Storage.Blobs;
 using Azure.Storage.Files.Shares;
@@ -25,6 +26,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace HE.FMS.Middleware.Providers.Config;
 
+[ExcludeFromCodeCoverage]
 public static class ProvidersModule
 {
     public static IServiceCollection AddProvidersModule(this IServiceCollection services)
