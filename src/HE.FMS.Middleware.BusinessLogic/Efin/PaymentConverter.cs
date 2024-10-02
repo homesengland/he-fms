@@ -6,7 +6,6 @@ namespace HE.FMS.Middleware.BusinessLogic.Efin;
 public abstract class PaymentConverter
 {
     protected const string DecimalFormat = "F";
-    protected const string DateAndTimeFormat = "MM/dd/yyyy H:mm:ss zzz";
     protected const string DateFormat = "d-MMM-yy";
 
     protected string GetDescription(
