@@ -8,8 +8,9 @@ public class EnumerableExtensionsTests
     [Fact]
     public void IsNullOrEmpty_ShouldReturnTrue_WhenCollectionIsNull()
     {
-        IEnumerable<int> collection = null;
+        IEnumerable<int> collection = null!;
         var result = collection.IsNullOrEmpty();
+
         Assert.True(result);
     }
 
@@ -32,7 +33,7 @@ public class EnumerableExtensionsTests
     [Fact]
     public void DefaultIfNull_ShouldReturnEmpty_WhenCollectionIsNull()
     {
-        IEnumerable<int> collection = null;
+        IEnumerable<int> collection = null!;
         var result = collection.DefaultIfNull();
         Assert.Empty(result);
     }
@@ -56,9 +57,9 @@ public class EnumerableExtensionsTests
     [Fact]
     public void WhereNotNull_ShouldReturnNonNullItems_WhenCollectionHasReferenceTypes()
     {
-        var collection = new string[] { "a", null, "b", null, "c" };
+        var collection = new string[] { "a", null!, "b", null!, "c" };
         var result = collection.WhereNotNull().ToArray();
-        Assert.Equal(new string[] { "a", "b", "c" }, result);
+        Assert.Equal(["a", "b", "c"], result);
     }
 
     [Fact]

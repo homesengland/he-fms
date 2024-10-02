@@ -51,7 +51,6 @@ public class HttpRequestExtensionsTests
             requestData.GetCustomHeader("SomeHeader"));
 
         Assert.Contains("Multiple 'SomeHeader' headers", exception.Message);
-
     }
 
     [Fact]

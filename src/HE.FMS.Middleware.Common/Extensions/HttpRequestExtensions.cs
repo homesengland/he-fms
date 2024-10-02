@@ -31,9 +31,8 @@ public static class HttpRequestExtensions
             }
 
             return headers.Single();
-
         }
-        catch (InvalidOperationException ex)
+        catch (InvalidOperationException)
         {
             throw new MissingRequiredHeaderException(headerName);
         }

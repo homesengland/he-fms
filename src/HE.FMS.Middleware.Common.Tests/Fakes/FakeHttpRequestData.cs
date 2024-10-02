@@ -1,6 +1,6 @@
-using Microsoft.Azure.Functions.Worker.Http;
-using Microsoft.Azure.Functions.Worker;
 using System.Security.Claims;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 
 namespace HE.FMS.Middleware.Common.Tests.Fakes;
 
@@ -8,7 +8,7 @@ public class FakeHttpRequestData(FunctionContext functionContext) : HttpRequestD
 {
     public override Stream Body { get; } = new MemoryStream();
 
-    public override HttpHeadersCollection Headers { get; } = new HttpHeadersCollection();
+    public override HttpHeadersCollection Headers { get; } = [];
 
     public override IReadOnlyCollection<IHttpCookie> Cookies { get; }
 
