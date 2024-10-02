@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using HE.FMS.Middleware.Common.Serialization;
@@ -5,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace HE.FMS.Middleware.Common.Config;
 
+[ExcludeFromCodeCoverage]
 public static class CommonModule
 {
     public static JsonSerializerOptions CommonSerializerOptions => new()

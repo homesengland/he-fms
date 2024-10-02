@@ -1,9 +1,10 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace HE.FMS.Middleware.Common.Serialization.Converters;
-
+[ExcludeFromCodeCoverage]
 public sealed class StaticTimeZoneDateTimeOffsetJsonConverter : JsonConverter<DateTimeOffset>
 {
     private readonly TimeZoneInfo _timeZone;

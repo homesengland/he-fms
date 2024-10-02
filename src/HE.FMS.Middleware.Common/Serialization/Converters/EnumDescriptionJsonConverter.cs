@@ -1,9 +1,10 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using HE.FMS.Middleware.Contract.Extensions;
 
 namespace HE.FMS.Middleware.Common.Serialization.Converters;
-
+[ExcludeFromCodeCoverage]
 public sealed class EnumDescriptionJsonConverter<T> : JsonConverter<T>
     where T : struct, Enum
 {

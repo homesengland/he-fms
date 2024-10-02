@@ -1,8 +1,9 @@
-﻿using System.Text.Json;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace HE.FMS.Middleware.Common.Serialization.Converters;
-
+[ExcludeFromCodeCoverage]
 public sealed class EnumDescriptionJsonConverterFactory : JsonConverterFactory
 {
     public override bool CanConvert(Type typeToConvert) => typeToConvert.IsEnum;

@@ -1,7 +1,9 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace HE.FMS.Middleware.Common.Serialization.Converters;
+[ExcludeFromCodeCoverage]
 public class StringToNullableEnumConverter<T> : JsonConverter<T>
     where T : struct, Enum
 {
