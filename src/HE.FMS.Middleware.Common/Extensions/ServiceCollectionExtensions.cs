@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace HE.FMS.Middleware.Common.Extensions;
@@ -17,6 +17,9 @@ public static class ServiceCollectionExtensions
         where TImplementation : class
     {
         return services.AddSingleton(x =>
-            x.GetRequiredService<IConfiguration>().GetSection(configurationKey).Get<TImplementation>()!);
+            {
+                var config = x.GetRequiredService<IConfiguration>();
+                return config.GetSection(configurationKey).Get<TImplementation>()!;
+            });
     }
 }

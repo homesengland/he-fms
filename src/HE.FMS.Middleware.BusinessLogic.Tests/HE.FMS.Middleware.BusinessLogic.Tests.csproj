@@ -8,6 +8,9 @@
     <PackageReference Include="NUnit" Version="4.2.2" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="8.0.0" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\HE.FMS.Middleware.BusinessLogic\HE.FMS.Middleware.BusinessLogic.csproj" />
     <ProjectReference Include="..\HE.FMS.Middleware.Providers\HE.FMS.Middleware.Providers.csproj" />
   </ItemGroup>

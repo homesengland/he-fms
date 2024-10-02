@@ -26,7 +26,6 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace HE.FMS.Middleware.Providers.Config;
 
-[ExcludeFromCodeCoverage]
 public static class ProvidersModule
 {
     public static IServiceCollection AddProvidersModule(this IServiceCollection services)
@@ -39,7 +38,7 @@ public static class ProvidersModule
             .AddStorage();
     }
 
-    private static IServiceCollection AddCommon(this IServiceCollection services)
+    internal static IServiceCollection AddCommon(this IServiceCollection services)
     {
         return services.AddSingleton<IDateTimeProvider, SystemDateTimeProvider>()
             .AddSingleton<IFileWriter, FileShareWriter>()
@@ -48,7 +47,7 @@ public static class ProvidersModule
             .AddSingleton(x => new AllowedEnvironmentSettings(x.GetRequiredService<IConfiguration>()["AllowedEnvironments"]!));
     }
 
-    private static IServiceCollection AddCosmosDb(this IServiceCollection services)
+    internal static IServiceCollection AddCosmosDb(this IServiceCollection services)
     {
         services.AddAppConfiguration<CosmosDbSettings>("CosmosDb");
 
@@ -66,15 +65,7 @@ public static class ProvidersModule
         return services;
     }
 
-    private static IServiceCollection AddKeyVault(this IServiceCollection services)
-    {
-        services.AddAppConfiguration<KeyVaultSettings>("KeyVault");
-        services.AddScoped<IKeyVaultSecretClient, KeyVaultSecretClient>();
-
-        return services;
-    }
-
-    private static IServiceCollection AddServiceBus(this IServiceCollection services)
+    internal static IServiceCollection AddServiceBus(this IServiceCollection services)
     {
         services.AddSingleton<ITopicClientFactory, TopicClientFactory>();
 
@@ -109,7 +100,7 @@ public static class ProvidersModule
         return services;
     }
 
-    private static IServiceCollection AddStorage(this IServiceCollection services)
+    internal static IServiceCollection AddStorage(this IServiceCollection services)
     {
         services.AddAppConfiguration<FileStorageSettings>("IntegrationStorage");
 
@@ -136,8 +127,18 @@ public static class ProvidersModule
         return services;
     }
 
+    [ExcludeFromCodeCoverage]
+    private static IServiceCollection AddKeyVault(this IServiceCollection services)
+    {
+        services.AddAppConfiguration<KeyVaultSettings>("KeyVault");
+        services.AddScoped<IKeyVaultSecretClient, KeyVaultSecretClient>();
+
+        return services;
+    }
+
 #pragma warning disable IDE0051 // Remove unused private members
 #pragma warning disable S1144 // Unused private types or members should be removed
+    [ExcludeFromCodeCoverage]
     private static IServiceCollection AddMambu(this IServiceCollection services)
     {
         services.AddAppConfiguration<IMambuApiSettings, MambuApiSettings>("Mambu:Api");
@@ -154,6 +155,7 @@ public static class ProvidersModule
         return services;
     }
 
+    [ExcludeFromCodeCoverage]
     private static IHttpClientBuilder AddMambuApiClient<TService, TImplementation>(this IServiceCollection services)
         where TImplementation : MambuApiHttpClientBase, TService
         where TService : class
