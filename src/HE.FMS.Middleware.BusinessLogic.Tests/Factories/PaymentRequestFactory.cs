@@ -20,7 +20,6 @@ public static class PaymentRequestFactory
             Claim = new ClaimDetails
             {
                 Amount = randomizer.Decimal(),
-                Id = randomizer.String2(10),
                 Milestone = randomizer.Enum<Milestone>(),
                 ApprovedOn = DateTimeProvider.UtcNow,
                 ApprovedBy = randomizer.String2(10),
@@ -38,7 +37,7 @@ public static class PaymentRequestFactory
             },
             Account = new ClaimAccountDetails
             {
-                Name = randomizer.String2(10),
+                ProviderId = randomizer.String2(10),
                 PartnerType = randomizer.Enum<PartnerType>(),
             },
         };
@@ -53,7 +52,6 @@ public static class PaymentRequestFactory
             Reclaim = new ReclaimDetails
             {
                 Amount = randomizer.Decimal2(),
-                Id = randomizer.String2(10),
                 Milestone = randomizer.Enum<Milestone>(),
                 InterestAmount = randomizer.Decimal2(),
                 TotalAmount = randomizer.Decimal2(),
@@ -71,7 +69,7 @@ public static class PaymentRequestFactory
             },
             Account = new ClaimAccountDetails
             {
-                Name = randomizer.String2(10),
+                ProviderId = randomizer.String2(10),
                 PartnerType = randomizer.Enum<PartnerType>(),
             },
         };
