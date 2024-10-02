@@ -129,7 +129,7 @@ public class ReclaimConverter : PaymentConverter, IReclaimConverter
             cliwi_sub_ledger_id = defaultDictionary[nameof(CLI_IW_INV.cliwi_sub_ledger_id)],
             cliwi_inv_ref = reclaimPayment.Application.AllocationId,
             cliwi_batch_ref = string.Empty,
-            cliwi_invoice_to_id = reclaimPayment.Reclaim.Id,
+            cliwi_invoice_to_id = reclaimPayment.Account.ProviderId,
             cliwi_net_amount = reclaimPayment.Reclaim.Amount.ToString(DecimalFormat, CultureInfo.InvariantCulture),
             cliwi_their_ref = reclaimPayment.Application.AllocationId,
             cliwi_trans_type = defaultDictionary[nameof(CLI_IW_INV.cliwi_trans_type)],
