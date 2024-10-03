@@ -5,6 +5,7 @@ using HE.FMS.Middleware.BusinessLogic.Efin;
 using HE.FMS.Middleware.BusinessLogic.Tests.Factories;
 using HE.FMS.Middleware.BusinessLogic.Tests.Fakes;
 using HE.FMS.Middleware.Contract.Claims.Efin;
+using HE.FMS.Middleware.Providers.Common;
 using Xunit;
 
 namespace HE.FMS.Middleware.BusinessLogic.Tests.Efin;
@@ -15,13 +16,14 @@ public class ClaimConverterTests
     private const string DecimalFormat = "F";
 
     private readonly FakeEfinLookupService _efinLookupService;
+    private readonly FakeDateTimeProvider _dateTimeProvider;
     private readonly ClaimConverter _claimConverter;
 
     public ClaimConverterTests()
     {
         _efinLookupService = new FakeEfinLookupService();
-        var dateTimeProvider = new FakeDateTimeProvider();
-        _claimConverter = new ClaimConverter(dateTimeProvider, _efinLookupService);
+        _dateTimeProvider = new FakeDateTimeProvider();
+        _claimConverter = new ClaimConverter(_dateTimeProvider, _efinLookupService);
     }
 
     [Fact]
@@ -48,6 +50,8 @@ public class ClaimConverterTests
     public async Task CreateBatch_ShouldReturnClClb_Batch()
     {
         // Arrange  
+        var defaultDictionary = await _efinLookupService.GetValue(EfinConstants.Lookups.ClaimDefault);
+
         var claimPaymentRequest1 = PaymentRequestFactory.CreateRandomClaimPaymentRequest();
         var claimPaymentRequest2 = PaymentRequestFactory.CreateRandomClaimPaymentRequest();
 
@@ -72,15 +76,15 @@ public class ClaimConverterTests
 
         // Assert  
         result.Should().NotBeNull();
-        result.clb_sub_ledger.Should().Be("PL4");
+        result.clb_sub_ledger.Should().Be(defaultDictionary[nameof(CLCLB_Batch.clb_sub_ledger)]);
         result.clb_batch_ref.Should().Be(batchRef);
         result.clb_year.Should().Be("1999");
         result.clb_period.Should().Be("1");
         result.clb_no_invoices.Should().Be("2");
         result.clb_quantity.Should().Be("2");
-        result.clb_user.Should().Be("AH GRANTS");
-        result.clb_grouping.Should().Be("C");
-        result.clb_entry_date.Should().Be("1-Jan-00");
+        result.clb_user.Should().Be(defaultDictionary[nameof(CLCLB_Batch.clb_user)]);
+        result.clb_grouping.Should().Be(defaultDictionary[nameof(CLCLB_Batch.clb_grouping)]);
+        result.clb_entry_date.Should().Be(_dateTimeProvider.UtcNow.ToString(DateFormat, CultureInfo.InvariantCulture));
     }
 
     [Fact]
@@ -122,13 +126,33 @@ public class ClaimConverterTests
     [Fact]
     public async Task CreateClaInvoiceAnalysis_ShouldReturnCLA_InvoiceAnalysis()
     {
-        // Arrange  
-        var claimPaymentRequest = PaymentRequestFactory.CreateRandomClaimPaymentRequest();
+        // Arrange
+        var defaultDictionary = await _efinLookupService.GetValue(EfinConstants.Lookups.ClaimDefault);
+        var regionLookup = await _efinLookupService.GetValue(EfinConstants.Lookups.RegionLookup);
+        var tenureLookup = await _efinLookupService.GetValue(EfinConstants.Lookups.TenureLookup);
+        var partnerTypeLookup = await _efinLookupService.GetValue(EfinConstants.Lookups.PartnerTypeLookup);
+
+        var request = PaymentRequestFactory.CreateRandomClaimPaymentRequest();
 
         // Act  
-        var result = await _claimConverter.CreateClaInvoiceAnalysis(claimPaymentRequest);
+        var result = await _claimConverter.CreateClaInvoiceAnalysis(request);
 
         // Assert  
         result.Should().NotBeNull();
+
+        result.cla_sub_ledger.Should().Be(defaultDictionary[nameof(CLA_InvoiceAnalysis.cla_sub_ledger)]);
+        result.cla_inv_ref.Should().Be(request.Application.AllocationId);
+        result.cla_batch_ref.Should().Be(string.Empty);
+        result.cla_cfacs_cc.Should().Be(regionLookup[request.Application.Region.ToString()]);
+        result.cla_cfacs_ac.Should().Be(partnerTypeLookup[$"Claim_{request.Application.RevenueIndicator}_{request.Account.PartnerType}"]);
+        result.cla_cfacs_actv.Should().Be(tenureLookup[request.Application.Tenure.ToString()]);
+        result.cla_cfacs_job.Should().Be(defaultDictionary[nameof(CLA_InvoiceAnalysis.cla_cfacs_job)]);
+        result.cla_amount.Should().Be(request.Claim.Amount.ToString(DecimalFormat, CultureInfo.InvariantCulture));
+        result.cla_vat_code.Should().Be(((int)request.Application.VatCode).ToString("D2", CultureInfo.InvariantCulture));
+        result.cla_vat_rate.Should().Be(request.Application.VatRate.ToString(DecimalFormat, CultureInfo.InvariantCulture));
+        result.cla_vat.Should().Be((request.Claim.Amount * request.Application.VatRate / 100).ToString(DecimalFormat, CultureInfo.InvariantCulture));
+        result.cla_unit_qty.Should().Be(defaultDictionary[nameof(CLA_InvoiceAnalysis.cla_unit_qty)]);
+        result.cla_uom.Should().Be(defaultDictionary[nameof(CLA_InvoiceAnalysis.cla_uom)]);
+        result.cla_volume.Should().Be(defaultDictionary[nameof(CLA_InvoiceAnalysis.cla_volume)]);
     }
 }
