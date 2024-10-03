@@ -15,7 +15,7 @@ public class PaymentConverterTests
         var applicationDetails = new ClaimApplicationDetails
         {
             ApplicationId = "12345",
-            SchemaName = "LongSchemaNameThatNeedsTruncation"
+            SchemaName = "LongSchemaNameThatNeedsTruncation",
         };
         var milestoneLookup = new Dictionary<string, string> { { "Acquisition", "ACQ" } };
 
@@ -31,8 +31,8 @@ public class PaymentConverterTests
     {
         // Arrange  
         var converter = new TestPaymentConverter();
-        decimal netAmount = 100m;
-        decimal vatRate = 20m;
+        var netAmount = 100m;
+        var vatRate = 20m;
 
         // Act  
         var vatAmount = converter.PublicCalculateVatAmount(netAmount, vatRate);
@@ -46,8 +46,8 @@ public class PaymentConverterTests
     {
         // Arrange  
         var converter = new TestPaymentConverter();
-        decimal netAmount = 100m;
-        decimal vatRate = 20m;
+        var netAmount = 100m;
+        var vatRate = 20m;
 
         // Act  
         var grossAmount = converter.PublicCalculateGrossAmount(netAmount, vatRate);
