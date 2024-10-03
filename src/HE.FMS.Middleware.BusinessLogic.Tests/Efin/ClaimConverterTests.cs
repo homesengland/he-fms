@@ -1,4 +1,6 @@
+using System.Globalization;
 using FluentAssertions;
+using HE.FMS.Middleware.BusinessLogic.Constants;
 using HE.FMS.Middleware.BusinessLogic.Efin;
 using HE.FMS.Middleware.BusinessLogic.Tests.Factories;
 using HE.FMS.Middleware.BusinessLogic.Tests.Fakes;
@@ -9,7 +11,18 @@ namespace HE.FMS.Middleware.BusinessLogic.Tests.Efin;
 
 public class ClaimConverterTests
 {
-    private readonly ClaimConverter _claimConverter = new(new FakeDateTimeProvider(), new FakeEfinLookupService());
+    private readonly FakeEfinLookupService _efinLookupService;
+    private readonly FakeDateTimeProvider _dateTimeProvider;
+    private readonly ClaimConverter _claimConverter;
+    private const string DateFormat = "d-MMM-yy";
+    private const string DecimalFormat = "F";
+
+    public ClaimConverterTests()
+    {
+        _efinLookupService = new FakeEfinLookupService();
+        _dateTimeProvider = new FakeDateTimeProvider();
+        _claimConverter = new ClaimConverter(_dateTimeProvider, _efinLookupService);
+    }
 
     [Fact]
     public async Task Convert_ShouldReturnExpectedClaimItem()
@@ -73,14 +86,38 @@ public class ClaimConverterTests
     [Fact]
     public async Task CreateCliInvoice_ShouldReturnCLI_Invoice()
     {
-        // Arrange  
-        var claimPaymentRequest = PaymentRequestFactory.CreateRandomClaimPaymentRequest();
+        // Arrange
+        var defaultDictionary = await _efinLookupService.GetValue(EfinConstants.Lookups.ClaimDefault);
+        var milestoneLookup = await _efinLookupService.GetValue(EfinConstants.Lookups.MilestoneLookup);
+        var regionLookup = await _efinLookupService.GetValue(EfinConstants.Lookups.RegionLookup);
+        var tenureLookup = await _efinLookupService.GetValue(EfinConstants.Lookups.TenureLookup);
+
+        var request = PaymentRequestFactory.CreateRandomClaimPaymentRequest();
 
         // Act  
-        var result = await _claimConverter.CreateCliInvoice(claimPaymentRequest);
+        var result = await _claimConverter.CreateCliInvoice(request);
 
         // Assert  
         result.Should().NotBeNull();
+
+        result.cli_sub_ledger.Should().Be(defaultDictionary[nameof(CLI_Invoice.cli_sub_ledger)]);
+        result.cli_inv_ref.Should().Be(request.Application.AllocationId);
+        result.cli_batch_ref.Should().BeEmpty();
+        result.cli_cfacs_customer.Should().Be(request.Account.ProviderId);
+        result.cli_net_amount.Should().Be(request.Claim.Amount.ToString(DecimalFormat, CultureInfo.InvariantCulture));
+        result.cli_vat.Should().Be((request.Claim.Amount * request.Application.VatRate / 100).ToString(DecimalFormat, CultureInfo.InvariantCulture));
+        result.cli_gross.Should().Be((request.Claim.Amount + (request.Claim.Amount * (request.Application.VatRate / 100))).ToString(DecimalFormat, CultureInfo.InvariantCulture));
+        result.cli_volume.Should().Be(defaultDictionary[nameof(CLI_Invoice.cli_volume)]);
+        result.cli_uom.Should().Be(defaultDictionary[nameof(CLI_Invoice.cli_uom)]);
+        result.cli_our_ref_2.Should().Be(request.Application.AllocationId);
+        result.cli_their_ref.Should().Be(request.Application.AllocationId);
+        result.cli_trans_type.Should().Be(defaultDictionary[nameof(CLI_Invoice.cli_trans_type)]);
+        result.cli_date.Should().Be(request.Claim.ApprovedOn.ToString(DateFormat, CultureInfo.InvariantCulture));
+        result.cli_terms_code.Should().Be(defaultDictionary[nameof(CLI_Invoice.cli_terms_code)]);
+        result.cli_due_date.Should().Be(request.Claim.ApprovedOn.AddDays(7).ToString(DateFormat, CultureInfo.InvariantCulture));
+        result.cli_cost_centre.Should().Be(regionLookup[request.Application.Region.ToString()]);
+        result.cli_job.Should().Be(defaultDictionary[nameof(CLI_Invoice.cli_job)]);
+        result.cli_activity.Should().Be(tenureLookup[request.Application.Tenure.ToString()]);
     }
 
     [Fact]
