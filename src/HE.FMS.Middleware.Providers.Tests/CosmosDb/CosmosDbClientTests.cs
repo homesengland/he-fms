@@ -25,17 +25,11 @@ public class CosmosDbClientTests
         _settings = new CosmosDbSettings
         {
             DatabaseId = "TestDatabase",
-            ContainerId = "TestContainer"
+            ContainerId = "TestContainer",
         };
 
         _cosmosClient.GetDatabase(_settings.DatabaseId).Returns(_database);
         _database.GetContainer(_settings.ContainerId).Returns(_container);
-    }
-
-    private CosmosDbClient<TMessage> CreateCosmosDbClient<TMessage>()
-        where TMessage : ICosmosItem
-    {
-        return Substitute.ForPartsOf<CosmosDbClient<TMessage>>(_cosmosClient, _settings);
     }
 
     [Fact]
@@ -84,6 +78,12 @@ public class CosmosDbClientTests
         // Assert  
         Assert.Equal(newName, item.Name);
         await _container.Received(1).ReplaceItemAsync(item, item.Id, new PartitionKey(partitionKey));
+    }
+
+    private CosmosDbClient<TMessage> CreateCosmosDbClient<TMessage>()
+        where TMessage : ICosmosItem
+    {
+        return Substitute.ForPartsOf<CosmosDbClient<TMessage>>(_cosmosClient, _settings);
     }
 
     // Dummy message class for testing  

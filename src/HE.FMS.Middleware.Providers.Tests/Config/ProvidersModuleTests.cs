@@ -16,10 +16,11 @@ public class ProvidersModuleTests
     private readonly IServiceCollection _services;
     private readonly IConfiguration _configuration;
 
-    private readonly Dictionary<string, string> _inMemorySettings = new Dictionary<string, string> {
-        {"CosmosDb:AccountEndpoint", "https://test-cosmos-db.documents.azure.com:443/"},
-        {"CosmosDb:ConnectionString", "AccountEndpoint=https://test-cosmos-db.documents.azure.com:443/;AccountKey=" },
-        {"CosmosDb:DatabaseId", "testDatabase" },
+    private readonly Dictionary<string, string> _inMemorySettings = new()
+    {
+        { "CosmosDb:AccountEndpoint", "https://test-cosmos-db.documents.azure.com:443/" },
+        { "CosmosDb:ConnectionString", "AccountEndpoint=https://test-cosmos-db.documents.azure.com:443/;AccountKey=" },
+        { "CosmosDb:DatabaseId", "testDatabase" },
         { Constants.Settings.ServiceBus.FullyQualifiedNamespace, "https://test-servicebus.servicebus.windows.net" },
         { Constants.Settings.ServiceBus.ClaimsTopic, "claims-topic" },
         { Constants.Settings.ServiceBus.ReclaimsTopic, "reclaims-topic" },

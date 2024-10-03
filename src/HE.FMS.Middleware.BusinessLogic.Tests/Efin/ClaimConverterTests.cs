@@ -11,17 +11,17 @@ namespace HE.FMS.Middleware.BusinessLogic.Tests.Efin;
 
 public class ClaimConverterTests
 {
-    private readonly FakeEfinLookupService _efinLookupService;
-    private readonly FakeDateTimeProvider _dateTimeProvider;
-    private readonly ClaimConverter _claimConverter;
     private const string DateFormat = "d-MMM-yy";
     private const string DecimalFormat = "F";
+
+    private readonly FakeEfinLookupService _efinLookupService;
+    private readonly ClaimConverter _claimConverter;
 
     public ClaimConverterTests()
     {
         _efinLookupService = new FakeEfinLookupService();
-        _dateTimeProvider = new FakeDateTimeProvider();
-        _claimConverter = new ClaimConverter(_dateTimeProvider, _efinLookupService);
+        var dateTimeProvider = new FakeDateTimeProvider();
+        _claimConverter = new ClaimConverter(dateTimeProvider, _efinLookupService);
     }
 
     [Fact]
@@ -88,7 +88,6 @@ public class ClaimConverterTests
     {
         // Arrange
         var defaultDictionary = await _efinLookupService.GetValue(EfinConstants.Lookups.ClaimDefault);
-        var milestoneLookup = await _efinLookupService.GetValue(EfinConstants.Lookups.MilestoneLookup);
         var regionLookup = await _efinLookupService.GetValue(EfinConstants.Lookups.RegionLookup);
         var tenureLookup = await _efinLookupService.GetValue(EfinConstants.Lookups.TenureLookup);
 

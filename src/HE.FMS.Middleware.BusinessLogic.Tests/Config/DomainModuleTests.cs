@@ -19,10 +19,11 @@ public class DomainModuleTests
     private readonly IServiceCollection _services;
     private readonly IConfiguration _configuration;
 
-    private readonly Dictionary<string, string> _inMemorySettings = new Dictionary<string, string> {
-        {"CosmosDb:AccountEndpoint", "https://test-cosmos-db.documents.azure.com:443/"},
-        {"CosmosDb:ConnectionString", "AccountEndpoint=https://test-cosmos-db.documents.azure.com:443/;AccountKey=" },
-        {"CosmosDb:DatabaseId", "testDatabase" },
+    private readonly Dictionary<string, string> _inMemorySettings = new()
+    {
+        { "CosmosDb:AccountEndpoint", "https://test-cosmos-db.documents.azure.com:443/" },
+        { "CosmosDb:ConnectionString", "AccountEndpoint=https://test-cosmos-db.documents.azure.com:443/;AccountKey=" },
+        { "CosmosDb:DatabaseId", "testDatabase" },
         { "EfinDb:ContainerId", "efinContainer" },
         { "EfinConfigDb:ContainerId", "efinConfigContainer" },
         { "TraceDb:ContainerId", "traceContainer" },
