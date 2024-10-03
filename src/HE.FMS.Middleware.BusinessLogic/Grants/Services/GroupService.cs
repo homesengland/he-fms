@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using HE.FMS.Middleware.BusinessLogic.Grants.Settings;
 using HE.FMS.Middleware.Contract.Common;
 using HE.FMS.Middleware.Contract.Mambu.Common.Enums;
@@ -6,6 +7,7 @@ using HE.FMS.Middleware.Providers.Mambu.Api.Group;
 
 namespace HE.FMS.Middleware.BusinessLogic.Grants.Services;
 
+[ExcludeFromCodeCoverage]
 public sealed class GroupService : IGroupService
 {
     private readonly IMambuGroupApiClient _groupApiClient;

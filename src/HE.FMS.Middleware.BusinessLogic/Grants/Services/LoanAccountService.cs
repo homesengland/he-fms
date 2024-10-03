@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using HE.FMS.Middleware.BusinessLogic.Grants.Settings;
 using HE.FMS.Middleware.Contract.Grants;
 using HE.FMS.Middleware.Contract.Mambu.Common;
@@ -9,6 +10,7 @@ using HE.FMS.Middleware.Providers.Mambu.Api.LoanAccount;
 
 namespace HE.FMS.Middleware.BusinessLogic.Grants.Services;
 
+[ExcludeFromCodeCoverage]
 public sealed class LoanAccountService : ILoanAccountService
 {
     private readonly IMambuLoanAccountApiClient _loanAccountApiClient;
