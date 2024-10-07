@@ -22,4 +22,14 @@ public class TestPaymentConverter : PaymentConverter
     {
         return CalculateGrossAmount(netAmount, vatRate);
     }
+
+    public int PublicGetAccountingYear(DateTime dateTime)
+    {
+        return GetAccountingYear(dateTime);
+    }
+
+    public int PublicGetAccountingPeriod(DateTime dateTime)
+    {
+        return GetAccountingPeriod(dateTime);
+    }
 }
