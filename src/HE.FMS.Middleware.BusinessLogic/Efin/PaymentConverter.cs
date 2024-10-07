@@ -34,7 +34,7 @@ public abstract class PaymentConverter
 
     protected int GetAccountingYear(DateTime dateTime)
     {
-        return dateTime.Month is >= 1 and <= 3 ? dateTime.Year - 1 : dateTime.Year;
+        return dateTime.Month is >= 1 and <= 3 ? dateTime.Year : dateTime.Year + 1;
     }
 
     protected int GetAccountingPeriod(DateTime dateTime)

@@ -18,12 +18,14 @@ public class ClaimConverterTests
     private readonly FakeEfinLookupService _efinLookupService;
     private readonly FakeDateTimeProvider _dateTimeProvider;
     private readonly ClaimConverter _claimConverter;
+    private readonly TestPaymentConverter _paymentConverter;
 
     public ClaimConverterTests()
     {
         _efinLookupService = new FakeEfinLookupService();
         _dateTimeProvider = new FakeDateTimeProvider();
         _claimConverter = new ClaimConverter(_dateTimeProvider, _efinLookupService);
+        _paymentConverter = new TestPaymentConverter();
     }
 
     [Fact]
@@ -78,10 +80,10 @@ public class ClaimConverterTests
         result.Should().NotBeNull();
         result.clb_sub_ledger.Should().Be(defaultDictionary[nameof(CLCLB_Batch.clb_sub_ledger)]);
         result.clb_batch_ref.Should().Be(batchRef);
-        result.clb_year.Should().Be("1999");
-        result.clb_period.Should().Be("10");
-        result.clb_no_invoices.Should().Be("2");
-        result.clb_quantity.Should().Be("2");
+        result.clb_year.Should().Be(_paymentConverter.PublicGetAccountingYear(_dateTimeProvider.UtcNow).ToString(CultureInfo.InvariantCulture));
+        result.clb_period.Should().Be(_paymentConverter.PublicGetAccountingPeriod(_dateTimeProvider.UtcNow).ToString(CultureInfo.InvariantCulture));
+        result.clb_no_invoices.Should().Be(claims.Length.ToString(CultureInfo.InvariantCulture));
+        result.clb_quantity.Should().Be(claims.Length.ToString(CultureInfo.InvariantCulture));
         result.clb_user.Should().Be(defaultDictionary[nameof(CLCLB_Batch.clb_user)]);
         result.clb_grouping.Should().Be(defaultDictionary[nameof(CLCLB_Batch.clb_grouping)]);
         result.clb_entry_date.Should().Be(_dateTimeProvider.UtcNow.ToString(DateFormat, CultureInfo.InvariantCulture));
@@ -94,6 +96,7 @@ public class ClaimConverterTests
         var defaultDictionary = await _efinLookupService.GetValue(EfinConstants.Lookups.ClaimDefault);
         var regionLookup = await _efinLookupService.GetValue(EfinConstants.Lookups.RegionLookup);
         var tenureLookup = await _efinLookupService.GetValue(EfinConstants.Lookups.TenureLookup);
+        var milestoneLookup = await _efinLookupService.GetValue(EfinConstants.Lookups.MilestoneLookup);
 
         var request = PaymentRequestFactory.CreateRandomClaimPaymentRequest();
 
@@ -121,6 +124,7 @@ public class ClaimConverterTests
         result.cli_cost_centre.Should().Be(regionLookup[request.Application.Region.ToString()]);
         result.cli_job.Should().Be(defaultDictionary[nameof(CLI_Invoice.cli_job)]);
         result.cli_activity.Should().Be(tenureLookup[request.Application.Tenure.ToString()]);
+        result.cli_description.Should().Be(_paymentConverter.PublicGetDescription(request.Claim, request.Application, milestoneLookup));
     }
 
     [Fact]
@@ -131,6 +135,7 @@ public class ClaimConverterTests
         var regionLookup = await _efinLookupService.GetValue(EfinConstants.Lookups.RegionLookup);
         var tenureLookup = await _efinLookupService.GetValue(EfinConstants.Lookups.TenureLookup);
         var partnerTypeLookup = await _efinLookupService.GetValue(EfinConstants.Lookups.PartnerTypeLookup);
+        var milestoneLookup = await _efinLookupService.GetValue(EfinConstants.Lookups.MilestoneLookup);
 
         var request = PaymentRequestFactory.CreateRandomClaimPaymentRequest();
 
@@ -154,5 +159,6 @@ public class ClaimConverterTests
         result.cla_unit_qty.Should().Be(defaultDictionary[nameof(CLA_InvoiceAnalysis.cla_unit_qty)]);
         result.cla_uom.Should().Be(defaultDictionary[nameof(CLA_InvoiceAnalysis.cla_uom)]);
         result.cla_volume.Should().Be(defaultDictionary[nameof(CLA_InvoiceAnalysis.cla_volume)]);
+        result.cla_description.Should().Be(_paymentConverter.PublicGetDescription(request.Claim, request.Application, milestoneLookup));
     }
 }
