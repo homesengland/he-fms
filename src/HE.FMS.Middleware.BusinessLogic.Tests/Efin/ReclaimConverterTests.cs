@@ -93,7 +93,7 @@ public class ReclaimConverterTests
         result.cliwb_sub_ledger.Should().Be(defaultDictionary[nameof(CLI_IW_BAT.cliwb_sub_ledger)]);
         result.cliwb_batch_ref.Should().Be(batchRef);
         result.cliwb_year.Should().Be("1999");
-        result.cliwb_period.Should().Be("1");
+        result.cliwb_period.Should().Be("10");
         result.cliwb_no_invoices.Should().Be(reclaims.Length.ToString(CultureInfo.InvariantCulture));
         result.cliwb_user.Should().Be(defaultDictionary[nameof(CLI_IW_BAT.cliwb_user)]);
         result.cliwb_default_prefix.Should().Be(defaultDictionary[nameof(CLI_IW_BAT.cliwb_default_prefix)]);

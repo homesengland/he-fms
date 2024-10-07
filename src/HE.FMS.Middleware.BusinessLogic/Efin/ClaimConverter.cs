@@ -36,8 +36,8 @@ public class ClaimConverter : PaymentConverter, IClaimConverter
         {
             clb_sub_ledger = defaultDictionary[nameof(CLCLB_Batch.clb_sub_ledger)],
             clb_batch_ref = batchRef,
-            clb_year = (_dateTimeProvider.UtcNow.Month is >= 1 and <= 3 ? _dateTimeProvider.UtcNow.Year - 1 : _dateTimeProvider.UtcNow.Year).ToString(CultureInfo.InvariantCulture),
-            clb_period = _dateTimeProvider.UtcNow.Month.ToString(CultureInfo.InvariantCulture),
+            clb_year = GetAccountingYear(_dateTimeProvider.UtcNow).ToString(CultureInfo.InvariantCulture),
+            clb_period = GetAccountingPeriod(_dateTimeProvider.UtcNow).ToString(CultureInfo.InvariantCulture),
             clb_net_amount = claims.Sum(x => decimal.Parse(x.CliInvoice.cli_net_amount, NumberStyles.Any, culture)).ToString(DecimalFormat, CultureInfo.InvariantCulture),
             clb_vat_amount = claims.Sum(x => decimal.Parse(x.CliInvoice.cli_vat, NumberStyles.Any, culture)).ToString(DecimalFormat, CultureInfo.InvariantCulture),
             clb_no_invoices = claims.Count().ToString(CultureInfo.InvariantCulture),

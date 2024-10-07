@@ -1,6 +1,7 @@
 using System.Globalization;
 using HE.FMS.Middleware.Common.Extensions;
 using HE.FMS.Middleware.Contract.Claims;
+using HE.FMS.Middleware.Providers.Common;
 
 namespace HE.FMS.Middleware.BusinessLogic.Efin;
 public abstract class PaymentConverter
@@ -29,5 +30,15 @@ public abstract class PaymentConverter
     protected decimal CalculateGrossAmount(decimal netAmount, decimal vatRate)
     {
         return netAmount + CalculateVatAmount(netAmount, vatRate);
+    }
+
+    protected int GetAccountingYear(DateTime dateTime)
+    {
+        return dateTime.Month is >= 1 and <= 3 ? dateTime.Year - 1 : dateTime.Year;
+    }
+
+    protected int GetAccountingPeriod(DateTime dateTime)
+    {
+        return dateTime.Month is >= 1 and <= 3 ? dateTime.Month + 9 : dateTime.Month - 3;
     }
 }

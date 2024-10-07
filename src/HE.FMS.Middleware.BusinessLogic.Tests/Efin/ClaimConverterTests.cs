@@ -79,7 +79,7 @@ public class ClaimConverterTests
         result.clb_sub_ledger.Should().Be(defaultDictionary[nameof(CLCLB_Batch.clb_sub_ledger)]);
         result.clb_batch_ref.Should().Be(batchRef);
         result.clb_year.Should().Be("1999");
-        result.clb_period.Should().Be("1");
+        result.clb_period.Should().Be("10");
         result.clb_no_invoices.Should().Be("2");
         result.clb_quantity.Should().Be("2");
         result.clb_user.Should().Be(defaultDictionary[nameof(CLCLB_Batch.clb_user)]);
