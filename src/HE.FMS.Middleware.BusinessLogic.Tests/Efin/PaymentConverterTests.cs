@@ -58,18 +58,18 @@ public class PaymentConverterTests
     }
 
     [Theory]
-    [InlineData("2020/1/1", 2019)]
-    [InlineData("2020/2/1", 2019)]
-    [InlineData("2020/3/1", 2019)]
-    [InlineData("2020/4/1", 2020)]
-    [InlineData("2020/5/1", 2020)]
-    [InlineData("2020/6/1", 2020)]
-    [InlineData("2020/7/1", 2020)]
-    [InlineData("2020/8/1", 2020)]
-    [InlineData("2020/9/1", 2020)]
-    [InlineData("2020/10/1", 2020)]
-    [InlineData("2020/11/1", 2020)]
-    [InlineData("2020/12/1", 2020)]
+    [InlineData("2020/1/1", 2020)]
+    [InlineData("2020/2/1", 2020)]
+    [InlineData("2020/3/1", 2020)]
+    [InlineData("2020/4/1", 2021)]
+    [InlineData("2020/5/1", 2021)]
+    [InlineData("2020/6/1", 2021)]
+    [InlineData("2020/7/1", 2021)]
+    [InlineData("2020/8/1", 2021)]
+    [InlineData("2020/9/1", 2021)]
+    [InlineData("2020/10/1", 2021)]
+    [InlineData("2020/11/1", 2021)]
+    [InlineData("2020/12/1", 2021)]
     public void GetAccountingYear_ShouldReturnCorrectYear(string date, int expected)
     {
         // Arrange  
