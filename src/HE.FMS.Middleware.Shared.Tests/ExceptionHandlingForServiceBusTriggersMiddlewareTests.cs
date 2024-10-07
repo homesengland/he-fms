@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 using NSubstitute;
 using Xunit;
 
-namespace HE.FMS.Middleware.Tests.Shared;
+namespace HE.FMS.Middleware.Shared.Tests;
 
 public class ExceptionHandlingForServiceBusTriggersMiddlewareTests
 {

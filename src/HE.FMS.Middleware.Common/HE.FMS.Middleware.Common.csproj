@@ -12,8 +12,6 @@
     <ProjectReference Include="..\HE.FMS.Middleware.Contract\HE.FMS.Middleware.Contract.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
-      <_Parameter1>HE.FMS.Middleware.Common.Tests</_Parameter1>
-    </AssemblyAttribute>
+    <InternalsVisibleTo Include="HE.FMS.Middleware.Common.Tests"></InternalsVisibleTo>
   </ItemGroup>
 </Project>

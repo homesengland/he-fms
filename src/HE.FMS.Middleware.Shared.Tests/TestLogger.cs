@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Logging;
 
-namespace HE.FMS.Middleware.Tests;
+namespace HE.FMS.Middleware.Shared.Tests;
 
 public sealed class TestLogger<T> : ILogger<T>
 {

@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using HE.FMS.Middleware.BusinessLogic.Grants.Settings;
 using HE.FMS.Middleware.Contract.Mambu.Common;
@@ -12,6 +13,7 @@ using Microsoft.Extensions.Logging;
 
 namespace HE.FMS.Middleware.BusinessLogic.Mambu;
 
+[ExcludeFromCodeCoverage]
 public class MambuApiKeyService : IMambuApiKeyService
 {
     private readonly IMambuRotationApiClient _rotationApiClient;
