@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace HE.FMS.Middleware.Providers.Common;
+
 public class SystemDateTimeProvider : IDateTimeProvider
 {
     public DateTime Now => DateTime.Now;

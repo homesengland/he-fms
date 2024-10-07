@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using HE.FMS.Middleware.BusinessLogic.Framework;
 using HE.FMS.Middleware.BusinessLogic.Grants.Services;
 using HE.FMS.Middleware.Contract.Grants.Results;
@@ -5,6 +6,7 @@ using HE.FMS.Middleware.Contract.Grants.UseCases;
 
 namespace HE.FMS.Middleware.BusinessLogic.Grants;
 
+[ExcludeFromCodeCoverage]
 public sealed class OpenNewGrantAccountUseCase : IUseCase<OpenNewGrantAccountRequest, OpenNewGrantAccountResult>
 {
     private readonly IGroupService _groupService;

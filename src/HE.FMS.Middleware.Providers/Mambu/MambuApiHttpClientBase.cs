@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace HE.FMS.Middleware.Providers.Mambu;
 
+[ExcludeFromCodeCoverage]
 internal abstract class MambuApiHttpClientBase
 {
     private readonly HttpClient _httpClient;

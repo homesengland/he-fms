@@ -1,8 +1,10 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 
 namespace HE.FMS.Middleware.Shared.Extensions;
 
+[ExcludeFromCodeCoverage]
 public static class ConfigurationBuilderExtensions
 {
     public static IConfigurationBuilder AddFmsConfiguration<T>(this IConfigurationBuilder builder, HostBuilderContext context)

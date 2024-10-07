@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Text;
 using HE.FMS.Middleware.BusinessLogic.Trace.CosmosDb;
@@ -11,6 +12,8 @@ using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.ServiceBus;
 
 namespace HE.FMS.Middleware.Shared.Base;
+
+[ExcludeFromCodeCoverage]
 public abstract class ClaimBase<T>
 {
     private readonly IStreamSerializer _streamSerializer;

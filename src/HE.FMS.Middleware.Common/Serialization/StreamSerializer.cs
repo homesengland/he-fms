@@ -1,5 +1,4 @@
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using HE.FMS.Middleware.Common.Exceptions.Validation;
 using Microsoft.Extensions.Logging;
 using MiniValidation;

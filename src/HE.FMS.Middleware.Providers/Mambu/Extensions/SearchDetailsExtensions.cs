@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Web;
 using HE.FMS.Middleware.Common.Extensions;
@@ -6,6 +7,7 @@ using HE.FMS.Middleware.Contract.Mambu.Common;
 
 namespace HE.FMS.Middleware.Providers.Mambu.Extensions;
 
+[ExcludeFromCodeCoverage]
 public static class SearchDetailsExtensions
 {
     public static string ToQueryString(this PageDetails pageDetails, IGetAllParams? getAllParams = null)

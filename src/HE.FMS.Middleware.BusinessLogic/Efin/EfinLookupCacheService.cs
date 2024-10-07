@@ -3,6 +3,7 @@ using HE.FMS.Middleware.Common.Exceptions.Internal;
 using HE.FMS.Middleware.Providers.Common;
 using HE.FMS.Middleware.Providers.Common.Settings;
 using Microsoft.Extensions.Caching.Memory;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace HE.FMS.Middleware.BusinessLogic.Efin;
@@ -28,14 +29,19 @@ public class EfinLookupCacheService : MemoryCacheProvider<Dictionary<string, str
         {
             var json = (JObject)item.Value;
 
-            var dictionary = json.ToObject<Dictionary<string, string>>() ?? throw new InvalidCastException();
+            try
+            {
+                var dictionary = json.ToObject<Dictionary<string, string>>() ?? throw new InvalidCastException("Failed to convert JSON to Dictionary<string, string>");
 
-            // return dictionary with case-insensitive keys
-            return new Dictionary<string, string>(dictionary, StringComparer.OrdinalIgnoreCase);
+                // return dictionary with case-insensitive keys  
+                return new Dictionary<string, string>(dictionary, StringComparer.OrdinalIgnoreCase);
+            }
+            catch (JsonReaderException ex)
+            {
+                throw new InvalidCastException("Failed to convert JSON to Dictionary<string, string>", ex);
+            }
         }
-        else
-        {
-            throw new MissingCosmosDbItemException(key);
-        }
+
+        throw new MissingCosmosDbItemException(key);
     }
 }

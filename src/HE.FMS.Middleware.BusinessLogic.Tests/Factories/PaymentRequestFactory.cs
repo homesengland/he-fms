@@ -1,5 +1,6 @@
 using Bogus;
 using Bogus.Extensions;
+using HE.FMS.Middleware.BusinessLogic.Tests.Fakes;
 using HE.FMS.Middleware.Contract.Claims;
 using HE.FMS.Middleware.Contract.Enums;
 using HE.FMS.Middleware.Contract.Reclaims;

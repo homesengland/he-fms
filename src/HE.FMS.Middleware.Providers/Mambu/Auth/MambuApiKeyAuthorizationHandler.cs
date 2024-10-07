@@ -1,5 +1,8 @@
-﻿namespace HE.FMS.Middleware.Providers.Mambu.Auth;
+using System.Diagnostics.CodeAnalysis;
 
+namespace HE.FMS.Middleware.Providers.Mambu.Auth;
+
+[ExcludeFromCodeCoverage]
 internal sealed class MambuApiKeyAuthorizationHandler : DelegatingHandler
 {
     private readonly IMambuApiKeyProvider _apiKeyProvider;

@@ -1,7 +1,7 @@
 using HE.FMS.Middleware.Common.Extensions;
 using Xunit;
 
-namespace HE.FMS.Middleware.Common.Tests;
+namespace HE.FMS.Middleware.Common.Tests.Extensions;
 public class StringExtensionsTests
 {
     [Fact]

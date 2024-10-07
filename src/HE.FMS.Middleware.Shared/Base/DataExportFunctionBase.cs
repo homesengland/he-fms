@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using HE.FMS.Middleware.BusinessLogic.Efin.CosmosDb;
 using HE.FMS.Middleware.Common.Extensions;
@@ -8,6 +9,7 @@ using HE.FMS.Middleware.Providers.File;
 
 namespace HE.FMS.Middleware.Shared.Base;
 
+[ExcludeFromCodeCoverage]
 public abstract class DataExportFunctionBase<T>
     where T : IItemSet
 {

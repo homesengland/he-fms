@@ -16,18 +16,25 @@ public static class HttpRequestExtensions
 
     public static string GetCustomHeader(this HttpRequestData requestData, string headerName)
     {
-        var headers = requestData.Headers.GetValues(headerName);
+        try
+        {
+            var headers = requestData.Headers.GetValues(headerName);
 
-        if (headers.IsNullOrEmpty())
+            if (headers.IsNullOrEmpty())
+            {
+                throw new MissingRequiredHeaderException(headerName);
+            }
+
+            if (headers.Count() > 1)
+            {
+                throw new InvalidRequestException($"Multiple '{headerName}' headers");
+            }
+
+            return headers.Single();
+        }
+        catch (InvalidOperationException)
         {
             throw new MissingRequiredHeaderException(headerName);
         }
-
-        if (headers.Count() > 1)
-        {
-            throw new InvalidRequestException($"Multiple '{headerName}' headers");
-        }
-
-        return headers.Single();
     }
 }

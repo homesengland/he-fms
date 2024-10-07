@@ -1,12 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 using HE.FMS.Middleware.Common.Exceptions.Validation;
-using Microsoft.Extensions.Logging;
-using MiniValidation;
 
 namespace HE.FMS.Middleware.Common.Serialization;
 public class ObjectSerializer : IObjectSerializer
@@ -40,6 +33,13 @@ public class ObjectSerializer : IObjectSerializer
             throw new ArgumentNullException(nameof(data));
         }
 
-        return JsonSerializer.Deserialize<T>(data, serializerOptions) ?? throw new FailedSerializationException();
+        try
+        {
+            return JsonSerializer.Deserialize<T>(data, serializerOptions) ?? throw new FailedSerializationException();
+        }
+        catch (JsonException ex)
+        {
+            throw new FailedSerializationException(ex.Message);
+        }
     }
 }

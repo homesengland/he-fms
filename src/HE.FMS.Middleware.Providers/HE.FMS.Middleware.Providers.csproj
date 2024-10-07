@@ -27,4 +27,7 @@
     <ProjectReference Include="..\HE.FMS.Middleware.Common\HE.FMS.Middleware.Common.csproj" />
     <ProjectReference Include="..\HE.FMS.Middleware.Contract\HE.FMS.Middleware.Contract.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="HE.FMS.Middleware.Providers.Tests"></InternalsVisibleTo>
+  </ItemGroup>
 </Project>

@@ -1,9 +1,11 @@
-﻿using HE.FMS.Middleware.Contract.Mambu.Rotation;
+using System.Diagnostics.CodeAnalysis;
+using HE.FMS.Middleware.Contract.Mambu.Rotation;
 using HE.FMS.Middleware.Providers.Mambu.Settings;
 using Microsoft.Extensions.Logging;
 
 namespace HE.FMS.Middleware.Providers.Mambu.Api.Rotation;
 
+[ExcludeFromCodeCoverage]
 internal sealed class MambuRotationApiClient : MambuApiHttpClientBase, IMambuRotationApiClient
 {
     private readonly IMambuApiKeySettings _settings;

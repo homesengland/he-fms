@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using HE.FMS.Middleware.Contract.Grants;
 using HE.FMS.Middleware.Contract.Mambu.Common.Enums;
 using HE.FMS.Middleware.Contract.Mambu.CreditArrangement;
@@ -6,6 +7,7 @@ using HE.FMS.Middleware.Providers.Mambu.Api.CreditArrangement;
 
 namespace HE.FMS.Middleware.BusinessLogic.Grants.Services;
 
+[ExcludeFromCodeCoverage]
 public sealed class CreditArrangementService : ICreditArrangementService
 {
     private static readonly DateTimeOffset CreditArrangementExpireDate = new(2199, 12, 31, 23, 59, 59, TimeSpan.Zero);

@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using System.Text.Json;
 using FluentAssertions;
 using HE.FMS.Middleware.Common.Serialization.Converters;
@@ -29,7 +29,7 @@ public class WriteTests
         var result = JsonSerializer.Serialize(new { Value = TestType.FirstOption }, _serializerOptions);
 
         // then
-        result.Should().Be("{\"value\":\"OPT1\"}");
+        result.Should().Be(expected: $$"""{"value":"OPT1"}""");
     }
 
     [Fact]
@@ -39,7 +39,7 @@ public class WriteTests
         var result = JsonSerializer.Serialize(new { Value = TestType.SecondOption }, _serializerOptions);
 
         // then
-        result.Should().Be("{\"value\":\"SecondOption\"}");
+        result.Should().Be($"{{\"value\":\"SecondOption\"}}");
     }
 
     [Fact]
@@ -49,6 +49,6 @@ public class WriteTests
         var result = JsonSerializer.Serialize(new { Value = (TestType?)null }, _serializerOptions);
 
         // then
-        result.Should().Be("{\"value\":null}");
+        result.Should().Be($"{{\"value\":null}}");
     }
 }
