@@ -15,7 +15,7 @@ using NSubstitute;
 using Polly.Timeout;
 using Xunit;
 
-namespace HE.FMS.Middleware.Tests.Shared;
+namespace HE.FMS.Middleware.Shared.Tests;
 
 public class ExceptionHandlingWithResponseMiddlewareTests
 {
