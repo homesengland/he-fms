@@ -1,10 +1,10 @@
+using Azure.Messaging.ServiceBus;
 using Azure.Storage.Blobs;
 using Azure.Storage.Files.Shares;
 using HE.FMS.Middleware.Common;
 using HE.FMS.Middleware.Providers.Common;
 using HE.FMS.Middleware.Providers.Config;
 using HE.FMS.Middleware.Providers.File;
-using HE.FMS.Middleware.Providers.ServiceBus;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -76,11 +76,11 @@ public class ProvidersModuleTests
         _services.AddSingleton(_configuration);
 
         // Act
-        _services.AddServiceBus();
+        _services.AddServiceBus(_configuration);
         var serviceProvider = _services.BuildServiceProvider();
 
         // Assert
-        Assert.NotNull(serviceProvider.GetService<ITopicClientFactory>());
+        Assert.NotNull(serviceProvider.GetService<ServiceBusClient>());
     }
 
     [Fact]

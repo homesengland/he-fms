@@ -31,4 +31,7 @@
   <ItemGroup>
     <InternalsVisibleTo Include="HE.FMS.Middleware.Providers.Tests"></InternalsVisibleTo>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="SeriveBus\NewFolder\" />
+  </ItemGroup>
 </Project>

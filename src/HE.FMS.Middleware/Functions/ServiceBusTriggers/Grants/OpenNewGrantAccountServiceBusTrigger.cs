@@ -1,14 +1,14 @@
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Azure.Messaging.ServiceBus;
 using HE.FMS.Middleware.BusinessLogic.Framework;
 using HE.FMS.Middleware.Common;
 using HE.FMS.Middleware.Common.Serialization;
 using HE.FMS.Middleware.Contract.Grants.Results;
 using HE.FMS.Middleware.Contract.Grants.UseCases;
-using HE.FMS.Middleware.Providers.ServiceBus;
 using Microsoft.Azure.Functions.Worker;
-using Microsoft.Azure.ServiceBus;
+using Microsoft.Extensions.Azure;
 
 namespace HE.FMS.Middleware.Functions.ServiceBusTriggers.Grants;
 
@@ -18,36 +18,38 @@ public class OpenNewGrantAccountServiceBusTrigger
 
     private readonly IStreamSerializer _streamSerializer;
     private readonly IObjectSerializer _objectSerializer;
-    private readonly TopicClient _topicClient;
+    private readonly ServiceBusSender _serviceBusSender;
 
     public OpenNewGrantAccountServiceBusTrigger(
         IUseCase<OpenNewGrantAccountRequest, OpenNewGrantAccountResult> useCase,
         IStreamSerializer streamSerializer,
         IObjectSerializer objectSerializer,
-        ITopicClientFactory topicClientFactory)
+        IAzureClientFactory<ServiceBusClient> clientFactory)
     {
         _useCase = useCase;
         _streamSerializer = streamSerializer;
         _objectSerializer = objectSerializer;
-        _topicClient = topicClientFactory.GetTopicClient("ServiceBus:PushToCrm:Topic");
+        _serviceBusSender = _serviceBusSender = clientFactory
+            .CreateClient(Constants.Settings.ServiceBus.DefaultClientName)
+            .CreateSender("ServiceBus:PushToCrm:Topic");
     }
 
     [Function(nameof(OpenNewGrantAccountServiceBusTrigger))]
     [FixedDelayRetry(Constants.FunctionsConfiguration.MaxRetryCount, Constants.FunctionsConfiguration.DelayInterval)]
     public async Task Run(
         [ServiceBusTrigger("%Grants:OpenGrantAccount:TopicName%", "%Grants:OpenGrantAccount:SubscriptionName%", Connection = "ServiceBus:Connection")]
-        Azure.Messaging.ServiceBus.ServiceBusReceivedMessage message,
+        ServiceBusReceivedMessage message,
         CancellationToken cancellationToken)
     {
         var inputData = await _streamSerializer.Deserialize<OpenNewGrantAccountRequest>(message.Body.ToStream(), cancellationToken);
 
-        var result = await _useCase.Trigger(inputData, cancellationToken);
+        await _useCase.Trigger(inputData, cancellationToken);
 
-        var topicOutput = new Message(Encoding.UTF8.GetBytes(_objectSerializer.Serialize(result)))
+        ServiceBusMessage sbMessage = new(Encoding.UTF8.GetBytes(_objectSerializer.Serialize(inputData)))
         {
             CorrelationId = message.CorrelationId,
         };
 
-        await _topicClient.SendAsync(topicOutput);
+        await _serviceBusSender.SendMessageAsync(sbMessage, cancellationToken);
     }
 }

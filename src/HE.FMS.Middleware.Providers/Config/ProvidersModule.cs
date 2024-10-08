@@ -2,7 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using Azure.Identity;
 using Azure.Storage.Blobs;
 using Azure.Storage.Files.Shares;
-using HE.FMS.Middleware.Common;
+using HE.FMS.Middleware.Common.Exceptions.Internal;
 using HE.FMS.Middleware.Common.Extensions;
 using HE.FMS.Middleware.Providers.Common;
 using HE.FMS.Middleware.Providers.Common.Settings;
@@ -19,22 +19,24 @@ using HE.FMS.Middleware.Providers.Mambu.Api.Rotation;
 using HE.FMS.Middleware.Providers.Mambu.Auth;
 using HE.FMS.Middleware.Providers.Mambu.Extensions;
 using HE.FMS.Middleware.Providers.Mambu.Settings;
-using HE.FMS.Middleware.Providers.ServiceBus;
+using HE.FMS.Middleware.Providers.SeriveBus.Settings;
 using Microsoft.Azure.Cosmos;
+using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Constants = HE.FMS.Middleware.Common.Constants;
 
 namespace HE.FMS.Middleware.Providers.Config;
 
 public static class ProvidersModule
 {
-    public static IServiceCollection AddProvidersModule(this IServiceCollection services)
+    public static IServiceCollection AddProvidersModule(this IServiceCollection services, IConfiguration configuration)
     {
         return services
             .AddCommon()
             .AddCosmosDb()
             .AddKeyVault()
-            .AddServiceBus()
+            .AddServiceBus(configuration)
             .AddStorage();
     }
 
@@ -65,9 +67,34 @@ public static class ProvidersModule
         return services;
     }
 
-    internal static IServiceCollection AddServiceBus(this IServiceCollection services)
+    internal static IServiceCollection AddServiceBus(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddSingleton<ITopicClientFactory, TopicClientFactory>();
+        services.AddSingleton(sp => new ServiceBusSettings()
+        {
+            ClaimsTopic = configuration[Constants.Settings.ServiceBus.ClaimsTopic] ?? string.Empty,
+            ReclaimsTopic = configuration[Constants.Settings.ServiceBus.ReclaimsTopic] ?? string.Empty,
+        });
+
+        services.AddAzureClients(clientBuilder =>
+        {
+            if (!string.IsNullOrWhiteSpace(configuration[Constants.Settings.ServiceBus.FullyQualifiedNamespace])
+                && !string.IsNullOrWhiteSpace(configuration[Constants.Settings.ServiceBus.ConnectionString]))
+            {
+                clientBuilder.AddServiceBusClient(configuration[Constants.Settings.ServiceBus.ConnectionString])
+                    .WithName(Constants.Settings.ServiceBus.DefaultClientName);
+            }
+            else if (!string.IsNullOrWhiteSpace(configuration[Constants.Settings.ServiceBus.FullyQualifiedNamespace])
+                     && string.IsNullOrWhiteSpace(configuration[Constants.Settings.ServiceBus.ConnectionString]))
+            {
+                clientBuilder.AddServiceBusClientWithNamespace(configuration[Constants.Settings.ServiceBus.FullyQualifiedNamespace])
+                    .WithCredential(new DefaultAzureCredential())
+                    .WithName(Constants.Settings.ServiceBus.DefaultClientName);
+            }
+            else
+            {
+                throw new MissingConfigurationException(Constants.Settings.ServiceBus.ConnectionString);
+            }
+        });
 
         services.AddHealthChecks().AddAzureServiceBusTopic(
             sp =>

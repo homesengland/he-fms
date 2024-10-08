@@ -5,6 +5,7 @@ using HE.FMS.Middleware.Providers.Config;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Polly;
 
 namespace HE.FMS.Middleware.Shared.Extensions;
 
@@ -16,14 +17,14 @@ public static class HostBuilderExtension
     {
         return hostBuilder.ConfigureFunctionsWorkerDefaults(builder => builder.UseFmsMiddlewares())
             .ConfigureAppConfiguration((context, builder) => builder.AddFmsConfiguration<T>(context))
-            .ConfigureServices(services =>
+            .ConfigureServices((context, services) =>
             {
                 services.AddApplicationInsightsTelemetryWorkerService();
                 services.ConfigureFunctionsApplicationInsights();
                 services.AddMemoryCache();
                 services.AddCommonModule()
                     .AddDomainModule()
-                    .AddProvidersModule();
+                    .AddProvidersModule(context.Configuration);
                 services.AddHealthChecks();
             })
             .Build();
