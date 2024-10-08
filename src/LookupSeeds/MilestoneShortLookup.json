@@ -1,5 +1,5 @@
 {
-  "id": "MilestoneLookup",
+  "id": "MilestoneShortLookup",
   "PartitionKey": "fms",
   "Value": {
     "Acquisition": "A",
