@@ -1,10 +1,10 @@
 {
-    "id": "RegionLookup",
-    "PartitionKey": "fms",
-    "Value": {
-        "North": "ASWRN",
-        "South": "ASWRS",
-        "Midlands": "ASWRM",
-        "London": "ASWRL"
-    }
+  "id": "RegionLookup",
+  "PartitionKey": "fms",
+  "Value": {
+    "North": "ASWRN",
+    "South": "ASWRS",
+    "Midlands": "ASWRM",
+    "London": "ASWRL"
+  }
 }

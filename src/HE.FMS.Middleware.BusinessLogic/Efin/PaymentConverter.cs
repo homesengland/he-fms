@@ -22,6 +22,18 @@ public abstract class PaymentConverter
             applicationDetails.SchemaName.Truncate(19));
     }
 
+    protected string GetInvoiceRef(
+        ClaimDetailsBase claimDetails,
+        ClaimApplicationDetails applicationDetails,
+        Dictionary<string, string> milestoneShortLookup)
+    {
+        return string.Format(
+            CultureInfo.InvariantCulture,
+            "{0}{1}",
+            applicationDetails.AllocationId,
+            milestoneShortLookup[claimDetails.Milestone.ToString()]);
+    }
+
     protected decimal CalculateVatAmount(decimal netAmount, decimal vatRate)
     {
         return netAmount * (vatRate / 100);

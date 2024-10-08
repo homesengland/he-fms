@@ -26,6 +26,9 @@ public sealed class FakeEfinLookupService : IEfinLookupCacheService
             var k when k.Equals(EfinConstants.Lookups.MilestoneLookup, StringComparison.OrdinalIgnoreCase)
                 => await GetDictionaryFromFile(EfinConstants.Lookups.MilestoneLookup),
 
+            var k when k.Equals(EfinConstants.Lookups.MilestoneShortLookup, StringComparison.OrdinalIgnoreCase)
+                => await GetDictionaryFromFile(EfinConstants.Lookups.MilestoneShortLookup),
+
             var k when k.Equals(EfinConstants.Lookups.TenureLookup, StringComparison.OrdinalIgnoreCase)
                 => await GetDictionaryFromFile(EfinConstants.Lookups.TenureLookup),
 

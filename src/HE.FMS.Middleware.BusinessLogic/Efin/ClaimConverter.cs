@@ -54,13 +54,14 @@ public class ClaimConverter : PaymentConverter, IClaimConverter
 
         var defaultDictionary = await _lookupCacheService.GetValue(EfinConstants.Lookups.ClaimDefault);
         var milestoneLookup = await _lookupCacheService.GetValue(EfinConstants.Lookups.MilestoneLookup);
+        var milestoneShortLookup = await _lookupCacheService.GetValue(EfinConstants.Lookups.MilestoneShortLookup);
         var regionLookup = await _lookupCacheService.GetValue(EfinConstants.Lookups.RegionLookup);
         var tenureLookup = await _lookupCacheService.GetValue(EfinConstants.Lookups.TenureLookup);
 
         return new CLI_Invoice()
         {
             cli_sub_ledger = defaultDictionary[nameof(CLI_Invoice.cli_sub_ledger)],
-            cli_inv_ref = claimPayment.Application.AllocationId,
+            cli_inv_ref = GetInvoiceRef(claimPayment.Claim, claimPayment.Application, milestoneShortLookup),
             cli_batch_ref = string.Empty,
             cli_cfacs_customer = claimPayment.Account.ProviderId,
             cli_net_amount = claimPayment.Claim.Amount.ToString(DecimalFormat, CultureInfo.InvariantCulture),
@@ -87,6 +88,7 @@ public class ClaimConverter : PaymentConverter, IClaimConverter
 
         var defaultDictionary = await _lookupCacheService.GetValue(EfinConstants.Lookups.ClaimDefault);
         var milestoneLookup = await _lookupCacheService.GetValue(EfinConstants.Lookups.MilestoneLookup);
+        var milestoneShortLookup = await _lookupCacheService.GetValue(EfinConstants.Lookups.MilestoneShortLookup);
         var regionLookup = await _lookupCacheService.GetValue(EfinConstants.Lookups.RegionLookup);
         var tenureLookup = await _lookupCacheService.GetValue(EfinConstants.Lookups.TenureLookup);
         var partnerTypeLookup = await _lookupCacheService.GetValue(EfinConstants.Lookups.PartnerTypeLookup);
@@ -94,7 +96,7 @@ public class ClaimConverter : PaymentConverter, IClaimConverter
         return new CLA_InvoiceAnalysis()
         {
             cla_sub_ledger = defaultDictionary[nameof(CLA_InvoiceAnalysis.cla_sub_ledger)],
-            cla_inv_ref = claimPayment.Application.AllocationId,
+            cla_inv_ref = GetInvoiceRef(claimPayment.Claim, claimPayment.Application, milestoneShortLookup),
             cla_batch_ref = string.Empty,
             cla_cfacs_cc = regionLookup[claimPayment.Application.Region.ToString()],
             cla_cfacs_ac = partnerTypeLookup[$"Claim_{claimPayment.Application.RevenueIndicator}_{claimPayment.Account.PartnerType}"],

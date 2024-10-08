@@ -6,6 +6,7 @@ public static class EfinConstants
         public const string ClaimDefault = nameof(ClaimDefault);
         public const string ReclaimDefault = nameof(ReclaimDefault);
         public const string MilestoneLookup = nameof(MilestoneLookup);
+        public const string MilestoneShortLookup = nameof(MilestoneShortLookup);
         public const string RegionLookup = nameof(RegionLookup);
         public const string TenureLookup = nameof(TenureLookup);
         public const string RevenueIndicatorLookup = nameof(RevenueIndicatorLookup);
