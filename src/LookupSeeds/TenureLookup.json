@@ -1,6 +1,6 @@
 {
-    "id": "TenureLookup",
-    "PartitionKey": "fms",
+  "id": "TenureLookup",
+  "PartitionKey": "fms",
   "Value": {
     "AffordableRent": "7572",
     "SocialRent": "7667",

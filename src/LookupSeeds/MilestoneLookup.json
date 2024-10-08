@@ -1,6 +1,6 @@
 {
-    "id": "MilestoneLookup",
-    "PartitionKey": "fms",
+  "id": "MilestoneLookup",
+  "PartitionKey": "fms",
   "Value": {
     "Acquisition": "ACQ",
     "StartOnSite": "SOS",

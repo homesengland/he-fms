@@ -13,6 +13,14 @@ public class TestPaymentConverter : PaymentConverter
         return GetDescription(claimDetails, applicationDetails, milestoneLookup);
     }
 
+    public string PublicGetInvoiceRef(
+        ClaimDetailsBase claimDetails,
+        ClaimApplicationDetails applicationDetails,
+        Dictionary<string, string> milestoneShortLookup)
+    {
+        return GetInvoiceRef(claimDetails, applicationDetails, milestoneShortLookup);
+    }
+
     public decimal PublicCalculateVatAmount(decimal netAmount, decimal vatRate)
     {
         return CalculateVatAmount(netAmount, vatRate);

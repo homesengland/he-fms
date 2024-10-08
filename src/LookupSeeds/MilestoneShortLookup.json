@@ -1,0 +1,10 @@
+{
+  "id": "MilestoneLookup",
+  "PartitionKey": "fms",
+  "Value": {
+    "Acquisition": "A",
+    "StartOnSite": "S",
+    "PracticalCompletion": "C",
+    "Planning": "P"
+  }
+}

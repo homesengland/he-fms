@@ -97,6 +97,7 @@ public class ClaimConverterTests
         var regionLookup = await _efinLookupService.GetValue(EfinConstants.Lookups.RegionLookup);
         var tenureLookup = await _efinLookupService.GetValue(EfinConstants.Lookups.TenureLookup);
         var milestoneLookup = await _efinLookupService.GetValue(EfinConstants.Lookups.MilestoneLookup);
+        var milestoneShortLookup = await _efinLookupService.GetValue(EfinConstants.Lookups.MilestoneShortLookup);
 
         var request = PaymentRequestFactory.CreateRandomClaimPaymentRequest();
 
@@ -107,7 +108,7 @@ public class ClaimConverterTests
         result.Should().NotBeNull();
 
         result.cli_sub_ledger.Should().Be(defaultDictionary[nameof(CLI_Invoice.cli_sub_ledger)]);
-        result.cli_inv_ref.Should().Be(request.Application.AllocationId);
+        result.cli_inv_ref.Should().Be(_paymentConverter.PublicGetInvoiceRef(request.Claim, request.Application, milestoneShortLookup));
         result.cli_batch_ref.Should().BeEmpty();
         result.cli_cfacs_customer.Should().Be(request.Account.ProviderId);
         result.cli_net_amount.Should().Be(request.Claim.Amount.ToString(DecimalFormat, CultureInfo.InvariantCulture));
@@ -136,6 +137,7 @@ public class ClaimConverterTests
         var tenureLookup = await _efinLookupService.GetValue(EfinConstants.Lookups.TenureLookup);
         var partnerTypeLookup = await _efinLookupService.GetValue(EfinConstants.Lookups.PartnerTypeLookup);
         var milestoneLookup = await _efinLookupService.GetValue(EfinConstants.Lookups.MilestoneLookup);
+        var milestoneShortLookup = await _efinLookupService.GetValue(EfinConstants.Lookups.MilestoneShortLookup);
 
         var request = PaymentRequestFactory.CreateRandomClaimPaymentRequest();
 
@@ -146,7 +148,7 @@ public class ClaimConverterTests
         result.Should().NotBeNull();
 
         result.cla_sub_ledger.Should().Be(defaultDictionary[nameof(CLA_InvoiceAnalysis.cla_sub_ledger)]);
-        result.cla_inv_ref.Should().Be(request.Application.AllocationId);
+        result.cla_inv_ref.Should().Be(_paymentConverter.PublicGetInvoiceRef(request.Claim, request.Application, milestoneShortLookup));
         result.cla_batch_ref.Should().Be(string.Empty);
         result.cla_cfacs_cc.Should().Be(regionLookup[request.Application.Region.ToString()]);
         result.cla_cfacs_ac.Should().Be(partnerTypeLookup[$"Claim_{request.Application.RevenueIndicator}_{request.Account.PartnerType}"]);
