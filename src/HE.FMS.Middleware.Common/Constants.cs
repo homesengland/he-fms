@@ -61,6 +61,7 @@ public static class Constants
             public const string ReclaimsTopic = "Reclaims:Create:TopicName";
             public const string ConnectionString = "ServiceBus:Connection";
             public const string FullyQualifiedNamespace = "ServiceBus:Connection:fullyQualifiedNamespace";
+            public const string DefaultClientName = "DefaultClient";
         }
     }
 }

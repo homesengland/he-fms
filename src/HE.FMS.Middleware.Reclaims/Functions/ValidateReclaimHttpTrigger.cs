@@ -1,17 +1,19 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Azure.Messaging.ServiceBus;
 using HE.FMS.Middleware.BusinessLogic.Trace.CosmosDb;
 using HE.FMS.Middleware.Common;
 using HE.FMS.Middleware.Common.Serialization;
 using HE.FMS.Middleware.Contract.Common.CosmosDb;
 using HE.FMS.Middleware.Contract.Reclaims;
 using HE.FMS.Middleware.Providers.Common;
-using HE.FMS.Middleware.Providers.ServiceBus;
+using HE.FMS.Middleware.Providers.SeriveBus.Settings;
 using HE.FMS.Middleware.Shared.Base;
 using HE.FMS.Middleware.Shared.Middlewares;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Logging;
 
 namespace HE.FMS.Middleware.Reclaims.Functions;
@@ -23,14 +25,16 @@ public class ValidateReclaimHttpTrigger : ClaimBase<ReclaimPaymentRequest>
         IStreamSerializer streamSerializer,
         ITraceCosmosClient traceCosmosDbClient,
         IObjectSerializer objectSerializer,
-        ITopicClientFactory topicClientFactory,
+        IAzureClientFactory<ServiceBusClient> clientFactory,
         IEnvironmentValidator environmentValidator,
+        ServiceBusSettings serviceBusSettings,
         ILogger<ValidateReclaimHttpTrigger> logger)
         : base(
             streamSerializer,
             traceCosmosDbClient,
             objectSerializer,
-            topicClientFactory.GetTopicClient(Constants.Settings.ServiceBus.ReclaimsTopic),
+            clientFactory.CreateClient(Constants.Settings.ServiceBus.DefaultClientName)
+                .CreateSender(serviceBusSettings.ReclaimsTopic),
             environmentValidator)
     {
         _logger = logger;

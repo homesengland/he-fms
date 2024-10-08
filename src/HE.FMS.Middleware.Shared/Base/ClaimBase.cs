@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Text;
+using Azure.Messaging.ServiceBus;
 using HE.FMS.Middleware.BusinessLogic.Trace.CosmosDb;
 using HE.FMS.Middleware.Common;
 using HE.FMS.Middleware.Common.Exceptions.Validation;
@@ -9,7 +10,6 @@ using HE.FMS.Middleware.Common.Serialization;
 using HE.FMS.Middleware.Contract.Common.CosmosDb;
 using HE.FMS.Middleware.Providers.Common;
 using Microsoft.Azure.Functions.Worker.Http;
-using Microsoft.Azure.ServiceBus;
 
 namespace HE.FMS.Middleware.Shared.Base;
 
@@ -18,7 +18,7 @@ public abstract class ClaimBase<T>
 {
     private readonly IStreamSerializer _streamSerializer;
     private readonly ITraceCosmosClient _traceCosmosDbClient;
-    private readonly TopicClient _topicClient;
+    private readonly ServiceBusSender _serviceBusSender;
     private readonly IObjectSerializer _objectSerializer;
     private readonly IEnvironmentValidator _environmentValidator;
 
@@ -26,13 +26,13 @@ public abstract class ClaimBase<T>
         IStreamSerializer streamSerializer,
         ITraceCosmosClient traceComsmosDbClient,
         IObjectSerializer objectSerializer,
-        TopicClient topicClient,
+        ServiceBusSender serviceBusSender,
         IEnvironmentValidator environmentValidator)
     {
         _streamSerializer = streamSerializer;
         _traceCosmosDbClient = traceComsmosDbClient;
         _objectSerializer = objectSerializer;
-        _topicClient = topicClient;
+        _serviceBusSender = serviceBusSender;
         _environmentValidator = environmentValidator;
     }
 
@@ -50,13 +50,14 @@ public abstract class ClaimBase<T>
 
         await _traceCosmosDbClient.UpsertItem(cosmosDbOutput, cancellationToken);
 
-        var topicOutput = new Message(Encoding.UTF8.GetBytes(_objectSerializer.Serialize(inputData)))
+        ServiceBusMessage message = new(Encoding.UTF8.GetBytes(_objectSerializer.Serialize(inputData)))
         {
             CorrelationId = idempotencyKey,
         };
-        topicOutput.UserProperties.Add(Constants.CustomHeaders.Environment, environment);
 
-        await _topicClient.SendAsync(topicOutput);
+        message.ApplicationProperties.Add(Constants.CustomHeaders.Environment, environment);
+
+        await _serviceBusSender.SendMessageAsync(message, cancellationToken);
 
         return request.CreateResponse(HttpStatusCode.Accepted);
     }
