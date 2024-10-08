@@ -6,6 +6,7 @@ using HE.FMS.Middleware.Providers.Common;
 using HE.FMS.Middleware.Providers.Config;
 using HE.FMS.Middleware.Providers.File;
 using Microsoft.Azure.Cosmos;
+using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
@@ -78,9 +79,13 @@ public class ProvidersModuleTests
         // Act
         _services.AddServiceBus(_configuration);
         var serviceProvider = _services.BuildServiceProvider();
+        var clientFactory = serviceProvider.GetService<IAzureClientFactory<ServiceBusClient>>();
 
         // Assert
-        Assert.NotNull(serviceProvider.GetService<ServiceBusClient>());
+        Assert.NotNull(clientFactory);
+
+        var defaultClient = clientFactory.CreateClient(Constants.Settings.ServiceBus.DefaultClientName);
+        Assert.NotNull(defaultClient);
     }
 
     [Fact]
