@@ -8,12 +8,25 @@
     <PackageReference Include="NUnit" Version="4.2.2" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="8.0.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HE.FMS.Middleware.Providers\HE.FMS.Middleware.Providers.csproj" />
   </ItemGroup>
   <ItemGroup>
     <AssemblyAttribute Include="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Update="FluentAssertions" Version="6.12.1" />
+    <PackageReference Update="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Update="SonarAnalyzer.CSharp" Version="9.32.0.97167">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Update="xunit" Version="2.9.2" />
+    <PackageReference Update="xunit.runner.visualstudio" Version="2.8.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 </Project>

@@ -18,14 +18,12 @@ public class ClaimConverterTests
     private readonly FakeEfinLookupService _efinLookupService;
     private readonly FakeDateTimeProvider _dateTimeProvider;
     private readonly ClaimConverter _claimConverter;
-    private readonly TestPaymentConverter _paymentConverter;
 
     public ClaimConverterTests()
     {
         _efinLookupService = new FakeEfinLookupService();
         _dateTimeProvider = new FakeDateTimeProvider();
         _claimConverter = new ClaimConverter(_dateTimeProvider, _efinLookupService);
-        _paymentConverter = new TestPaymentConverter();
     }
 
     [Fact]
@@ -80,8 +78,8 @@ public class ClaimConverterTests
         result.Should().NotBeNull();
         result.clb_sub_ledger.Should().Be(defaultDictionary[nameof(CLCLB_Batch.clb_sub_ledger)]);
         result.clb_batch_ref.Should().Be(batchRef);
-        result.clb_year.Should().Be(_paymentConverter.PublicGetAccountingYear(_dateTimeProvider.UtcNow).ToString(CultureInfo.InvariantCulture));
-        result.clb_period.Should().Be(_paymentConverter.PublicGetAccountingPeriod(_dateTimeProvider.UtcNow).ToString(CultureInfo.InvariantCulture));
+        result.clb_year.Should().Be(PaymentConverter.GetAccountingYear(_dateTimeProvider.UtcNow).ToString(CultureInfo.InvariantCulture));
+        result.clb_period.Should().Be(PaymentConverter.GetAccountingPeriod(_dateTimeProvider.UtcNow).ToString(CultureInfo.InvariantCulture));
         result.clb_no_invoices.Should().Be(claims.Length.ToString(CultureInfo.InvariantCulture));
         result.clb_quantity.Should().Be(claims.Length.ToString(CultureInfo.InvariantCulture));
         result.clb_user.Should().Be(defaultDictionary[nameof(CLCLB_Batch.clb_user)]);
@@ -108,7 +106,7 @@ public class ClaimConverterTests
         result.Should().NotBeNull();
 
         result.cli_sub_ledger.Should().Be(defaultDictionary[nameof(CLI_Invoice.cli_sub_ledger)]);
-        result.cli_inv_ref.Should().Be(_paymentConverter.PublicGetInvoiceRef(request.Claim, request.Application, milestoneShortLookup));
+        result.cli_inv_ref.Should().Be(PaymentConverter.GetInvoiceRef(request.Claim, request.Application, milestoneShortLookup));
         result.cli_batch_ref.Should().BeEmpty();
         result.cli_cfacs_customer.Should().Be(request.Account.ProviderId);
         result.cli_net_amount.Should().Be(request.Claim.Amount.ToString(DecimalFormat, CultureInfo.InvariantCulture));
@@ -125,7 +123,7 @@ public class ClaimConverterTests
         result.cli_cost_centre.Should().Be(regionLookup[request.Application.Region.ToString()]);
         result.cli_job.Should().Be(defaultDictionary[nameof(CLI_Invoice.cli_job)]);
         result.cli_activity.Should().Be(tenureLookup[request.Application.Tenure.ToString()]);
-        result.cli_description.Should().Be(_paymentConverter.PublicGetDescription(request.Claim, request.Application, milestoneLookup));
+        result.cli_description.Should().Be(PaymentConverter.GetDescription(request.Claim, request.Application, milestoneLookup));
     }
 
     [Fact]
@@ -148,7 +146,7 @@ public class ClaimConverterTests
         result.Should().NotBeNull();
 
         result.cla_sub_ledger.Should().Be(defaultDictionary[nameof(CLA_InvoiceAnalysis.cla_sub_ledger)]);
-        result.cla_inv_ref.Should().Be(_paymentConverter.PublicGetInvoiceRef(request.Claim, request.Application, milestoneShortLookup));
+        result.cla_inv_ref.Should().Be(PaymentConverter.GetInvoiceRef(request.Claim, request.Application, milestoneShortLookup));
         result.cla_batch_ref.Should().Be(string.Empty);
         result.cla_cfacs_cc.Should().Be(regionLookup[request.Application.Region.ToString()]);
         result.cla_cfacs_ac.Should().Be(partnerTypeLookup[$"Claim_{request.Application.RevenueIndicator}_{request.Account.PartnerType}"]);
@@ -161,6 +159,6 @@ public class ClaimConverterTests
         result.cla_unit_qty.Should().Be(defaultDictionary[nameof(CLA_InvoiceAnalysis.cla_unit_qty)]);
         result.cla_uom.Should().Be(defaultDictionary[nameof(CLA_InvoiceAnalysis.cla_uom)]);
         result.cla_volume.Should().Be(defaultDictionary[nameof(CLA_InvoiceAnalysis.cla_volume)]);
-        result.cla_description.Should().Be(_paymentConverter.PublicGetDescription(request.Claim, request.Application, milestoneLookup));
+        result.cla_description.Should().Be(PaymentConverter.GetDescription(request.Claim, request.Application, milestoneLookup));
     }
 }
