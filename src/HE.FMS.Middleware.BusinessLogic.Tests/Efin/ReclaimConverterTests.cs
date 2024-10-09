@@ -6,7 +6,6 @@ using HE.FMS.Middleware.BusinessLogic.Tests.Factories;
 using HE.FMS.Middleware.BusinessLogic.Tests.Fakes;
 using HE.FMS.Middleware.Contract.Reclaims;
 using HE.FMS.Middleware.Contract.Reclaims.Efin;
-using HE.FMS.Middleware.Providers.Common;
 using Xunit;
 
 namespace HE.FMS.Middleware.BusinessLogic.Tests.Efin;
@@ -18,14 +17,12 @@ public class ReclaimConverterTests
     private readonly ReclaimConverter _reclaimConverter;
     private readonly FakeEfinLookupService _efinLookupService;
     private readonly FakeDateTimeProvider _dateTimeProvider;
-    private readonly TestPaymentConverter _paymentConverter;
 
     public ReclaimConverterTests()
     {
         _efinLookupService = new FakeEfinLookupService();
         _dateTimeProvider = new FakeDateTimeProvider();
         _reclaimConverter = new(_dateTimeProvider, _efinLookupService);
-        _paymentConverter = new TestPaymentConverter();
     }
 
     [Fact]
@@ -92,8 +89,8 @@ public class ReclaimConverterTests
         result.Should().NotBeNull();
         result.cliwb_sub_ledger.Should().Be(defaultDictionary[nameof(CLI_IW_BAT.cliwb_sub_ledger)]);
         result.cliwb_batch_ref.Should().Be(batchRef);
-        result.cliwb_year.Should().Be(_paymentConverter.PublicGetAccountingYear(_dateTimeProvider.UtcNow).ToString(CultureInfo.InvariantCulture));
-        result.cliwb_period.Should().Be(_paymentConverter.PublicGetAccountingPeriod(_dateTimeProvider.UtcNow).ToString(CultureInfo.InvariantCulture));
+        result.cliwb_year.Should().Be(PaymentConverter.GetAccountingYear(_dateTimeProvider.UtcNow).ToString(CultureInfo.InvariantCulture));
+        result.cliwb_period.Should().Be(PaymentConverter.GetAccountingPeriod(_dateTimeProvider.UtcNow).ToString(CultureInfo.InvariantCulture));
         result.cliwb_no_invoices.Should().Be(reclaims.Length.ToString(CultureInfo.InvariantCulture));
         result.cliwb_user.Should().Be(defaultDictionary[nameof(CLI_IW_BAT.cliwb_user)]);
         result.cliwb_default_prefix.Should().Be(defaultDictionary[nameof(CLI_IW_BAT.cliwb_default_prefix)]);
@@ -115,7 +112,7 @@ public class ReclaimConverterTests
         // Assert    
         result.Should().NotBeNull();
         result.cliwt_sub_ledger_id.Should().Be(defaultDictionary[nameof(CLI_IW_ILT.cliwt_sub_ledger_id)]);
-        result.cliwt_inv_ref.Should().Be(_paymentConverter.PublicGetInvoiceRef(request.Reclaim, request.Application, milestoneShortLookup));
+        result.cliwt_inv_ref.Should().Be(PaymentConverter.GetInvoiceRef(request.Reclaim, request.Application, milestoneShortLookup));
         result.cliwt_batch_ref.Should().BeEmpty();
         result.cliwt_item_sequence.Should().Be(defaultDictionary[nameof(CLI_IW_ILT.cliwt_item_sequence)]);
         result.cliwt_print_sequence.Should().Be(defaultDictionary[nameof(CLI_IW_ILT.cliwt_print_sequence)]);
@@ -140,7 +137,7 @@ public class ReclaimConverterTests
         // Assert    
         result.Should().NotBeNull();
         result.cliwa_sub_ledger_id.Should().Be(defaultDictionary[nameof(CLI_IW_INA.cliwa_sub_ledger_id)]);
-        result.cliwa_inv_ref.Should().Be(_paymentConverter.PublicGetInvoiceRef(request.Reclaim, request.Application, milestoneShortLookup));
+        result.cliwa_inv_ref.Should().Be(PaymentConverter.GetInvoiceRef(request.Reclaim, request.Application, milestoneShortLookup));
         result.cliwa_batch_ref.Should().Be(string.Empty);
         result.cliwa_item_sequence.Should().Be(defaultDictionary[nameof(CLI_IW_INA.cliwa_item_sequence)]);
         result.cliwa_cost_centre.Should().Be(regionLookup[request.Application.Region.ToString()]);
@@ -166,13 +163,13 @@ public class ReclaimConverterTests
         // Assert  
         result.Should().NotBeNull();
         result.cliwl_sub_ledger_id.Should().Be(defaultDictionary[nameof(CLI_IW_INL.cliwl_sub_ledger_id)]);
-        result.cliwl_inv_ref.Should().Be(_paymentConverter.PublicGetInvoiceRef(request.Reclaim, request.Application, milestoneShortLookup));
+        result.cliwl_inv_ref.Should().Be(PaymentConverter.GetInvoiceRef(request.Reclaim, request.Application, milestoneShortLookup));
         result.cliwl_batch_ref.Should().Be(string.Empty);
         result.cliwl_item_sequence.Should().Be(defaultDictionary[nameof(CLI_IW_INL.cliwl_item_sequence)]);
         result.cliwl_product_id.Should().Be(defaultDictionary[nameof(CLI_IW_INL.cliwl_product_id)]);
         result.cliwl_goods_value.Should().Be(request.Reclaim.Amount.ToString(DecimalFormat, CultureInfo.InvariantCulture));
         result.cliwl_vat_code.Should().Be(((int)request.Application.VatCode).ToString("D2", CultureInfo.InvariantCulture));
-        result.cliwl_vat_amount.Should().Be(_paymentConverter.PublicCalculateVatAmount(request.Reclaim.Amount, request.Application.VatRate).ToString(DecimalFormat, CultureInfo.InvariantCulture));
+        result.cliwl_vat_amount.Should().Be(PaymentConverter.CalculateVatAmount(request.Reclaim.Amount, request.Application.VatRate).ToString(DecimalFormat, CultureInfo.InvariantCulture));
         result.cliwl_line_ref.Should().Be(defaultDictionary[nameof(CLI_IW_INL.cliwl_line_ref)]);
     }
 
@@ -195,7 +192,7 @@ public class ReclaimConverterTests
         // Assert  
         result.Should().NotBeNull();
         result.cliwi_sub_ledger_id.Should().Be(defaultDictionary[nameof(CLI_IW_INV.cliwi_sub_ledger_id)]);
-        result.cliwi_inv_ref.Should().Be(_paymentConverter.PublicGetInvoiceRef(request.Reclaim, request.Application, milestoneShortLookup));
+        result.cliwi_inv_ref.Should().Be(PaymentConverter.GetInvoiceRef(request.Reclaim, request.Application, milestoneShortLookup));
         result.cliwi_batch_ref.Should().BeEmpty();
         result.cliwi_invoice_to_id.Should().Be(request.Account.ProviderId);
         result.cliwi_net_amount.Should().Be(request.Reclaim.Amount.ToString(DecimalFormat, CultureInfo.InvariantCulture));
@@ -212,7 +209,7 @@ public class ReclaimConverterTests
         result.cliwi_entry_date.Should().Be(_dateTimeProvider.UtcNow.ToString(DateFormat, CultureInfo.InvariantCulture));
         result.cliwi_invoice_prefix.Should().Be(defaultDictionary[nameof(CLI_IW_INV.cliwi_invoice_prefix)]);
         result.cliwi_tax_point.Should().Be(_dateTimeProvider.UtcNow.ToString(DateFormat, CultureInfo.InvariantCulture));
-        result.cliwi_description.Should().Be(_paymentConverter.PublicGetDescription(request.Reclaim, request.Application, milestoneLookup));
+        result.cliwi_description.Should().Be(PaymentConverter.GetDescription(request.Reclaim, request.Application, milestoneLookup));
     }
 
     [Fact]
@@ -232,9 +229,9 @@ public class ReclaimConverterTests
         result.Should().NotBeNull();
         result.cliwx_sub_ledger_id.Should().Be(defaultDictionary[nameof(CLI_IW_ITL.cliwx_sub_ledger_id)]);
         result.cliwx_batch_ref.Should().BeEmpty();
-        result.cliwx_inv_ref.Should().Be(_paymentConverter.PublicGetInvoiceRef(request.Reclaim, request.Application, milestoneShortLookup));
+        result.cliwx_inv_ref.Should().Be(PaymentConverter.GetInvoiceRef(request.Reclaim, request.Application, milestoneShortLookup));
         result.cliwx_line_no.Should().Be(defaultDictionary[nameof(CLI_IW_ITL.cliwx_line_no)]);
         result.cliwx_header_footer.Should().Be(defaultDictionary[nameof(CLI_IW_ITL.cliwx_header_footer)]);
-        result.cliwx_text.Should().Be(_paymentConverter.PublicGetDescription(request.Reclaim, request.Application, milestoneLookup));
+        result.cliwx_text.Should().Be(PaymentConverter.GetDescription(request.Reclaim, request.Application, milestoneLookup));
     }
 }

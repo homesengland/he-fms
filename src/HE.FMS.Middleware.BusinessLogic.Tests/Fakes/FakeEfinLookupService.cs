@@ -56,6 +56,7 @@ public sealed class FakeEfinLookupService : IEfinLookupCacheService
         return new Dictionary<string, string>(dictionary, StringComparer.OrdinalIgnoreCase);
     }
 
+#pragma warning disable S2325
     private async Task<EfinLookupItem> DeserializeJsonFileAsync(string directoryPath, string fileName)
     {
         var solutionDirectory = TestContext.CurrentContext.TestDirectory;
@@ -71,4 +72,5 @@ public sealed class FakeEfinLookupService : IEfinLookupCacheService
         var json = await File.ReadAllTextAsync(filePath);
         return JsonConvert.DeserializeObject<EfinLookupItem>(json)!;
     }
+#pragma warning restore S2325
 }

@@ -1,4 +1,5 @@
 using System.Globalization;
+using HE.FMS.Middleware.BusinessLogic.Efin;
 using HE.FMS.Middleware.Contract.Claims;
 using HE.FMS.Middleware.Contract.Enums;
 using Xunit;
@@ -11,7 +12,6 @@ public class PaymentConverterTests
     public void GetDescription_ShouldReturnFormattedDescription()
     {
         // Arrange  
-        var converter = new TestPaymentConverter();
         var claimDetails = new ClaimDetailsBase { Milestone = Milestone.Acquisition };
         var applicationDetails = new ClaimApplicationDetails
         {
@@ -21,7 +21,7 @@ public class PaymentConverterTests
         var milestoneLookup = new Dictionary<string, string> { { "Acquisition", "ACQ" } };
 
         // Act  
-        var description = converter.PublicGetDescription(claimDetails, applicationDetails, milestoneLookup);
+        var description = PaymentConverter.GetDescription(claimDetails, applicationDetails, milestoneLookup);
 
         // Assert  
         Assert.Equal("ACQ12345 LongSchemaNameThatN", description);
@@ -30,8 +30,7 @@ public class PaymentConverterTests
     [Fact]
     public void GetInvoiceRef_ShouldReturnFormattedInvoiceRef()
     {
-        // Arrange  
-        var converter = new TestPaymentConverter();
+        // Arrange
         var claimDetails = new ClaimDetailsBase { Milestone = Milestone.Acquisition };
         var applicationDetails = new ClaimApplicationDetails
         {
@@ -40,7 +39,7 @@ public class PaymentConverterTests
         var milestoneLookup = new Dictionary<string, string> { { "Acquisition", "A" } };
 
         // Act  
-        var invoiceRef = converter.PublicGetInvoiceRef(claimDetails, applicationDetails, milestoneLookup);
+        var invoiceRef = PaymentConverter.GetInvoiceRef(claimDetails, applicationDetails, milestoneLookup);
 
         // Assert  
         Assert.Equal("G123456A", invoiceRef);
@@ -49,13 +48,12 @@ public class PaymentConverterTests
     [Fact]
     public void CalculateVatAmount_ShouldReturnCorrectVatAmount()
     {
-        // Arrange  
-        var converter = new TestPaymentConverter();
+        // Arrange
         var netAmount = 100m;
         var vatRate = 20m;
 
         // Act  
-        var vatAmount = converter.PublicCalculateVatAmount(netAmount, vatRate);
+        var vatAmount = PaymentConverter.CalculateVatAmount(netAmount, vatRate);
 
         // Assert  
         Assert.Equal(20m, vatAmount);
@@ -64,13 +62,12 @@ public class PaymentConverterTests
     [Fact]
     public void CalculateGrossAmount_ShouldReturnCorrectGrossAmount()
     {
-        // Arrange  
-        var converter = new TestPaymentConverter();
+        // Arrange
         var netAmount = 100m;
         var vatRate = 20m;
 
         // Act  
-        var grossAmount = converter.PublicCalculateGrossAmount(netAmount, vatRate);
+        var grossAmount = PaymentConverter.CalculateGrossAmount(netAmount, vatRate);
 
         // Assert  
         Assert.Equal(120m, grossAmount);
@@ -91,13 +88,11 @@ public class PaymentConverterTests
     [InlineData("2020/12/1", 2021)]
     public void GetAccountingYear_ShouldReturnCorrectYear(string date, int expected)
     {
-        // Arrange  
-        var converter = new TestPaymentConverter();
-
+        // Arrange
         var parsedDate = DateTime.Parse(date, CultureInfo.InvariantCulture);
 
         // Act  
-        var result = converter.PublicGetAccountingYear(parsedDate);
+        var result = PaymentConverter.GetAccountingYear(parsedDate);
 
         // Assert  
         Assert.Equal(expected, result);
@@ -118,13 +113,11 @@ public class PaymentConverterTests
     [InlineData("2020/12/1", 9)]
     public void GetAccountingPeriod_ShouldReturnCorrectPeriod(string date, int expected)
     {
-        // Arrange  
-        var converter = new TestPaymentConverter();
-
+        // Arrange
         var parsedDate = DateTime.Parse(date, CultureInfo.InvariantCulture);
 
         // Act  
-        var result = converter.PublicGetAccountingPeriod(parsedDate);
+        var result = PaymentConverter.GetAccountingPeriod(parsedDate);
 
         // Assert  
         Assert.Equal(expected, result);

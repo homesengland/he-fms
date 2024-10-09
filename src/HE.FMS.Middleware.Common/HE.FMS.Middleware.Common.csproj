@@ -6,12 +6,18 @@
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" Version="3.2.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.2" />
     <PackageReference Include="MiniValidation" Version="0.9.1" />
-    <PackageReference Include="System.Memory.Data" Version="1.0.2" />
+    <PackageReference Include="System.Memory.Data" Version="8.0.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HE.FMS.Middleware.Contract\HE.FMS.Middleware.Contract.csproj" />
   </ItemGroup>
   <ItemGroup>
     <InternalsVisibleTo Include="HE.FMS.Middleware.Common.Tests"></InternalsVisibleTo>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Update="SonarAnalyzer.CSharp" Version="9.32.0.97167">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 </Project>

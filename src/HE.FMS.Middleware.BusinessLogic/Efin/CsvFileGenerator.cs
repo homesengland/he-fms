@@ -20,14 +20,10 @@ public class CsvFileGenerator(IDateTimeProvider dateTimeProvider) : ICsvFileGene
 
         var dateString = dateTimeProvider.UtcNow.ToString(DateTimeFormat, CultureInfo.InvariantCulture);
 
-        return new BlobData()
-        {
-            Name = $"{fileNamePrefix}{batchNumber}_{dateString}{FileExtension}",
-            Content = string.Join(Environment.NewLine, rows),
-        };
+        return new BlobData() { Name = $"{fileNamePrefix}{batchNumber}_{dateString}{FileExtension}", Content = string.Join(Environment.NewLine, rows), };
     }
 
-    private string GenerateRow(object item)
+    private static string GenerateRow(object item)
     {
         ArgumentNullException.ThrowIfNull(item);
 
