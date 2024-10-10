@@ -53,12 +53,11 @@ public class ReclaimConverter : PaymentConverter, IReclaimConverter
         ArgumentNullException.ThrowIfNull(reclaimPayment);
 
         var defaultDictionary = await _lookupCacheService.GetValue(EfinConstants.Lookups.ReclaimDefault);
-        var milestoneShortLookup = await _lookupCacheService.GetValue(EfinConstants.Lookups.MilestoneShortLookup);
 
         return new CLI_IW_ILT()
         {
             cliwt_sub_ledger_id = defaultDictionary[nameof(CLI_IW_ILT.cliwt_sub_ledger_id)],
-            cliwt_inv_ref = GetInvoiceRef(reclaimPayment.Reclaim, reclaimPayment.Application, milestoneShortLookup),
+            cliwt_inv_ref = reclaimPayment.Reclaim.InvoiceId,
             cliwt_batch_ref = string.Empty,
             cliwt_item_sequence = defaultDictionary[nameof(CLI_IW_ILT.cliwt_item_sequence)],
             cliwt_print_sequence = defaultDictionary[nameof(CLI_IW_ILT.cliwt_print_sequence)],
@@ -74,13 +73,12 @@ public class ReclaimConverter : PaymentConverter, IReclaimConverter
         var regionLookup = await _lookupCacheService.GetValue(EfinConstants.Lookups.RegionLookup);
         var tenureLookup = await _lookupCacheService.GetValue(EfinConstants.Lookups.TenureLookup);
         var partnerTypeLookup = await _lookupCacheService.GetValue(EfinConstants.Lookups.PartnerTypeLookup);
-        var milestoneShortLookup = await _lookupCacheService.GetValue(EfinConstants.Lookups.MilestoneShortLookup);
 
         return new CLI_IW_INA()
         {
             cliwa_sub_ledger_id = defaultDictionary[nameof(CLI_IW_INA.cliwa_sub_ledger_id)],
             cliwa_batch_ref = string.Empty,
-            cliwa_inv_ref = GetInvoiceRef(reclaimPayment.Reclaim, reclaimPayment.Application, milestoneShortLookup),
+            cliwa_inv_ref = reclaimPayment.Reclaim.InvoiceId,
             cliwa_item_sequence = defaultDictionary[nameof(CLI_IW_INA.cliwa_item_sequence)],
             cliwa_cost_centre = regionLookup[reclaimPayment.Application.Region.ToString()],
             cliwa_account = reclaimPayment.Reclaim.Amount != 0 ?
@@ -99,12 +97,11 @@ public class ReclaimConverter : PaymentConverter, IReclaimConverter
         ArgumentNullException.ThrowIfNull(reclaimPayment);
 
         var defaultDictionary = await _lookupCacheService.GetValue(EfinConstants.Lookups.ReclaimDefault);
-        var milestoneShortLookup = await _lookupCacheService.GetValue(EfinConstants.Lookups.MilestoneShortLookup);
 
         return new CLI_IW_INL()
         {
             cliwl_sub_ledger_id = defaultDictionary[nameof(CLI_IW_INL.cliwl_sub_ledger_id)],
-            cliwl_inv_ref = GetInvoiceRef(reclaimPayment.Reclaim, reclaimPayment.Application, milestoneShortLookup),
+            cliwl_inv_ref = reclaimPayment.Reclaim.InvoiceId,
             cliwl_batch_ref = string.Empty,
             cliwl_item_sequence = defaultDictionary[nameof(CLI_IW_INL.cliwl_item_sequence)],
             cliwl_product_id = defaultDictionary[nameof(CLI_IW_INL.cliwl_product_id)],
@@ -124,12 +121,11 @@ public class ReclaimConverter : PaymentConverter, IReclaimConverter
         var regionLookup = await _lookupCacheService.GetValue(EfinConstants.Lookups.RegionLookup);
         var tenureLookup = await _lookupCacheService.GetValue(EfinConstants.Lookups.TenureLookup);
         var partnerTypeLookup = await _lookupCacheService.GetValue(EfinConstants.Lookups.PartnerTypeLookup);
-        var milestoneShortLookup = await _lookupCacheService.GetValue(EfinConstants.Lookups.MilestoneShortLookup);
 
         return new CLI_IW_INV()
         {
             cliwi_sub_ledger_id = defaultDictionary[nameof(CLI_IW_INV.cliwi_sub_ledger_id)],
-            cliwi_inv_ref = GetInvoiceRef(reclaimPayment.Reclaim, reclaimPayment.Application, milestoneShortLookup),
+            cliwi_inv_ref = reclaimPayment.Reclaim.InvoiceId,
             cliwi_batch_ref = string.Empty,
             cliwi_invoice_to_id = reclaimPayment.Account.ProviderId,
             cliwi_net_amount = reclaimPayment.Reclaim.Amount.ToString(DecimalFormat, CultureInfo.InvariantCulture),
@@ -156,13 +152,12 @@ public class ReclaimConverter : PaymentConverter, IReclaimConverter
 
         var defaultDictionary = await _lookupCacheService.GetValue(EfinConstants.Lookups.ReclaimDefault);
         var milestoneLookup = await _lookupCacheService.GetValue(EfinConstants.Lookups.MilestoneLookup);
-        var milestoneShortLookup = await _lookupCacheService.GetValue(EfinConstants.Lookups.MilestoneShortLookup);
 
         return new CLI_IW_ITL()
         {
             cliwx_sub_ledger_id = defaultDictionary[nameof(CLI_IW_ITL.cliwx_sub_ledger_id)],
             cliwx_batch_ref = string.Empty,
-            cliwx_inv_ref = GetInvoiceRef(reclaimPayment.Reclaim, reclaimPayment.Application, milestoneShortLookup),
+            cliwx_inv_ref = reclaimPayment.Reclaim.InvoiceId,
             cliwx_line_no = defaultDictionary[nameof(CLI_IW_ITL.cliwx_line_no)],
             cliwx_header_footer = defaultDictionary[nameof(CLI_IW_ITL.cliwx_header_footer)],
             cliwx_text = GetDescription(reclaimPayment.Reclaim, reclaimPayment.Application, milestoneLookup),

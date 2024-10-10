@@ -102,8 +102,6 @@ public class ReclaimConverterTests
     {
         // Arrange  
         var defaultDictionary = await _efinLookupService.GetValue(EfinConstants.Lookups.ReclaimDefault);
-        var milestoneShortLookup = await _efinLookupService.GetValue(EfinConstants.Lookups.MilestoneShortLookup);
-
         var request = PaymentRequestFactory.CreateRandomReclaimPaymentRequest();
 
         // Act    
@@ -112,7 +110,7 @@ public class ReclaimConverterTests
         // Assert    
         result.Should().NotBeNull();
         result.cliwt_sub_ledger_id.Should().Be(defaultDictionary[nameof(CLI_IW_ILT.cliwt_sub_ledger_id)]);
-        result.cliwt_inv_ref.Should().Be(PaymentConverter.GetInvoiceRef(request.Reclaim, request.Application, milestoneShortLookup));
+        result.cliwt_inv_ref.Should().Be(request.Reclaim.InvoiceId);
         result.cliwt_batch_ref.Should().BeEmpty();
         result.cliwt_item_sequence.Should().Be(defaultDictionary[nameof(CLI_IW_ILT.cliwt_item_sequence)]);
         result.cliwt_print_sequence.Should().Be(defaultDictionary[nameof(CLI_IW_ILT.cliwt_print_sequence)]);
@@ -127,8 +125,6 @@ public class ReclaimConverterTests
         var regionLookup = await _efinLookupService.GetValue(EfinConstants.Lookups.RegionLookup);
         var tenureLookup = await _efinLookupService.GetValue(EfinConstants.Lookups.TenureLookup);
         var partnerTypeLookup = await _efinLookupService.GetValue(EfinConstants.Lookups.PartnerTypeLookup);
-        var milestoneShortLookup = await _efinLookupService.GetValue(EfinConstants.Lookups.MilestoneShortLookup);
-
         var request = PaymentRequestFactory.CreateRandomReclaimPaymentRequest();
 
         // Act    
@@ -137,7 +133,7 @@ public class ReclaimConverterTests
         // Assert    
         result.Should().NotBeNull();
         result.cliwa_sub_ledger_id.Should().Be(defaultDictionary[nameof(CLI_IW_INA.cliwa_sub_ledger_id)]);
-        result.cliwa_inv_ref.Should().Be(PaymentConverter.GetInvoiceRef(request.Reclaim, request.Application, milestoneShortLookup));
+        result.cliwa_inv_ref.Should().Be(request.Reclaim.InvoiceId);
         result.cliwa_batch_ref.Should().Be(string.Empty);
         result.cliwa_item_sequence.Should().Be(defaultDictionary[nameof(CLI_IW_INA.cliwa_item_sequence)]);
         result.cliwa_cost_centre.Should().Be(regionLookup[request.Application.Region.ToString()]);
@@ -153,8 +149,6 @@ public class ReclaimConverterTests
     {
         // Arrange  
         var defaultDictionary = await _efinLookupService.GetValue(EfinConstants.Lookups.ReclaimDefault);
-        var milestoneShortLookup = await _efinLookupService.GetValue(EfinConstants.Lookups.MilestoneShortLookup);
-
         var request = PaymentRequestFactory.CreateRandomReclaimPaymentRequest();
 
         // Act  
@@ -163,7 +157,7 @@ public class ReclaimConverterTests
         // Assert  
         result.Should().NotBeNull();
         result.cliwl_sub_ledger_id.Should().Be(defaultDictionary[nameof(CLI_IW_INL.cliwl_sub_ledger_id)]);
-        result.cliwl_inv_ref.Should().Be(PaymentConverter.GetInvoiceRef(request.Reclaim, request.Application, milestoneShortLookup));
+        result.cliwl_inv_ref.Should().Be(request.Reclaim.InvoiceId);
         result.cliwl_batch_ref.Should().Be(string.Empty);
         result.cliwl_item_sequence.Should().Be(defaultDictionary[nameof(CLI_IW_INL.cliwl_item_sequence)]);
         result.cliwl_product_id.Should().Be(defaultDictionary[nameof(CLI_IW_INL.cliwl_product_id)]);
@@ -182,7 +176,6 @@ public class ReclaimConverterTests
         var tenureLookup = await _efinLookupService.GetValue(EfinConstants.Lookups.TenureLookup);
         var partnerTypeLookup = await _efinLookupService.GetValue(EfinConstants.Lookups.PartnerTypeLookup);
         var milestoneLookup = await _efinLookupService.GetValue(EfinConstants.Lookups.MilestoneLookup);
-        var milestoneShortLookup = await _efinLookupService.GetValue(EfinConstants.Lookups.MilestoneShortLookup);
 
         var request = PaymentRequestFactory.CreateRandomReclaimPaymentRequest();
 
@@ -192,7 +185,7 @@ public class ReclaimConverterTests
         // Assert  
         result.Should().NotBeNull();
         result.cliwi_sub_ledger_id.Should().Be(defaultDictionary[nameof(CLI_IW_INV.cliwi_sub_ledger_id)]);
-        result.cliwi_inv_ref.Should().Be(PaymentConverter.GetInvoiceRef(request.Reclaim, request.Application, milestoneShortLookup));
+        result.cliwi_inv_ref.Should().Be(request.Reclaim.InvoiceId);
         result.cliwi_batch_ref.Should().BeEmpty();
         result.cliwi_invoice_to_id.Should().Be(request.Account.ProviderId);
         result.cliwi_net_amount.Should().Be(request.Reclaim.Amount.ToString(DecimalFormat, CultureInfo.InvariantCulture));
@@ -218,8 +211,6 @@ public class ReclaimConverterTests
         // Arrange  
         var defaultDictionary = await _efinLookupService.GetValue(EfinConstants.Lookups.ReclaimDefault);
         var milestoneLookup = await _efinLookupService.GetValue(EfinConstants.Lookups.MilestoneLookup);
-        var milestoneShortLookup = await _efinLookupService.GetValue(EfinConstants.Lookups.MilestoneShortLookup);
-
         var request = PaymentRequestFactory.CreateRandomReclaimPaymentRequest();
 
         // Act  
@@ -229,7 +220,7 @@ public class ReclaimConverterTests
         result.Should().NotBeNull();
         result.cliwx_sub_ledger_id.Should().Be(defaultDictionary[nameof(CLI_IW_ITL.cliwx_sub_ledger_id)]);
         result.cliwx_batch_ref.Should().BeEmpty();
-        result.cliwx_inv_ref.Should().Be(PaymentConverter.GetInvoiceRef(request.Reclaim, request.Application, milestoneShortLookup));
+        result.cliwx_inv_ref.Should().Be(request.Reclaim.InvoiceId);
         result.cliwx_line_no.Should().Be(defaultDictionary[nameof(CLI_IW_ITL.cliwx_line_no)]);
         result.cliwx_header_footer.Should().Be(defaultDictionary[nameof(CLI_IW_ITL.cliwx_header_footer)]);
         result.cliwx_text.Should().Be(PaymentConverter.GetDescription(request.Reclaim, request.Application, milestoneLookup));
