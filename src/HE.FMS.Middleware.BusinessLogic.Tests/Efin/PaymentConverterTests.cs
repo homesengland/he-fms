@@ -28,24 +28,6 @@ public class PaymentConverterTests
     }
 
     [Fact]
-    public void GetInvoiceRef_ShouldReturnFormattedInvoiceRef()
-    {
-        // Arrange
-        var claimDetails = new ClaimDetailsBase { Milestone = Milestone.Acquisition };
-        var applicationDetails = new ClaimApplicationDetails
-        {
-            AllocationId = "G123456",
-        };
-        var milestoneLookup = new Dictionary<string, string> { { "Acquisition", "A" } };
-
-        // Act  
-        var invoiceRef = PaymentConverter.GetInvoiceRef(claimDetails, applicationDetails, milestoneLookup);
-
-        // Assert  
-        Assert.Equal("G123456A", invoiceRef);
-    }
-
-    [Fact]
     public void CalculateVatAmount_ShouldReturnCorrectVatAmount()
     {
         // Arrange

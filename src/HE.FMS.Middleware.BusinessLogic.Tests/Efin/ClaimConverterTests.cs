@@ -5,7 +5,6 @@ using HE.FMS.Middleware.BusinessLogic.Efin;
 using HE.FMS.Middleware.BusinessLogic.Tests.Factories;
 using HE.FMS.Middleware.BusinessLogic.Tests.Fakes;
 using HE.FMS.Middleware.Contract.Claims.Efin;
-using HE.FMS.Middleware.Providers.Common;
 using Xunit;
 
 namespace HE.FMS.Middleware.BusinessLogic.Tests.Efin;
@@ -95,7 +94,6 @@ public class ClaimConverterTests
         var regionLookup = await _efinLookupService.GetValue(EfinConstants.Lookups.RegionLookup);
         var tenureLookup = await _efinLookupService.GetValue(EfinConstants.Lookups.TenureLookup);
         var milestoneLookup = await _efinLookupService.GetValue(EfinConstants.Lookups.MilestoneLookup);
-        var milestoneShortLookup = await _efinLookupService.GetValue(EfinConstants.Lookups.MilestoneShortLookup);
 
         var request = PaymentRequestFactory.CreateRandomClaimPaymentRequest();
 
@@ -106,7 +104,7 @@ public class ClaimConverterTests
         result.Should().NotBeNull();
 
         result.cli_sub_ledger.Should().Be(defaultDictionary[nameof(CLI_Invoice.cli_sub_ledger)]);
-        result.cli_inv_ref.Should().Be(PaymentConverter.GetInvoiceRef(request.Claim, request.Application, milestoneShortLookup));
+        result.cli_inv_ref.Should().Be(request.Claim.InvoiceId);
         result.cli_batch_ref.Should().BeEmpty();
         result.cli_cfacs_customer.Should().Be(request.Account.ProviderId);
         result.cli_net_amount.Should().Be(request.Claim.Amount.ToString(DecimalFormat, CultureInfo.InvariantCulture));
@@ -115,7 +113,7 @@ public class ClaimConverterTests
         result.cli_volume.Should().Be(defaultDictionary[nameof(CLI_Invoice.cli_volume)]);
         result.cli_uom.Should().Be(defaultDictionary[nameof(CLI_Invoice.cli_uom)]);
         result.cli_our_ref_2.Should().Be(request.Application.AllocationId);
-        result.cli_their_ref.Should().Be(request.Application.AllocationId);
+        result.cli_their_ref.Should().Be(request.Claim.InvoiceId);
         result.cli_trans_type.Should().Be(defaultDictionary[nameof(CLI_Invoice.cli_trans_type)]);
         result.cli_date.Should().Be(request.Claim.ApprovedOn.ToString(DateFormat, CultureInfo.InvariantCulture));
         result.cli_terms_code.Should().Be(defaultDictionary[nameof(CLI_Invoice.cli_terms_code)]);
@@ -135,7 +133,6 @@ public class ClaimConverterTests
         var tenureLookup = await _efinLookupService.GetValue(EfinConstants.Lookups.TenureLookup);
         var partnerTypeLookup = await _efinLookupService.GetValue(EfinConstants.Lookups.PartnerTypeLookup);
         var milestoneLookup = await _efinLookupService.GetValue(EfinConstants.Lookups.MilestoneLookup);
-        var milestoneShortLookup = await _efinLookupService.GetValue(EfinConstants.Lookups.MilestoneShortLookup);
 
         var request = PaymentRequestFactory.CreateRandomClaimPaymentRequest();
 
@@ -146,7 +143,7 @@ public class ClaimConverterTests
         result.Should().NotBeNull();
 
         result.cla_sub_ledger.Should().Be(defaultDictionary[nameof(CLA_InvoiceAnalysis.cla_sub_ledger)]);
-        result.cla_inv_ref.Should().Be(PaymentConverter.GetInvoiceRef(request.Claim, request.Application, milestoneShortLookup));
+        result.cla_inv_ref.Should().Be(request.Claim.InvoiceId);
         result.cla_batch_ref.Should().Be(string.Empty);
         result.cla_cfacs_cc.Should().Be(regionLookup[request.Application.Region.ToString()]);
         result.cla_cfacs_ac.Should().Be(partnerTypeLookup[$"Claim_{request.Application.RevenueIndicator}_{request.Account.PartnerType}"]);
