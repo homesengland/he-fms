@@ -48,7 +48,7 @@ public class ClaimConverterTests
     [Fact]
     public async Task CreateBatch_ShouldReturnClClb_Batch()
     {
-        // Arrange  
+        // Arrange
         var defaultDictionary = await _efinLookupService.GetValue(EfinConstants.Lookups.ClaimDefault);
 
         var claimPaymentRequest1 = PaymentRequestFactory.CreateRandomClaimPaymentRequest();
@@ -70,10 +70,10 @@ public class ClaimConverterTests
 
         var batchRef = "BatchRef";
 
-        // Act  
+        // Act
         var result = await _claimConverter.CreateBatch(claims, batchRef);
 
-        // Assert  
+        // Assert
         result.Should().NotBeNull();
         result.clb_sub_ledger.Should().Be(defaultDictionary[nameof(CLCLB_Batch.clb_sub_ledger)]);
         result.clb_batch_ref.Should().Be(batchRef);
@@ -97,10 +97,10 @@ public class ClaimConverterTests
 
         var request = PaymentRequestFactory.CreateRandomClaimPaymentRequest();
 
-        // Act  
+        // Act
         var result = await _claimConverter.CreateCliInvoice(request);
 
-        // Assert  
+        // Assert
         result.Should().NotBeNull();
 
         result.cli_sub_ledger.Should().Be(defaultDictionary[nameof(CLI_Invoice.cli_sub_ledger)]);
@@ -120,7 +120,7 @@ public class ClaimConverterTests
         result.cli_due_date.Should().Be(request.Claim.ApprovedOn.AddDays(7).ToString(DateFormat, CultureInfo.InvariantCulture));
         result.cli_cost_centre.Should().Be(regionLookup[request.Application.Region.ToString()]);
         result.cli_job.Should().Be(defaultDictionary[nameof(CLI_Invoice.cli_job)]);
-        result.cli_activity.Should().Be(tenureLookup[request.Application.Tenure.ToString()]);
+        result.cli_activity.Should().Be(tenureLookup[$"{EfinConstants.Lookups.Claim}_{request.Application.Tenure}"]);
         result.cli_description.Should().Be(PaymentConverter.GetDescription(request.Claim, request.Application, milestoneLookup));
     }
 
@@ -136,18 +136,18 @@ public class ClaimConverterTests
 
         var request = PaymentRequestFactory.CreateRandomClaimPaymentRequest();
 
-        // Act  
+        // Act
         var result = await _claimConverter.CreateClaInvoiceAnalysis(request);
 
-        // Assert  
+        // Assert
         result.Should().NotBeNull();
 
         result.cla_sub_ledger.Should().Be(defaultDictionary[nameof(CLA_InvoiceAnalysis.cla_sub_ledger)]);
         result.cla_inv_ref.Should().Be(request.Claim.InvoiceId);
         result.cla_batch_ref.Should().Be(string.Empty);
         result.cla_cfacs_cc.Should().Be(regionLookup[request.Application.Region.ToString()]);
-        result.cla_cfacs_ac.Should().Be(partnerTypeLookup[$"Claim_{request.Application.RevenueIndicator}_{request.Account.PartnerType}"]);
-        result.cla_cfacs_actv.Should().Be(tenureLookup[request.Application.Tenure.ToString()]);
+        result.cla_cfacs_ac.Should().Be(partnerTypeLookup[$"{EfinConstants.Lookups.Claim}_{request.Application.RevenueIndicator}_{request.Account.PartnerType}"]);
+        result.cla_cfacs_actv.Should().Be(tenureLookup[$"{EfinConstants.Lookups.Claim}_{request.Application.Tenure}"]);
         result.cla_cfacs_job.Should().Be(defaultDictionary[nameof(CLA_InvoiceAnalysis.cla_cfacs_job)]);
         result.cla_amount.Should().Be(request.Claim.Amount.ToString(DecimalFormat, CultureInfo.InvariantCulture));
         result.cla_vat_code.Should().Be(((int)request.Application.VatCode).ToString("D2", CultureInfo.InvariantCulture));

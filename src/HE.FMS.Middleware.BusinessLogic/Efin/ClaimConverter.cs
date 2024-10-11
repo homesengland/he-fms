@@ -77,7 +77,7 @@ public class ClaimConverter : PaymentConverter, IClaimConverter
             cli_due_date = claimPayment.Claim.ApprovedOn.AddDays(7).ToString(DateFormat, CultureInfo.InvariantCulture),
             cli_cost_centre = regionLookup[claimPayment.Application.Region.ToString()],
             cli_job = defaultDictionary[nameof(CLI_Invoice.cli_job)],
-            cli_activity = tenureLookup[claimPayment.Application.Tenure.ToString()],
+            cli_activity = tenureLookup[$"{EfinConstants.Lookups.Claim}_{claimPayment.Application.Tenure}"],
         };
     }
 
@@ -97,8 +97,8 @@ public class ClaimConverter : PaymentConverter, IClaimConverter
             cla_inv_ref = claimPayment.Claim.InvoiceId,
             cla_batch_ref = string.Empty,
             cla_cfacs_cc = regionLookup[claimPayment.Application.Region.ToString()],
-            cla_cfacs_ac = partnerTypeLookup[$"Claim_{claimPayment.Application.RevenueIndicator}_{claimPayment.Account.PartnerType}"],
-            cla_cfacs_actv = tenureLookup[claimPayment.Application.Tenure.ToString()],
+            cla_cfacs_ac = partnerTypeLookup[$"{EfinConstants.Lookups.Claim}_{claimPayment.Application.RevenueIndicator}_{claimPayment.Account.PartnerType}"],
+            cla_cfacs_actv = tenureLookup[$"{EfinConstants.Lookups.Claim}_{claimPayment.Application.Tenure}"],
             cla_cfacs_job = defaultDictionary[nameof(CLA_InvoiceAnalysis.cla_cfacs_job)],
             cla_amount = claimPayment.Claim.Amount.ToString(DecimalFormat, CultureInfo.InvariantCulture),
             cla_vat_code = ((int)claimPayment.Application.VatCode).ToString("D2", CultureInfo.InvariantCulture),
