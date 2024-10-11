@@ -6,19 +6,19 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
 
-namespace HE.FMS.Middleware.Reclaims.Functions;
-public class ReclaimHealtCheckHttpTrigger
+namespace HE.FMS.Middleware.Claims.Functions;
+public class ClaimHealthCheckHttpTrigger
 {
     private readonly HealthCheckService _healthCheck;
-    private readonly ILogger<ReclaimHealtCheckHttpTrigger> _logger;
+    private readonly ILogger<ClaimHealthCheckHttpTrigger> _logger;
 
-    public ReclaimHealtCheckHttpTrigger(HealthCheckService healthCheck, ILogger<ReclaimHealtCheckHttpTrigger> logger)
+    public ClaimHealthCheckHttpTrigger(HealthCheckService healthCheck, ILogger<ClaimHealthCheckHttpTrigger> logger)
     {
         _healthCheck = healthCheck;
         _logger = logger;
     }
 
-    [Function(nameof(ReclaimHealtCheckHttpTrigger))]
+    [Function(nameof(ClaimHealthCheckHttpTrigger))]
     public async Task<IActionResult> Run(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "health")] HttpRequest req)
     {

@@ -1,7 +1,5 @@
 using System.Linq.Expressions;
 using System.Reflection;
-using Azure.Identity;
-using HE.FMS.Middleware.Common;
 using HE.FMS.Middleware.Contract.Common.CosmosDb;
 using HE.FMS.Middleware.Providers.CosmosDb.Settings;
 using Microsoft.Azure.Cosmos;

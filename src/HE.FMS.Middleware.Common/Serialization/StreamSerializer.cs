@@ -5,7 +5,7 @@ using MiniValidation;
 
 namespace HE.FMS.Middleware.Common.Serialization;
 
-internal sealed class StreamSerializer : IStreamSerializer
+public sealed class StreamSerializer : IStreamSerializer
 {
     private readonly ILogger<StreamSerializer> _logger;
 

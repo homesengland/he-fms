@@ -4,7 +4,6 @@ using HE.FMS.Middleware.BusinessLogic.Tests.Fakes;
 using HE.FMS.Middleware.Contract.Claims;
 using HE.FMS.Middleware.Contract.Enums;
 using HE.FMS.Middleware.Contract.Reclaims;
-using HE.FMS.Middleware.Providers.Common;
 
 namespace HE.FMS.Middleware.BusinessLogic.Tests.Factories;
 public static class PaymentRequestFactory
