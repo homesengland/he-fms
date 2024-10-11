@@ -2,11 +2,17 @@
   "id": "TenureLookup",
   "PartitionKey": "fms",
   "Value": {
-    "AffordableRent": "7572",
-    "SocialRent": "7667",
-    "SharedOwnership": "7666",
-    "RentToBuy": "7655",
-    "HomeOwnershipForPeopleWithLongTermDisabilities": "7666",
-    "OlderPersonsSharedOwnership": "7666"
+    "Claim_AffordableRent": "7572",
+    "Claim_SocialRent": "7667",
+    "Claim_SharedOwnership": "7666",
+    "Claim_RentToBuy": "7655",
+    "Claim_HomeOwnershipForPeopleWithLongTermDisabilities": "7666",
+    "Claim_OlderPersonsSharedOwnership": "7666",
+    "Reclaim_AffordableRent": "8241",
+    "Reclaim_SocialRent": "8242",
+    "Reclaim_SharedOwnership": "8243",
+    "Reclaim_RentToBuy": "8244",
+    "Reclaim_HomeOwnershipForPeopleWithLongTermDisabilities": "7666",
+    "Reclaim_OlderPersonsSharedOwnership": "7666"
   }
 }

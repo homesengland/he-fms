@@ -54,7 +54,7 @@ public class ReclaimConverterTests
     [Fact]
     public async Task CreateBatch_ShouldReturnCliIwBat()
     {
-        // Arrange  
+        // Arrange
         var defaultDictionary = await _efinLookupService.GetValue(EfinConstants.Lookups.ReclaimDefault);
 
         var reclaimPaymentRequest1 = PaymentRequestFactory.CreateRandomReclaimPaymentRequest();
@@ -82,10 +82,10 @@ public class ReclaimConverterTests
 
         var batchRef = "BatchRef";
 
-        // Act    
+        // Act
         var result = await _reclaimConverter.CreateBatch(reclaims, batchRef);
 
-        // Assert    
+        // Assert
         result.Should().NotBeNull();
         result.cliwb_sub_ledger.Should().Be(defaultDictionary[nameof(CLI_IW_BAT.cliwb_sub_ledger)]);
         result.cliwb_batch_ref.Should().Be(batchRef);
@@ -100,14 +100,14 @@ public class ReclaimConverterTests
     [Fact]
     public async Task CreateCliIwIlt_ShouldReturnCLI_IW_ILT()
     {
-        // Arrange  
+        // Arrange
         var defaultDictionary = await _efinLookupService.GetValue(EfinConstants.Lookups.ReclaimDefault);
         var request = PaymentRequestFactory.CreateRandomReclaimPaymentRequest();
 
-        // Act    
+        // Act
         var result = await _reclaimConverter.CreateCliIwIlt(request);
 
-        // Assert    
+        // Assert
         result.Should().NotBeNull();
         result.cliwt_sub_ledger_id.Should().Be(defaultDictionary[nameof(CLI_IW_ILT.cliwt_sub_ledger_id)]);
         result.cliwt_inv_ref.Should().Be(request.Reclaim.InvoiceId);
@@ -120,17 +120,17 @@ public class ReclaimConverterTests
     [Fact]
     public async Task CreateCliIwIna_ShouldReturnCLI_IW_INA()
     {
-        // Arrange  
+        // Arrange
         var defaultDictionary = await _efinLookupService.GetValue(EfinConstants.Lookups.ReclaimDefault);
         var regionLookup = await _efinLookupService.GetValue(EfinConstants.Lookups.RegionLookup);
         var tenureLookup = await _efinLookupService.GetValue(EfinConstants.Lookups.TenureLookup);
         var partnerTypeLookup = await _efinLookupService.GetValue(EfinConstants.Lookups.PartnerTypeLookup);
         var request = PaymentRequestFactory.CreateRandomReclaimPaymentRequest();
 
-        // Act    
+        // Act
         var result = await _reclaimConverter.CreateCliIwIna(request);
 
-        // Assert    
+        // Assert
         result.Should().NotBeNull();
         result.cliwa_sub_ledger_id.Should().Be(defaultDictionary[nameof(CLI_IW_INA.cliwa_sub_ledger_id)]);
         result.cliwa_inv_ref.Should().Be(request.Reclaim.InvoiceId);
@@ -138,23 +138,23 @@ public class ReclaimConverterTests
         result.cliwa_item_sequence.Should().Be(defaultDictionary[nameof(CLI_IW_INA.cliwa_item_sequence)]);
         result.cliwa_cost_centre.Should().Be(regionLookup[request.Application.Region.ToString()]);
         result.cliwa_account.Should().Be(request.Reclaim.Amount != 0 ?
-            partnerTypeLookup[$"Reclaim_{nameof(ReclaimPaymentRequest.Reclaim.Amount)}_{request.Account.PartnerType}"] :
-            partnerTypeLookup[$"Reclaim_{nameof(ReclaimPaymentRequest.Reclaim.InterestAmount)}_{request.Account.PartnerType}"]);
-        result.cliwa_activity.Should().Be(tenureLookup[request.Application.Tenure.ToString()]);
+            partnerTypeLookup[$"{EfinConstants.Lookups.Reclaim}_{nameof(ReclaimPaymentRequest.Reclaim.Amount)}_{request.Account.PartnerType}"] :
+            partnerTypeLookup[$"{EfinConstants.Lookups.Reclaim}_{nameof(ReclaimPaymentRequest.Reclaim.InterestAmount)}_{request.Account.PartnerType}"]);
+        result.cliwa_activity.Should().Be(tenureLookup[$"{EfinConstants.Lookups.Reclaim}_{request.Application.Tenure}"]);
         result.cliwa_job.Should().Be(defaultDictionary[nameof(CLI_IW_INA.cliwa_job)]);
     }
 
     [Fact]
     public async Task CreateCliIwInl_ShouldReturnCLI_IW_INL()
     {
-        // Arrange  
+        // Arrange
         var defaultDictionary = await _efinLookupService.GetValue(EfinConstants.Lookups.ReclaimDefault);
         var request = PaymentRequestFactory.CreateRandomReclaimPaymentRequest();
 
-        // Act  
+        // Act
         var result = await _reclaimConverter.CreateCliIwInl(request);
 
-        // Assert  
+        // Assert
         result.Should().NotBeNull();
         result.cliwl_sub_ledger_id.Should().Be(defaultDictionary[nameof(CLI_IW_INL.cliwl_sub_ledger_id)]);
         result.cliwl_inv_ref.Should().Be(request.Reclaim.InvoiceId);
@@ -170,7 +170,7 @@ public class ReclaimConverterTests
     [Fact]
     public async Task CreateCliIwInv_ShouldReturnCLI_IW_INV()
     {
-        // Arrange  
+        // Arrange
         var defaultDictionary = await _efinLookupService.GetValue(EfinConstants.Lookups.ReclaimDefault);
         var regionLookup = await _efinLookupService.GetValue(EfinConstants.Lookups.RegionLookup);
         var tenureLookup = await _efinLookupService.GetValue(EfinConstants.Lookups.TenureLookup);
@@ -179,10 +179,10 @@ public class ReclaimConverterTests
 
         var request = PaymentRequestFactory.CreateRandomReclaimPaymentRequest();
 
-        // Act  
+        // Act
         var result = await _reclaimConverter.CreateCliIwInv(request);
 
-        // Assert  
+        // Assert
         result.Should().NotBeNull();
         result.cliwi_sub_ledger_id.Should().Be(defaultDictionary[nameof(CLI_IW_INV.cliwi_sub_ledger_id)]);
         result.cliwi_inv_ref.Should().Be(request.Reclaim.InvoiceId);
@@ -196,9 +196,9 @@ public class ReclaimConverterTests
         result.cliwi_cost_centre.Should().Be(regionLookup[request.Application.Region.ToString()]);
         result.cliwi_job.Should().Be(defaultDictionary[nameof(CLI_IW_INV.cliwi_job)]);
         result.cliwi_account.Should().Be(request.Reclaim.Amount != 0
-            ? partnerTypeLookup[$"Reclaim_Amount_{request.Account.PartnerType}"]
-            : partnerTypeLookup[$"Reclaim_InterestAmount_{request.Account.PartnerType}"]);
-        result.cliwi_activity.Should().Be(tenureLookup[request.Application.Tenure.ToString()]);
+            ? partnerTypeLookup[$"{EfinConstants.Lookups.Reclaim}_Amount_{request.Account.PartnerType}"]
+            : partnerTypeLookup[$"{EfinConstants.Lookups.Reclaim}_InterestAmount_{request.Account.PartnerType}"]);
+        result.cliwi_activity.Should().Be(tenureLookup[$"{EfinConstants.Lookups.Reclaim}_{request.Application.Tenure}"]);
         result.cliwi_entry_date.Should().Be(_dateTimeProvider.UtcNow.ToString(DateFormat, CultureInfo.InvariantCulture));
         result.cliwi_invoice_prefix.Should().Be(defaultDictionary[nameof(CLI_IW_INV.cliwi_invoice_prefix)]);
         result.cliwi_tax_point.Should().Be(_dateTimeProvider.UtcNow.ToString(DateFormat, CultureInfo.InvariantCulture));
@@ -208,15 +208,15 @@ public class ReclaimConverterTests
     [Fact]
     public async Task CreateCliIwItl_ShouldReturnCLI_IW_ITL()
     {
-        // Arrange  
+        // Arrange
         var defaultDictionary = await _efinLookupService.GetValue(EfinConstants.Lookups.ReclaimDefault);
         var milestoneLookup = await _efinLookupService.GetValue(EfinConstants.Lookups.MilestoneLookup);
         var request = PaymentRequestFactory.CreateRandomReclaimPaymentRequest();
 
-        // Act  
+        // Act
         var result = await _reclaimConverter.CreateCliIwItl(request);
 
-        // Assert  
+        // Assert
         result.Should().NotBeNull();
         result.cliwx_sub_ledger_id.Should().Be(defaultDictionary[nameof(CLI_IW_ITL.cliwx_sub_ledger_id)]);
         result.cliwx_batch_ref.Should().BeEmpty();

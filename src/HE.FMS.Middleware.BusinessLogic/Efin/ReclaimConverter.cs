@@ -82,9 +82,9 @@ public class ReclaimConverter : PaymentConverter, IReclaimConverter
             cliwa_item_sequence = defaultDictionary[nameof(CLI_IW_INA.cliwa_item_sequence)],
             cliwa_cost_centre = regionLookup[reclaimPayment.Application.Region.ToString()],
             cliwa_account = reclaimPayment.Reclaim.Amount != 0 ?
-                partnerTypeLookup[$"Reclaim_{nameof(ReclaimPaymentRequest.Reclaim.Amount)}_{reclaimPayment.Account.PartnerType}"] :
-                partnerTypeLookup[$"Reclaim_{nameof(ReclaimPaymentRequest.Reclaim.InterestAmount)}_{reclaimPayment.Account.PartnerType}"],
-            cliwa_activity = tenureLookup[reclaimPayment.Application.Tenure.ToString()],
+                partnerTypeLookup[$"{EfinConstants.Lookups.Reclaim}_{nameof(ReclaimPaymentRequest.Reclaim.Amount)}_{reclaimPayment.Account.PartnerType}"] :
+                partnerTypeLookup[$"{EfinConstants.Lookups.Reclaim}_{nameof(ReclaimPaymentRequest.Reclaim.InterestAmount)}_{reclaimPayment.Account.PartnerType}"],
+            cliwa_activity = tenureLookup[$"{EfinConstants.Lookups.Reclaim}_{reclaimPayment.Application.Tenure}"],
             cliwa_job = defaultDictionary[nameof(CLI_IW_INA.cliwa_job)],
             cliwa_amount = reclaimPayment.Reclaim.Amount.ToString(DecimalFormat, CultureInfo.InvariantCulture),
             cliwa_uom = defaultDictionary[nameof(CLI_IW_INA.cliwa_uom)],
@@ -136,9 +136,9 @@ public class ReclaimConverter : PaymentConverter, IReclaimConverter
             cliwi_cost_centre = regionLookup[reclaimPayment.Application.Region.ToString()],
             cliwi_job = defaultDictionary[nameof(CLI_IW_INV.cliwi_job)],
             cliwi_account = reclaimPayment.Reclaim.Amount != 0 ?
-                partnerTypeLookup[$"Reclaim_{nameof(ReclaimPaymentRequest.Reclaim.Amount)}_{reclaimPayment.Account.PartnerType}"] :
-                partnerTypeLookup[$"Reclaim_{nameof(ReclaimPaymentRequest.Reclaim.InterestAmount)}_{reclaimPayment.Account.PartnerType}"],
-            cliwi_activity = tenureLookup[reclaimPayment.Application.Tenure.ToString()],
+                partnerTypeLookup[$"{EfinConstants.Lookups.Reclaim}_{nameof(ReclaimPaymentRequest.Reclaim.Amount)}_{reclaimPayment.Account.PartnerType}"] :
+                partnerTypeLookup[$"{EfinConstants.Lookups.Reclaim}_{nameof(ReclaimPaymentRequest.Reclaim.InterestAmount)}_{reclaimPayment.Account.PartnerType}"],
+            cliwi_activity = tenureLookup[$"{EfinConstants.Lookups.Reclaim}_{reclaimPayment.Application.Tenure}"],
             cliwi_entry_date = _dateTimeProvider.UtcNow.ToString(DateFormat, CultureInfo.InvariantCulture),
             cliwi_invoice_prefix = defaultDictionary[nameof(CLI_IW_INV.cliwi_invoice_prefix)],
             cliwi_tax_point = _dateTimeProvider.UtcNow.ToString(DateFormat, CultureInfo.InvariantCulture),

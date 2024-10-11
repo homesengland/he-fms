@@ -3,6 +3,9 @@ public static class EfinConstants
 {
     public static class Lookups
     {
+        public const string Claim = nameof(Claim);
+        public const string Reclaim = nameof(Reclaim);
+
         public const string ClaimDefault = nameof(ClaimDefault);
         public const string ReclaimDefault = nameof(ReclaimDefault);
         public const string MilestoneLookup = nameof(MilestoneLookup);
