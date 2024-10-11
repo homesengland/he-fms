@@ -4,7 +4,6 @@ using HE.FMS.Middleware.BusinessLogic.Tests.Fakes;
 using HE.FMS.Middleware.Contract.Claims;
 using HE.FMS.Middleware.Contract.Enums;
 using HE.FMS.Middleware.Contract.Reclaims;
-using HE.FMS.Middleware.Providers.Common;
 
 namespace HE.FMS.Middleware.BusinessLogic.Tests.Factories;
 public static class PaymentRequestFactory
@@ -23,6 +22,7 @@ public static class PaymentRequestFactory
                 Milestone = randomizer.Enum<Milestone>(),
                 ApprovedOn = DateTimeProvider.UtcNow,
                 ApprovedBy = randomizer.String2(10),
+                InvoiceId = randomizer.String2(8),
             },
             Application = new ClaimApplicationDetails
             {
@@ -55,6 +55,7 @@ public static class PaymentRequestFactory
                 Milestone = randomizer.Enum<Milestone>(),
                 InterestAmount = randomizer.Decimal2(),
                 TotalAmount = randomizer.Decimal2(),
+                InvoiceId = randomizer.String2(8),
             },
             Application = new ClaimApplicationDetails
             {
