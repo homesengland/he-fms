@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
+using HE.FMS.Middleware.Common.Config;
 using HE.FMS.Middleware.Common.Exceptions.Validation;
 using HE.FMS.Middleware.Common.Serialization;
 using Microsoft.Extensions.Logging;
@@ -23,6 +24,23 @@ public class StreamSerializerTests
 
         // Act  
         var result = await serializer.Deserialize<TestModel>(stream, cancellationToken);
+
+        // Assert  
+        Assert.NotNull(result);
+        Assert.Equal("Test", result.Name);
+    }
+
+    [Fact]
+    public async Task Deserialize_WithOptions_ShouldReturnDeserializedObject_WhenValidJson()
+    {
+        // Arrange  
+        var serializer = CreateStreamSerializer();
+        var json = $"{{\"Name\": \"Test\"}}";
+        var stream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(json));
+        var cancellationToken = CancellationToken.None;
+
+        // Act  
+        var result = await serializer.Deserialize<TestModel>(stream, CommonModule.CommonSerializerOptions, cancellationToken);
 
         // Assert  
         Assert.NotNull(result);
