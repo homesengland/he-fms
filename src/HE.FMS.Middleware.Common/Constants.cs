@@ -33,8 +33,6 @@ public static class Constants
         public static class Claim
         {
             public const string InvoiceIndex = nameof(InvoiceIndex);
-            public const string InvoiceIndexPrefix = "CS";
-            public const int InvoiceIndexLength = 6;
 
             public const string BatchIndex = nameof(BatchIndex);
             public const string BatchIndexPrefix = "K";
@@ -44,8 +42,6 @@ public static class Constants
         public static class Reclaim
         {
             public const string InvoiceIndex = nameof(InvoiceIndex);
-            public const string InvoiceIndexPrefix = "J";
-            public const int InvoiceIndexLength = 7;
 
             public const string BatchIndex = nameof(BatchIndex);
             public const string BatchIndexPrefix = "A";
