@@ -8,7 +8,6 @@
   <ItemGroup>
     <ProjectReference Include="..\HE.FMS.Middleware.Common\HE.FMS.Middleware.Common.csproj" />
     <ProjectReference Include="..\HE.FMS.Middleware.Shared\HE.FMS.Middleware.Shared.csproj" />
-    <ProjectReference Include="..\HE.FMS.Middleware\HE.FMS.Middleware.csproj" />
   </ItemGroup>
   <ItemGroup>
     <AssemblyAttribute Include="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute" />

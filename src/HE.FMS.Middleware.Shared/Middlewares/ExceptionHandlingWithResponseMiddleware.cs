@@ -1,8 +1,5 @@
-using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
 using HE.FMS.Middleware.Common;
 using HE.FMS.Middleware.Common.Exceptions;
 using HE.FMS.Middleware.Common.Exceptions.Communication;

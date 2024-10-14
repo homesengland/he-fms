@@ -1,15 +1,6 @@
-using System.Diagnostics.CodeAnalysis;
 using HE.FMS.Middleware.BusinessLogic.Efin;
 using HE.FMS.Middleware.BusinessLogic.Efin.CosmosDb;
-using HE.FMS.Middleware.BusinessLogic.Framework;
-using HE.FMS.Middleware.BusinessLogic.Grants;
-using HE.FMS.Middleware.BusinessLogic.Grants.Services;
-using HE.FMS.Middleware.BusinessLogic.Grants.Settings;
-using HE.FMS.Middleware.BusinessLogic.Mambu;
 using HE.FMS.Middleware.BusinessLogic.Trace.CosmosDb;
-using HE.FMS.Middleware.Common.Extensions;
-using HE.FMS.Middleware.Contract.Grants.Results;
-using HE.FMS.Middleware.Contract.Grants.UseCases;
 using HE.FMS.Middleware.Providers.CosmosDb.Settings;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Configuration;
@@ -72,28 +63,4 @@ public static class DomainModule
             .AddSingleton<ICsvFileGenerator, CsvFileGenerator>()
             .AddSingleton<IEfinLookupCacheService, EfinLookupCacheService>();
     }
-
-#pragma warning disable IDE0051 // Remove unused private members
-#pragma warning disable S1144 // Unused private types or members should be removed
-    [ExcludeFromCodeCoverage]
-    private static IServiceCollection AddMambu(this IServiceCollection services)
-    {
-        services.AddScoped<IMambuApiKeyService, MambuApiKeyService>();
-
-        return services;
-    }
-
-    [ExcludeFromCodeCoverage]
-    private static IServiceCollection AddGrants(this IServiceCollection services)
-    {
-        services.AddAppConfiguration<IGrantsSettings, GrantsSettings>("Grants");
-        services.AddScoped<IGroupService, GroupService>();
-        services.AddScoped<ICreditArrangementService, CreditArrangementService>();
-        services.AddScoped<ILoanAccountService, LoanAccountService>();
-        services.AddScoped<IUseCase<OpenNewGrantAccountRequest, OpenNewGrantAccountResult>, OpenNewGrantAccountUseCase>();
-
-        return services;
-    }
-#pragma warning restore IDE0051 // Remove unused private members
-#pragma warning restore S1144 // Unused private types or members should be removed
 }
