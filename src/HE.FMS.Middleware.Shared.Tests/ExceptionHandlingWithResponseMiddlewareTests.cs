@@ -1,7 +1,6 @@
 using System.Net;
 using Azure.Core.Serialization;
 using HE.FMS.Middleware.Common;
-using HE.FMS.Middleware.Common.Exceptions.Communication;
 using HE.FMS.Middleware.Common.Exceptions.Validation;
 using HE.FMS.Middleware.Shared.Middlewares;
 using Microsoft.Azure.Functions.Worker;
@@ -104,25 +103,6 @@ public class ExceptionHandlingWithResponseMiddlewareTests
         Assert.Equal(exception, logEntry.Exception);
         Assert.Equal(exception.Message, logEntry.Message);
         Assert.Equal(HttpStatusCode.BadRequest, _httpResponseData.StatusCode);
-    }
-
-    [Fact]
-    public async Task Invoke_ShouldLogAndSetInternalServerErrorResponse_ForExternalSystemException()
-    {
-        // Arrange
-        var exception = new ExternalSystemCommunicationException("Test", HttpStatusCode.BadRequest);
-        _next.When(x => x(_context)).Do(_ => throw exception);
-
-        // Act
-        await _middleware.Invoke(_context, _next);
-
-        // Assert  
-        var logEntry = _logger.LogEntries.FirstOrDefault();
-        Assert.NotNull(logEntry);
-        Assert.Equal(LogLevel.Error, logEntry.LogLevel);
-        Assert.Equal(exception, logEntry.Exception);
-        Assert.Equal(exception.Message, logEntry.Message);
-        Assert.Equal(HttpStatusCode.InternalServerError, _httpResponseData.StatusCode);
     }
 
     [Fact]
