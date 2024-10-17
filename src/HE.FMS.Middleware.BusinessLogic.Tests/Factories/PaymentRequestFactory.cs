@@ -64,7 +64,7 @@ public static class PaymentRequestFactory
                 SchemaName = randomizer.String2(27),
                 Region = randomizer.Enum<Region>(),
                 RevenueIndicator = randomizer.Enum<RevenueIndicator>(),
-                Tenure = randomizer.Enum<Tenure>(),
+                Tenure = randomizer.Enum([Tenure.HomeOwnershipForPeopleWithLongTermDisabilities, Tenure.OlderPersonsSharedOwnership]),
                 VatCode = randomizer.Enum<VatCode>(),
                 VatRate = 23,
             },
