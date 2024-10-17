@@ -61,7 +61,7 @@ public class ReclaimConverter : PaymentConverter, IReclaimConverter
             cliwt_batch_ref = string.Empty,
             cliwt_item_sequence = defaultDictionary[nameof(CLI_IW_ILT.cliwt_item_sequence)],
             cliwt_print_sequence = defaultDictionary[nameof(CLI_IW_ILT.cliwt_print_sequence)],
-            cliwt_text = defaultDictionary[nameof(CLI_IW_ILT.cliwt_text)],
+            cliwt_text = defaultDictionary[$"{nameof(CLI_IW_ILT.cliwt_text)}_{reclaimPayment.Application.Tenure}"],
         };
     }
 

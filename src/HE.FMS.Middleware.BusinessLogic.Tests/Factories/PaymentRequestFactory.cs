@@ -47,6 +47,7 @@ public static class PaymentRequestFactory
     {
         var randomizer = new Randomizer();
 
+        Tenure[] excludeTenureElements = [Tenure.HomeOwnershipForPeopleWithLongTermDisabilities, Tenure.OlderPersonsSharedOwnership];
         return new ReclaimPaymentRequest
         {
             Reclaim = new ReclaimDetails
@@ -64,7 +65,7 @@ public static class PaymentRequestFactory
                 SchemaName = randomizer.String2(27),
                 Region = randomizer.Enum<Region>(),
                 RevenueIndicator = randomizer.Enum<RevenueIndicator>(),
-                Tenure = randomizer.Enum<Tenure>(),
+                Tenure = randomizer.Enum(excludeTenureElements),
                 VatCode = randomizer.Enum<VatCode>(),
                 VatRate = 23,
             },

@@ -11,8 +11,6 @@
     "Reclaim_AffordableRent": "8241",
     "Reclaim_SocialRent": "8242",
     "Reclaim_SharedOwnership": "8243",
-    "Reclaim_RentToBuy": "8244",
-    "Reclaim_HomeOwnershipForPeopleWithLongTermDisabilities": "7666",
-    "Reclaim_OlderPersonsSharedOwnership": "7666"
+    "Reclaim_RentToBuy": "8244"
   }
 }
