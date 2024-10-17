@@ -25,7 +25,10 @@
     "cliwt_item_sequence": "1",
     "cliwt_print_sequence": "1",
     "cliwt_sub_ledger_id": "SL4",
-    "cliwt_text": "HOUSING FOR RENT GRANT RECLAIM",
+    "cliwt_text_AffordableRent": "AFFORDABLE RENT GRANTS RECLAIMS",
+    "cliwt_text_SocialRent": "SOCIAL RENT GRANT RECLAIMS",
+    "cliwt_text_SharedOwnership": "SHARED OWNERSHIP GRANT RECLAIMS",
+    "cliwt_text_RentToBuy": "RENT TO BUY GRANT RECLAIMS",
     "cliwa_job": "AHP11111",
     "cliwi_job": "AHP11111"
   }

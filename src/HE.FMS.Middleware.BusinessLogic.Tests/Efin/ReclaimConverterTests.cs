@@ -114,7 +114,7 @@ public class ReclaimConverterTests
         result.cliwt_batch_ref.Should().BeEmpty();
         result.cliwt_item_sequence.Should().Be(defaultDictionary[nameof(CLI_IW_ILT.cliwt_item_sequence)]);
         result.cliwt_print_sequence.Should().Be(defaultDictionary[nameof(CLI_IW_ILT.cliwt_print_sequence)]);
-        result.cliwt_text.Should().Be(defaultDictionary[nameof(CLI_IW_ILT.cliwt_text)]);
+        result.cliwt_text.Should().Be(defaultDictionary[$"{nameof(CLI_IW_ILT.cliwt_text)}_{request.Application.Tenure}"]);
     }
 
     [Fact]
