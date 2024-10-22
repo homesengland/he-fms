@@ -18,7 +18,7 @@ public static class PaymentRequestFactory
         {
             Claim = new ClaimDetails
             {
-                Amount = randomizer.Decimal(),
+                Amount = randomizer.Decimal(min: 0.01M),
                 Milestone = randomizer.Enum<Milestone>(),
                 ApprovedOn = DateTimeProvider.UtcNow,
                 ApprovedBy = randomizer.String2(10),
@@ -54,7 +54,7 @@ public static class PaymentRequestFactory
                 Amount = randomizer.Decimal2(),
                 Milestone = randomizer.Enum<Milestone>(),
                 InterestAmount = randomizer.Decimal2(),
-                TotalAmount = randomizer.Decimal2(),
+                TotalAmount = randomizer.Decimal2(min: 0.01M),
                 InvoiceId = randomizer.String2(8),
             },
             Application = new ClaimApplicationDetails
