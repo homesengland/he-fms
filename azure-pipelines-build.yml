@@ -1,4 +1,18 @@
-trigger: none
+trigger:
+- none
+
+pr:
+  branches:
+    include:
+    - main
+
+schedules:
+- cron: "0 4 * * Mon,Tue,Wed,Thu,Fri"
+  displayName: Nightly Test Run
+  branches:
+    include:
+    - main
+  always: true
 
 parameters:
 - name: forcePushToProd
