@@ -50,13 +50,7 @@ public abstract class ClaimBase<T>
 
         await _traceCosmosDbClient.UpsertItem(cosmosDbOutput, cancellationToken);
 
-        ServiceBusMessage message = new(Encoding.UTF8.GetBytes(_objectSerializer.Serialize(inputData)))
-        {
-            CorrelationId = idempotencyKey,
-        };
-
-        message.ApplicationProperties.Add(Constants.CustomHeaders.Environment, environment);
-
+        var message = CreateServiceBusMessage(inputData, idempotencyKey, environment);
         await _serviceBusSender.SendMessageAsync(message, cancellationToken);
 
         return request.CreateResponse(HttpStatusCode.Accepted);
@@ -73,19 +67,24 @@ public abstract class ClaimBase<T>
         var cosmosDbOutput = await _traceCosmosDbClient.GetItems($"{Constants.CosmosDbConfiguration.PartitonKey}-{environment}");
 
         var deserializedItems = cosmosDbOutput
-            .Where(item => item.Value.ToString() != null)
+            .Where(item => !string.IsNullOrEmpty(item.Value.ToString()))
             .Select(item => _objectSerializer.Deserialize<T>(item.Value.ToString()!))
             .ToList();
 
-        ServiceBusMessage message = new(Encoding.UTF8.GetBytes(_objectSerializer.Serialize(deserializedItems)))
+        var message = CreateServiceBusMessage(deserializedItems, idempotencyKey, environment);
+        await _serviceBusSender.SendMessageAsync(message, cancellationToken);
+
+        return request.CreateResponse(HttpStatusCode.Accepted);
+    }
+
+    private ServiceBusMessage CreateServiceBusMessage(object data, string idempotencyKey, string environment)
+    {
+        var message = new ServiceBusMessage(Encoding.UTF8.GetBytes(_objectSerializer.Serialize(data)))
         {
             CorrelationId = idempotencyKey,
         };
 
         message.ApplicationProperties.Add(Constants.CustomHeaders.Environment, environment);
-
-        await _serviceBusSender.SendMessageAsync(message, cancellationToken);
-
-        return request.CreateResponse(HttpStatusCode.Accepted);
+        return message;
     }
 }
