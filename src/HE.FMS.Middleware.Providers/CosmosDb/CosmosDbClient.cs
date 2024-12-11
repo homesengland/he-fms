@@ -36,6 +36,21 @@ public abstract class CosmosDbClient<TMessage> : ICosmosDbClient<TMessage>, IDis
         return await _container.ReadItemAsync<TMessage>(id, new PartitionKey(partitionKey));
     }
 
+    public async Task<IList<TMessage>> GetItems(string partitionKey)
+    {
+        var queryable = _container
+            .GetItemLinqQueryable<TMessage>(requestOptions: new QueryRequestOptions { PartitionKey = new PartitionKey(partitionKey) })
+            .ToFeedIterator();
+        var results = new List<TMessage>();
+
+        while (queryable.HasMoreResults)
+        {
+            results.AddRange(await queryable.ReadNextAsync());
+        }
+
+        return results;
+    }
+
     public async Task<IList<TMessage>> FindAllItems(Expression<Func<TMessage, bool>> predicate, string partitionKey)
     {
         var queryable = _container

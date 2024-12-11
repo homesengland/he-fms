@@ -8,6 +8,8 @@ public interface ICosmosDbClient<TMessage>
 {
     Task<TMessage> GetItem(string id, string partitionKey);
 
+    Task<IList<TMessage>> GetItems(string partitionKey);
+
     Task UpsertItem(TMessage message, CancellationToken cancellationToken);
 
     Task<IList<TMessage>> FindAllItems(Expression<Func<TMessage, bool>> predicate, string partitionKey);

@@ -61,4 +61,31 @@ public abstract class ClaimBase<T>
 
         return request.CreateResponse(HttpStatusCode.Accepted);
     }
+
+    protected async Task<HttpResponseData> Trigger(HttpRequestData request, CancellationToken cancellationToken)
+    {
+        var environment = request.GetEnvironmentHeader();
+
+        _environmentValidator.Validate(environment);
+
+        var idempotencyKey = request.GetIdempotencyHeader();
+
+        var cosmosDbOutput = await _traceCosmosDbClient.GetItems($"{Constants.CosmosDbConfiguration.PartitonKey}-{environment}");
+
+        var deserializedItems = cosmosDbOutput
+            .Where(item => item.Value.ToString() != null)
+            .Select(item => _objectSerializer.Deserialize<T>(item.Value.ToString()!))
+            .ToList();
+
+        ServiceBusMessage message = new(Encoding.UTF8.GetBytes(_objectSerializer.Serialize(deserializedItems)))
+        {
+            CorrelationId = idempotencyKey,
+        };
+
+        message.ApplicationProperties.Add(Constants.CustomHeaders.Environment, environment);
+
+        await _serviceBusSender.SendMessageAsync(message, cancellationToken);
+
+        return request.CreateResponse(HttpStatusCode.Accepted);
+    }
 }
