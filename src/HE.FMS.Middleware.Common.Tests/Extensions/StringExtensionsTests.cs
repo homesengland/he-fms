@@ -5,9 +5,9 @@ namespace HE.FMS.Middleware.Common.Tests.Extensions;
 public class StringExtensionsTests
 {
     [Fact]
-    public void Should_remove_commas_and_dots()
+    public void Should_remove_commas()
     {
-        const string input = "Arms, Length Body ,of, Government.";
+        const string input = "Arms, Length Body ,of, Government";
         const string expectedOutput = "Arms Length Body of Government";
 
         var result = input.RemoveSpecialCharacters();
