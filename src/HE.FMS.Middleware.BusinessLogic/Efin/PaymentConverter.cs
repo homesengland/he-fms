@@ -18,7 +18,7 @@ public abstract class PaymentConverter
             "{0}{1} {2}",
             milestoneLookup[claimDetails.Milestone.ToString()],
             applicationDetails.ApplicationId,
-            applicationDetails.SchemaName.Truncate(19));
+            applicationDetails.SchemaName.RemoveSpecialCharacters().Truncate(19));
     }
 
     public static decimal CalculateVatAmount(decimal netAmount, decimal vatRate)
