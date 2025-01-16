@@ -142,7 +142,7 @@ public class ReclaimConverter : PaymentConverter, IReclaimConverter
             cliwi_entry_date = _dateTimeProvider.UtcNow.ToString(DateFormat, CultureInfo.InvariantCulture),
             cliwi_invoice_prefix = defaultDictionary[nameof(CLI_IW_INV.cliwi_invoice_prefix)],
             cliwi_tax_point = _dateTimeProvider.UtcNow.ToString(DateFormat, CultureInfo.InvariantCulture),
-            cliwi_description = GetDescription(reclaimPayment.Reclaim, reclaimPayment.Application, milestoneLookup),
+            cliwi_description = GetDescription(reclaimPayment.Reclaim, reclaimPayment.Reclaim.Milestone, reclaimPayment.Application, milestoneLookup),
         };
     }
 
@@ -160,7 +160,7 @@ public class ReclaimConverter : PaymentConverter, IReclaimConverter
             cliwx_inv_ref = reclaimPayment.Reclaim.InvoiceId,
             cliwx_line_no = defaultDictionary[nameof(CLI_IW_ITL.cliwx_line_no)],
             cliwx_header_footer = defaultDictionary[nameof(CLI_IW_ITL.cliwx_header_footer)],
-            cliwx_text = GetDescription(reclaimPayment.Reclaim, reclaimPayment.Application, milestoneLookup),
+            cliwx_text = GetDescription(reclaimPayment.Reclaim, reclaimPayment.Reclaim.Milestone, reclaimPayment.Application, milestoneLookup),
         };
     }
 }

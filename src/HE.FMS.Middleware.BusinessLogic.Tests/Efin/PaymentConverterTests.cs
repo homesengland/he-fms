@@ -2,6 +2,7 @@ using System.Globalization;
 using HE.FMS.Middleware.BusinessLogic.Efin;
 using HE.FMS.Middleware.Contract.Claims;
 using HE.FMS.Middleware.Contract.Enums;
+using HE.FMS.Middleware.Contract.Reclaims;
 using Xunit;
 
 namespace HE.FMS.Middleware.BusinessLogic.Tests.Efin;
@@ -9,22 +10,43 @@ namespace HE.FMS.Middleware.BusinessLogic.Tests.Efin;
 public class PaymentConverterTests
 {
     [Fact]
-    public void GetDescription_ShouldReturnFormattedDescription()
+    public void GetDescription_ShouldReturnFormattedDescription_WhenMilestoneExists()
     {
-        // Arrange  
-        var claimDetails = new ClaimDetailsBase { Milestone = Milestone.Acquisition };
+        // Arrange
+        var reclaimDetails = new ReclaimDetails { Milestone = Milestone.Acquisition, InvoiceId = "0000097R" };
         var applicationDetails = new ClaimApplicationDetails
         {
             ApplicationId = "12345",
+            AllocationId = "G002186",
             SchemaName = "LongSchemaNameThatNeedsTruncation",
         };
         var milestoneLookup = new Dictionary<string, string> { { "Acquisition", "ACQ" } };
 
-        // Act  
-        var description = PaymentConverter.GetDescription(claimDetails, applicationDetails, milestoneLookup);
+        // Act
+        var description = PaymentConverter.GetDescription(reclaimDetails, reclaimDetails.Milestone, applicationDetails, milestoneLookup);
 
-        // Assert  
-        Assert.Equal("ACQ12345 LongSchemaNameThatN", description);
+        // Assert
+        Assert.Equal("ACQG002186 LongSchemaNameThatN", description);
+    }
+
+    [Fact]
+    public void GetDescription_ShouldReturnFormattedDescription_WhenMilestoneDoesNotExist()
+    {
+        // Arrange
+        var reclaimDetails = new ReclaimDetails { Milestone = null, InvoiceId = "0000098R" };
+        var applicationDetails = new ClaimApplicationDetails
+        {
+            ApplicationId = "1234567",
+            AllocationId = "G002186",
+            SchemaName = "LongSchemaNameThatNeedsTruncation",
+        };
+        var milestoneLookup = new Dictionary<string, string> { { "Acquisition", "ACQ" } };
+
+        // Act
+        var description = PaymentConverter.GetDescription(reclaimDetails, reclaimDetails.Milestone, applicationDetails, milestoneLookup);
+
+        // Assert
+        Assert.Equal("G002186LongSchemaName0000098R", description);
     }
 
     [Fact]
@@ -34,10 +56,10 @@ public class PaymentConverterTests
         var netAmount = 100m;
         var vatRate = 20m;
 
-        // Act  
+        // Act
         var vatAmount = PaymentConverter.CalculateVatAmount(netAmount, vatRate);
 
-        // Assert  
+        // Assert
         Assert.Equal(20m, vatAmount);
     }
 
@@ -48,10 +70,10 @@ public class PaymentConverterTests
         var netAmount = 100m;
         var vatRate = 20m;
 
-        // Act  
+        // Act
         var grossAmount = PaymentConverter.CalculateGrossAmount(netAmount, vatRate);
 
-        // Assert  
+        // Assert
         Assert.Equal(120m, grossAmount);
     }
 
@@ -73,10 +95,10 @@ public class PaymentConverterTests
         // Arrange
         var parsedDate = DateTime.Parse(date, CultureInfo.InvariantCulture);
 
-        // Act  
+        // Act
         var result = PaymentConverter.GetAccountingYear(parsedDate);
 
-        // Assert  
+        // Assert
         Assert.Equal(expected, result);
     }
 
@@ -98,10 +120,10 @@ public class PaymentConverterTests
         // Arrange
         var parsedDate = DateTime.Parse(date, CultureInfo.InvariantCulture);
 
-        // Act  
+        // Act
         var result = PaymentConverter.GetAccountingPeriod(parsedDate);
 
-        // Assert  
+        // Assert
         Assert.Equal(expected, result);
     }
 }
