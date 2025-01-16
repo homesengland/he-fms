@@ -202,7 +202,7 @@ public class ReclaimConverterTests
         result.cliwi_entry_date.Should().Be(_dateTimeProvider.UtcNow.ToString(DateFormat, CultureInfo.InvariantCulture));
         result.cliwi_invoice_prefix.Should().Be(defaultDictionary[nameof(CLI_IW_INV.cliwi_invoice_prefix)]);
         result.cliwi_tax_point.Should().Be(_dateTimeProvider.UtcNow.ToString(DateFormat, CultureInfo.InvariantCulture));
-        result.cliwi_description.Should().Be(PaymentConverter.GetDescription(request.Reclaim, request.Application, milestoneLookup));
+        result.cliwi_description.Should().Be(PaymentConverter.GetDescription(request.Reclaim, request.Reclaim.Milestone, request.Application, milestoneLookup));
     }
 
     [Fact]
@@ -223,6 +223,6 @@ public class ReclaimConverterTests
         result.cliwx_inv_ref.Should().Be(request.Reclaim.InvoiceId);
         result.cliwx_line_no.Should().Be(defaultDictionary[nameof(CLI_IW_ITL.cliwx_line_no)]);
         result.cliwx_header_footer.Should().Be(defaultDictionary[nameof(CLI_IW_ITL.cliwx_header_footer)]);
-        result.cliwx_text.Should().Be(PaymentConverter.GetDescription(request.Reclaim, request.Application, milestoneLookup));
+        result.cliwx_text.Should().Be(PaymentConverter.GetDescription(request.Reclaim, request.Reclaim.Milestone, request.Application, milestoneLookup));
     }
 }
