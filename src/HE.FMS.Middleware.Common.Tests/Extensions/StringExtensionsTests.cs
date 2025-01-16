@@ -36,4 +36,15 @@ public class StringExtensionsTests
 
         Assert.Equal(expectedOutput, result);
     }
+
+    [Fact]
+    public void Should_skip_dashes()
+    {
+        const string input = "Public-Private-Partnership";
+        const string expectedOutput = "Public-Private-Partnership";
+
+        var result = input.RemoveSpecialCharacters();
+
+        Assert.Equal(expectedOutput, result);
+    }
 }
