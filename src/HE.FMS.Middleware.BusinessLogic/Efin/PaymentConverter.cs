@@ -9,6 +9,14 @@ public abstract class PaymentConverter
     protected const string DecimalFormat = "F";
     protected const string DateFormat = "d-MMM-yy";
 
+    /// <summary>
+    ///     Generates a formatted description based on the provided claim details, milestone, application details, and milestone lookup.
+    /// </summary>
+    /// <param name="claimDetails">The details of the claim.</param>
+    /// <param name="milestone">The milestone associated with the claim, if any.</param>
+    /// <param name="applicationDetails">The details of the application associated with the claim.</param>
+    /// <param name="milestoneLookup">A dictionary mapping milestone names to their abbreviations.</param>
+    /// <returns>A formatted description string.</returns>
     public static string GetDescription(
         ClaimDetailsBase claimDetails,
         Milestone? milestone,
