@@ -46,7 +46,7 @@ public class PaymentConverterTests
         var description = PaymentConverter.GetDescription(reclaimDetails, reclaimDetails.Milestone, applicationDetails, milestoneLookup);
 
         // Assert
-        Assert.Equal("LongSchemaName0000098RG002186", description);
+        Assert.Equal("G002186LongSchemaName0000098R", description);
     }
 
     [Fact]

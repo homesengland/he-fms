@@ -28,9 +28,9 @@ public abstract class PaymentConverter
         return string.Format(
             CultureInfo.InvariantCulture,
             "{0}{1}{2}",
+            applicationDetails.AllocationId.Truncate(7),
             applicationDetails.SchemaName.RemoveSpecialCharacters().Truncate(14),
-            claimDetails.InvoiceId,
-            applicationDetails.AllocationId.Truncate(7));
+            claimDetails.InvoiceId);
     }
 
     public static decimal CalculateVatAmount(decimal netAmount, decimal vatRate)
