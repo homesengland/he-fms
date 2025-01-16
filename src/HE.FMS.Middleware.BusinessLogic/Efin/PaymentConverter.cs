@@ -21,7 +21,7 @@ public abstract class PaymentConverter
                 CultureInfo.InvariantCulture,
                 "{0}{1} {2}",
                 milestoneLookup[milestone.Value.ToString()],
-                applicationDetails.ApplicationId,
+                applicationDetails.AllocationId,
                 applicationDetails.SchemaName.RemoveSpecialCharacters().Truncate(19));
         }
 

@@ -17,6 +17,7 @@ public class PaymentConverterTests
         var applicationDetails = new ClaimApplicationDetails
         {
             ApplicationId = "12345",
+            AllocationId = "G002186",
             SchemaName = "LongSchemaNameThatNeedsTruncation",
         };
         var milestoneLookup = new Dictionary<string, string> { { "Acquisition", "ACQ" } };
@@ -25,7 +26,7 @@ public class PaymentConverterTests
         var description = PaymentConverter.GetDescription(reclaimDetails, reclaimDetails.Milestone, applicationDetails, milestoneLookup);
 
         // Assert
-        Assert.Equal("ACQ12345 LongSchemaNameThatN", description);
+        Assert.Equal("ACQG002186 LongSchemaNameThatN", description);
     }
 
     [Fact]
