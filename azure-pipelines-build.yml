@@ -1,4 +1,18 @@
-trigger: none
+trigger:
+- none
+
+pr:
+  branches:
+    include:
+    - main
+
+schedules:
+- cron: "0 4 * * Mon,Tue,Wed,Thu,Fri"
+  displayName: Nightly Test Run
+  branches:
+    include:
+    - main
+  always: true
 
 parameters:
 - name: forcePushToProd
@@ -8,12 +22,13 @@ parameters:
 
 variables:
   buildMajor: 3
-  buildMinor: 2
-  buildBranch: $[replace(variables['Build.SourceBranch'], '/', '.')]
+  buildMinor: 3
+  buildPatch: 1
+  buildBranch: $[replace(replace(variables['Build.SourceBranch'], 'refs/heads/', ''), '/', '.')]
 
 pool: 'vmss-ado-chs-nonprod-001'
 
-name: $(buildMajor).$(buildMinor).$(Rev:r)-$(buildBranch)
+name: $(buildMajor).$(buildMinor).$(buildPatch)-$(Rev:r).$(buildBranch)
 
 resources:
   repositories:
