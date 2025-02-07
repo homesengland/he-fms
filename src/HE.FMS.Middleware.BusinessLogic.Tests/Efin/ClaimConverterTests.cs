@@ -121,7 +121,7 @@ public class ClaimConverterTests
         result.cli_cost_centre.Should().Be(regionLookup[request.Application.Region.ToString()]);
         result.cli_job.Should().Be(defaultDictionary[nameof(CLI_Invoice.cli_job)]);
         result.cli_activity.Should().Be(tenureLookup[$"{EfinConstants.Lookups.Claim}_{request.Application.Tenure}"]);
-        result.cli_description.Should().Be(PaymentConverter.GetDescription(request.Claim, request.Application, milestoneLookup));
+        result.cli_description.Should().Be(PaymentConverter.GetDescription(request.Claim, request.Claim.Milestone, request.Application, milestoneLookup));
     }
 
     [Fact]
@@ -156,6 +156,6 @@ public class ClaimConverterTests
         result.cla_unit_qty.Should().Be(defaultDictionary[nameof(CLA_InvoiceAnalysis.cla_unit_qty)]);
         result.cla_uom.Should().Be(defaultDictionary[nameof(CLA_InvoiceAnalysis.cla_uom)]);
         result.cla_volume.Should().Be(defaultDictionary[nameof(CLA_InvoiceAnalysis.cla_volume)]);
-        result.cla_description.Should().Be(PaymentConverter.GetDescription(request.Claim, request.Application, milestoneLookup));
+        result.cla_description.Should().Be(PaymentConverter.GetDescription(request.Claim, request.Claim.Milestone, request.Application, milestoneLookup));
     }
 }

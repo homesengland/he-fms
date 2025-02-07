@@ -7,7 +7,7 @@ public static class StringExtensions
     {
         var sb = new StringBuilder();
         foreach (var c in from c in str
-                          where c is (>= '0' and <= '9') or (>= 'A' and <= 'Z') or (>= 'a' and <= 'z') or '.' or '_'
+                          where c is (>= '0' and <= '9') or (>= 'A' and <= 'Z') or (>= 'a' and <= 'z') or '.' or '_' or ' ' or '-'
                           select c)
         {
             sb.Append(c);
