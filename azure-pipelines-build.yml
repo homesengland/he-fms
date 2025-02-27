@@ -25,7 +25,6 @@ variables:
   buildMinor: 3
   buildPatch: 1
   buildBranch: $[replace(replace(variables['Build.SourceBranch'], 'refs/heads/', ''), '/', '.')]
-  identifier: "fms"
 
 pool: 'vmss-ado-chs-nonprod-001'
 
