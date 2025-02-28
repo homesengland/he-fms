@@ -23,7 +23,7 @@ parameters:
 variables:
   buildMajor: 3
   buildMinor: 3
-  buildPatch: 1
+  buildPatch: 2
   buildBranch: $[replace(replace(variables['Build.SourceBranch'], 'refs/heads/', ''), '/', '.')]
   identifier: "fms"
 
@@ -36,7 +36,6 @@ resources:
   - repository: he-fms-deployment
     type: git
     name: 'FMS/he-fms-deployment'
-    ref: 'hotfix/build-pipeline-fix'
   - repository: templates
     type: git
     name: 'Cloud Hosting Service/Templates'
