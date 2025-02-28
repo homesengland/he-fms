@@ -36,6 +36,7 @@ resources:
   - repository: he-fms-deployment
     type: git
     name: 'FMS/he-fms-deployment'
+    ref: 'hotfix/build-pipeline-fix'
   - repository: templates
     type: git
     name: 'Cloud Hosting Service/Templates'
