@@ -39,7 +39,7 @@ resources:
   - repository: templates
     type: git
     name: 'Cloud Hosting Service/Templates'
-    ref: 'master'
+    ref: 'feature/backlog-implementation'
 
 stages:
 - template: pipelines/azure-pipelines-build.yml@he-fms-deployment
