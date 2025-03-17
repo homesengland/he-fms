@@ -36,11 +36,11 @@ resources:
   - repository: he-fms-deployment
     type: git
     name: 'FMS/he-fms-deployment'
-    ref: 'feature/clean-repos-bug-backlog'
+    ref: 'main'
   - repository: templates
     type: git
     name: 'Cloud Hosting Service/Templates'
-    ref: 'feature/backlog-implementation'
+    ref: 'master'
 
 stages:
 - template: pipelines/azure-pipelines-build.yml@he-fms-deployment
